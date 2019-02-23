@@ -3,6 +3,16 @@ published: true
 layout: single
 title: Network prototyping made easy with P4 and Python!
 date: 2018-12-24T00:00:00.000Z
+categories:
+- P4
+- Programming
+tags:
+- SDN
+- BMv2
+- NFV
+- Python
+- Mininet
+- scapy
 ---
 ## Introduction ##
 
