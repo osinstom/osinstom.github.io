@@ -79,3 +79,20 @@ sudo ./dpdk-devbind.py -b igb_uio 0000:88:00.0
 sudo ./dpdk-devbind.py -b igb_uio 0000:88:00.1
 ```
 
+Then, mount hugepages:
+
+```
+sudo mkdir -p /mnt/huge
+(mount | grep hugetlbfs) > /dev/null || sudo mount -t hugetlbfs nodev /mnt/huge
+```
+
+And edit configuration to support 2048 hugepages. 
+
+`sudo nano /sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages`
+
+and set number of hugepages to _2048_.
+
+You can validate if hugepages has been configured by:
+
+`grep -i huge /proc/meminfo`
+
