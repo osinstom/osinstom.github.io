@@ -96,3 +96,5 @@ You can validate if hugepages has been configured by:
 
 `grep -i huge /proc/meminfo`
 
+### Performance tuning
+
