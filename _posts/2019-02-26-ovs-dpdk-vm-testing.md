@@ -1,7 +1,7 @@
 ---
-published: false
 layout: single
-date: 2019-02-26T00:00:00.000Z
+published: false
+date: {}
 categories:
   - NFV
   - OVS-DPDK
@@ -11,10 +11,17 @@ tags:
   - DPDK
   - OVS
   - Linux
+title: Untitled
 ---
-## Configuring testing environment based on OVS-DPDK and KVM
+## Configuring OVS-DPDK with VM for performance testing
 
-This is a user guide on how to install and configure testing virtual environment based on OVS-DPDK and KVM.
+Recently, I work on a performance comparison between virtualization technologies. In order to make an evaluation I had to setup a test environment based on OVS-DPDK and KVM-based Virtual Machine (refer to test scenario below). This user guide shows how to install and configure the PHY-VM-PHY scenario with OVS-DPDK and libvirt.
+
+// TODO: 
+
+### Prerequisites
+
+
 
 ### Installing OVS-DPDK
 
@@ -96,5 +103,14 @@ You can validate if hugepages has been configured by:
 
 `grep -i huge /proc/meminfo`
 
-### Performance tuning
+### Performance tuning of OVS-DPDK
+
+### Configuring KVM machine
+
+
+
+### Summary
+
+
+
 
