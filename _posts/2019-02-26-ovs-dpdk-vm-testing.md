@@ -169,7 +169,6 @@ lscpu
 --- 
 
 NUMA node0 CPU(s):     0-9,20-29
-
 NUMA node1 CPU(s):     10-19,30-39
 ```
 
@@ -184,7 +183,13 @@ cat /sys/bus/pci/devices/0000:88:00.1/numa_node
 1
 ```
 
-**As our NICs are associated with the NUMA node 1 we need to dedicate CPU cores in the same NUMA node to run PMD threads.** From the _lscpu_ command's output we know we should use CPU cores from range 10-19 or 30-39. 
+**As our NICs are associated with the NUMA node 1 we need to dedicate CPU cores in the same NUMA node to run PMD threads.** From the _lscpu_ command's output we know we should use CPU cores from range 10-19 or 30-39. So, let's configure remaining parameters (we don't configure _pmd-rxq-affinity_):
+
+```
+sudo ovs-vsctl --no-wait set Open_vSwitch . other_config:dpdk-lcore-mask=""
+sudo ovs-vsctl --no-wait set Open_vSwitch . other_config:pmd-cpu-mask=""
+```
+
 
 ### Configuring KVM machine
 
