@@ -11,7 +11,7 @@ tags:
   - DPDK
   - OVS
   - Linux
-title: Untitled
+title: Configuring OVS-DPDK with VM
 ---
 ## Configuring OVS-DPDK with VM for performance testing
 
@@ -109,8 +109,8 @@ Network devices using DPDK-compatible driver
 0000:88:00.0 '82599ES 10-Gigabit SFI/SFP+ Network Connection 10fb' drv=uio_pci_generic unused=ixgbe
 0000:88:00.1 '82599ES 10-Gigabit SFI/SFP+ Network Connection 10fb' drv=uio_pci_generic unused=ixgbe
 ```
-
-If Ethernet interfaces have been bound to DPDK, it's time to mount hugepages. In order to allocate hugepages persistently I have added following parameters to GRUB_CMDLINE_LINUX_DEFAULT in _/etc/default/grub_:
+Physical memory is segmented into contiguous regions called pages. 
+If Ethernet interfaces have been bound to DPDK, it's time to mount hugepages. Hugepages are contiguous regions, which are segments of physical memory. In order to allocate hugepages persistently I have added following parameters to GRUB_CMDLINE_LINUX_DEFAULT in _/etc/default/grub_:
 
 `GRUB_CMDLINE_LINUX_DEFAULT="default_hugepagesz=1G hugepagesz=1G hugepages=16 hugepagesz=2M hugepages=2048"`
 
@@ -121,25 +121,70 @@ sudo update-grub
 sudo reboot
 ```
 
-After restart, mount hugepages and check if they are allocated:
+After restart, mount hugepages using:
 
 ```
 sudo mkdir -p /mnt/huge
 sudo mount -t hugetlbfs nodev /mnt/huge
-
 ```
-
-And edit configuration to support 2048 hugepages. 
-
-`sudo nano /sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages`
-
-and set number of hugepages to _2048_.
 
 You can validate if hugepages has been configured by:
 
 `grep -i huge /proc/meminfo`
 
-### Performance tuning of OVS-DPDK
+Great, the DPDK environment should be configured now. We can move to the configuration of OVS. Firstly initialize OVS brigde with DPDK capabilities:
+
+```
+sudo ovs-vsctl --no-wait init
+sudo ovs-vsctl --no-wait set Open_vSwitch . other_config:dpdk-init=true
+```
+
+The dpdk-init=true should be applied. To validate use below command, which should return the _true_ value.
+
+`sudo ovs-vsctl get Open_vSwitch . dpdk_initialized`
+
+Now, we need to define other OVS parameters to be used by the DPDK ports. These are:
+
+- **other_config:dpdk-hugepage-dir** - points to a directory, where hugepages are mounted.
+- **other_config:dpdk-socket-mem** - a comma seperated list of hugepage memory, specified in MBs per NUMA node, allocated to the ovs-vswitchd to use for the DPDK dataplane
+- **other_config:dpdk-lcore-mask** - a bitmask of what CPU core to pin to non-dataplane threads of the ovs-vswitchd to.
+- **other_config:pmd-cpu-mask** - a bitmask of what CPU core to pin to the dataplane-related (Poll Mode Driver, PMD) threads of the ovs-vswitchd to. Each bit set in the bitmask result in the creating of the PMD thread.
+- **other_config:pmd-rxq-affinity** - it is set per Interface. It pins a queue of port to the given CPU core. This parameter is optional, but in some circumstances it can be used to pin a queue of port to the specific CPU core.
+
+The first two options are quite straightforward and can be configured with:
+
+```
+sudo ovs-vsctl --no-wait set Open_vSwitch . other_config:dpdk-socket-mem="4096M"
+sudo ovs-vsctl --no-wait set Open_vSwitch . other_config:dpdk-hugepage-dir="/mnt/huge"
+```
+
+Now, to configure _dpdk-lcore-mask_ and _pmd-cpu-mask_ we need to find out how our server is configured. In particular, we need to know how many NUMA nodes our server has and how CPU cores are allocated across NUMA nodes.
+
+Just to clarify, NUMA stands for Non-Uniform Memory Access. In NUMA system memory is divided into zones called nodes, which are allocated to particular CPUs or sockets. Access to memory that is local to a CPU is faster than memory connected to remote CPUs on that system. Normally, each socket on a NUMA system has a local memory node whose contents can be accessed faster than the memory in the node local to another CPU or the memory on a bus shared by all CPUs.
+
+Because of above mentioned characteristics we should configure OVS-DPDK with NUMA-awareness. In order to check NUMA topology on the server use:
+
+```
+lscpu
+--- 
+
+NUMA node0 CPU(s):     0-9,20-29
+
+NUMA node1 CPU(s):     10-19,30-39
+```
+
+In our case we have two NUMA nodes (0 and 1). The CPU cores 0-9 and 20-29 are associated with NUMA node0, while the others are associated with NUMA node1. 
+
+Now, for the physical ports (88:00.0 and 88:00.1 in our case) that will be connected to OVS-DPDK we should check the associated NUMA node: 
+
+```
+cat /sys/bus/pci/devices/0000:88:00.0/numa_node
+1
+cat /sys/bus/pci/devices/0000:88:00.1/numa_node
+1
+```
+
+**As our NICs are associated with the NUMA node 1 we need to dedicate CPU cores in the same NUMA node to run PMD threads.** From the _lscpu_ command's output we know we should use CPU cores from range 10-19 or 30-39. 
 
 ### Configuring KVM machine
 
@@ -149,4 +194,4 @@ You can validate if hugepages has been configured by:
 
 This blog posts describes how to setup OVS-DPDK with VM for performance testing. I hope it will be found useful for anyone, who will need to run OVS-DPDK with KVM. With this setup I was able to achieve ~8.5 Mpps (~7.5 Gbps) for l2fwd on HP ProLiant DL380 Gen9 server with 2x Intel(R) Xeon(R) CPU E5-2650 v3 @ 2.30GHz and 128 GB RAM.
 
-
+If you have any problem to reproduce the steps to configure OVS-DPDK with VM don't hesitate to contact me. 
