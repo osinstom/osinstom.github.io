@@ -277,7 +277,8 @@ prose:
           value: "single"
       - name: "date"
         field: 
-          element: "hidden"
+          element: "text"
+          label: "Date"
           value: "CURRENT_DATETIME"
       - name: "title"
         field:
