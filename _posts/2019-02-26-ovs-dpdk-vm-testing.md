@@ -242,7 +242,101 @@ Great! We have OVS-DPDK up and running. Now, let's create and run Virtual Machin
 
 ### Configuring KVM machine
 
-In order to configure and run VMs we will use _virsh_. 
+In order to configure and run VMs we will use _virsh_. Before booting the VM up we need to prepare Host OS by configuring permissions for QEMU and hugepages to be used by VM's ports.
+
+Edit /etc/libvirt/qemu.conf and modify the following lines to set "root" as the value of user and group:
+
+```
+user = "root"
+group = "root"
+```
+
+Then, restart libvirt:
+
+`sudo systemctl restart libvirtd.service`
+
+Now, mount hugepages to be used by QEMU:
+
+```
+sudo mkdir -p /dev/hugepages/libvirt
+sudo mkdir -p /dev/hugepages/libvirt/qemu
+sudo mount -t hugetlbfs hugetlbfs /dev/hugepages/libvirt/qemu
+```
+
+Once done, we can run VM by using _virsh_ and XML configuration file. The XML file is provided below. 
+
+```xml
+<domain type='kvm'>
+  <name>demovm</name>
+  <uuid>4a9b3f53-fa2a-47f3-a757-dd87720d9d1d</uuid>
+  <memory unit='KiB'>8388608</memory>
+  <currentMemory unit='KiB'>8399608</currentMemory>
+  <memoryBacking>
+    <hugepages>
+      <page size='1' unit='G' nodeset='0'/>
+    </hugepages>
+  </memoryBacking>
+  <vcpu placement='static'>8</vcpu>
+  <cputune>
+    <shares>4096</shares>
+    <vcpupin vcpu='0' cpuset='14'/>
+    <vcpupin vcpu='1' cpuset='15'/>
+    <emulatorpin cpuset='11,13'/>
+  </cputune>
+  <os>
+    <type arch='x86_64' machine='pc'>hvm</type>
+    <boot dev='hd'/>
+  </os>
+  <features>
+    <acpi/>
+    <apic/>
+  </features>
+  <cpu mode='host-model'>
+    <model fallback='allow'/>
+    <topology sockets='2' cores='4' threads='1'/>
+    <numa>
+      <cell id='0' cpus='0-1' memory='4194304' unit='KiB' memAccess='shared'/>
+    </numa>
+  </cpu>
+  <on_poweroff>destroy</on_poweroff>
+  <on_reboot>restart</on_reboot>
+  <on_crash>destroy</on_crash>
+  <devices>
+    <emulator>/usr/bin/qemu-system-x86_64</emulator>
+    <disk type='file' device='disk'>
+      <driver name='qemu' type='qcow2' cache='none'/>
+      <source file='/home/tomek/ovs.qcow2'/>
+      <target dev='vda' bus='virtio'/>
+    </disk>
+    <disk type='file' device='disk'>
+      <source file='/home/tomek/user-data.img'/>
+      <target dev='vdb' bus='virtio'/>
+    </disk>
+    <interface type='vhostuser'>
+      <mac address='00:00:00:00:00:01'/>
+      <source type='unix' path='/usr/local/var/run/openvswitch/dpdkvhostuser0' mode='client'/>
+       <model type='virtio'/>
+      <driver queues='2'>
+        <host mrg_rxbuf='off'/>
+      </driver>
+    </interface>
+    <interface type='vhostuser'>
+      <mac address='00:00:00:00:00:02'/>
+      <source type='unix' path='/usr/local/var/run/openvswitch/dpdkvhostuser1' mode='client'/>
+      <model type='virtio'/>
+      <driver queues='2'>
+        <host mrg_rxbuf='off'/>
+      </driver>
+    </interface>
+    <serial type='pty'>
+      <target port='0'/>
+    </serial>
+    <console type='pty'>
+      <target type='serial' port='0'/>
+    </console>
+  </devices>
+</domain>
+```
 
 ### Summary
 
