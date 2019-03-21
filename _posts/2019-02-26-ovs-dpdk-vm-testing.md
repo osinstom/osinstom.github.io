@@ -1,7 +1,7 @@
 ---
 layout: single
 published: false
-date: {}
+date: '[object Object]'
 categories:
   - NFV
   - OVS-DPDK
