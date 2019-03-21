@@ -15,9 +15,10 @@ title: Configuring OVS-DPDK with VM
 ---
 ## Configuring OVS-DPDK with VM for performance testing
 
-Recently, I work on a performance comparison between virtualization technologies. In order to make an evaluation I had to setup a test environment based on OVS-DPDK and KVM-based Virtual Machine (refer to test scenario below). This user guide shows how to install and configure the PHY-VM-PHY scenario with OVS-DPDK and libvirt.
+Recently, I work on a performance comparison between virtualization technologies. In order to make an evaluation I had to setup a test environment based on [OVS-DPDK](https://software.intel.com/en-us/articles/open-vswitch-with-dpdk-overview) and [KVM-based Virtual Machine](https://www.redhat.com/en/topics/virtualization/what-is-KVM). This user guide shows how to install and configure the test scenario with OVS-DPDK and libvirt. The test scenario is presented below. According to OVS flow rules configuration we can test PHY-OVS-PHY scenario (green line) or PHY-VM-PHY scenario (red line). 
 
-// TODO: 
+![The OVS-DPDK + VM scenario]({{site.baseurl}}/_posts/test-scenario-ovs-dpdk.png)
+
 
 ### Prerequisites
 
@@ -190,13 +191,61 @@ sudo ovs-vsctl --no-wait set Open_vSwitch . other_config:dpdk-lcore-mask=""
 sudo ovs-vsctl --no-wait set Open_vSwitch . other_config:pmd-cpu-mask=""
 ```
 
+When DPDK parameters are configured, let's run OVS-DPDK bridge. To create OVS-DPDK bridge with type=netdev use:
+
+```
+sudo ovs-vsctl add-br br0
+sudo ovs-vsctl set Bridge br0 datapath_type=netdev
+```
+
+And add physical ports to OVS-DPDK:
+
+```
+sudo ovs-vsctl add-port br0 ens4f0 -- set Interface ens4f0 type=dpdk \
+            options:dpdk-devargs=0000:88:00.0 \
+            options:n_rxq=2 \
+            ofport_request=1
+
+sudo ovs-vsctl add-port br0 ens4f1 -- set Interface ens4f1 type=dpdk \
+            options:dpdk-devargs=0000:88:00.1 \
+            options:n_rxq=2 \
+            ofport_request=2
+```
+
+In our case we want also to attach VM to OVS-DPDK, so we create two virtual ports (type=dpdkvhostuser). These ports will be later used by VM.
+
+```
+sudo ovs-vsctl add-port br0 dpdkvhostuser0 -- set Interface dpdkvhostuser0 type=dpdkvhostuser ofport_request=3
+
+sudo ovs-vsctl add-port br0 dpdkvhostuser1 -- set Interface dpdkvhostuser1 type=dpdkvhostuser ofport_request=4
+```
+
+Then, let's configure the OVS flow fules to push traffic to and from VM's ports.
+
+```
+sudo ovs-ofctl del-flows br0
+sudo ovs-ofctl add-flow br0 in_port=1,actions=output:3
+sudo ovs-ofctl add-flow br0 in_port=2,actions=output:4
+sudo ovs-ofctl add-flow br0 in_port=3,actions=output:1
+sudo ovs-ofctl add-flow br0 in_port=4,actions=output:2
+```
+
+To check current configuration of OVS use:
+
+```
+sudo ovs-ofctl dump-flows br0
+sudo ovs-ofctl dump-ports br0
+sudo ovs-vsctl show
+```
+
+Great! We have OVS-DPDK up and running. Now, let's create and run Virtual Machine..
 
 ### Configuring KVM machine
 
-
+In order to configure and run VMs we will use _virsh_. 
 
 ### Summary
 
 This blog posts describes how to setup OVS-DPDK with VM for performance testing. I hope it will be found useful for anyone, who will need to run OVS-DPDK with KVM. With this setup I was able to achieve ~8.5 Mpps (~7.5 Gbps) for l2fwd on HP ProLiant DL380 Gen9 server with 2x Intel(R) Xeon(R) CPU E5-2650 v3 @ 2.30GHz and 128 GB RAM.
 
-If you have any problem to reproduce the steps to configure OVS-DPDK with VM don't hesitate to contact me. 
+If you have any problem to reproduce the steps to configure OVS-DPDK with VM don't hesitate to contact me.
