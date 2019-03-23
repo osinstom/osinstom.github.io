@@ -270,8 +270,7 @@ prose:
     - /_layouts
     - /_includes
   metadata:
-    "":
-      - date: CURRENT_DATETIME
+    _posts:
       - name: "layout"
         field:
           element: "hidden"
@@ -279,7 +278,7 @@ prose:
       - name: "date"
         field: 
           element: "hidden"
-          value: "CURRENT_DATETIME"
+          value: CURRENT_DATETIME
       - name: "title"
         field:
           element: "text"
