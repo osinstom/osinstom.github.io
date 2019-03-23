@@ -271,6 +271,7 @@ prose:
     - /_includes
   metadata:
     "":
+      - date: CURRENT_DATETIME
       - name: "layout"
         field:
           element: "hidden"
