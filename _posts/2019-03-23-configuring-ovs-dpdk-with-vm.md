@@ -1,7 +1,7 @@
 ---
 date: '2019-03-23 23:00 +0100'
 layout: single
-published: false
+published: true
 title: Configuring OVS-DPDK with VM
 categories:
   - Tutorial
@@ -387,6 +387,6 @@ Finally, let's run the testpmd app, which will forward the traffic between two D
   
 ### Summary
 
-This blog posts describes how to setup OVS-DPDK with VM for performance testing. I hope it will be found useful for anyone, who will need to run OVS-DPDK with KVM. With this setup I was able to achieve about 8.5 Mpps (~7.5 Gbps) for small (74 Bytes) packets on HP ProLiant DL380 Gen9 server with 2x Intel(R) Xeon(R) CPU E5-2650 v3 @ 2.30GHz and 128 GB RAM.
+This post describes how to setup OVS-DPDK with VM. I hope it will be found useful for anyone, who will need to run OVS-DPDK with KVM. With this setup I was able to achieve about 8.5 Mpps (~7.5 Gbps) for small (74 Bytes) packets on HP ProLiant DL380 Gen9 server with 2x Intel(R) Xeon(R) CPU E5-2650 v3 @ 2.30GHz and 128 GB RAM.
 
 If you have any question regarding the configuration process or you faced a problem to reproduce the steps don't hesitate to contact me.
