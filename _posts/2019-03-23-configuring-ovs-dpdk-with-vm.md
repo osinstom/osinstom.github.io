@@ -363,6 +363,22 @@ When the VM will boot up you can login by using username: _ubuntu_ and password:
   
 If you would like to test network performance of OVS-DPDK + VM deployment I recommend you to run testpmd app inside VM. 
   
+[Once the testpmd app is compiled](https://doc.dpdk.org/guides/testpmd_app_ug/build_app.html), let's setup the DPDK ports inside VM and run testpmd:
+  
+```
+sudo sysctl vm.nr_hugepages=1024
+sudo mkdir -p /dev/hugepages
+sudo mount -t hugetlbfs hugetlbfs /dev/hugepages
+sudo modprobe uio
+sudo insmod $DPDK_BUILD/kmod/igb_uio.ko
+$DPDK_DIR/usertools/dpdk-devbind.py --status
+sudo $DPDK_DIR/usertools/dpdk-devbind.py -b igb_uio 00:02.0 00:03.0
+```
+  
+Finally, let's run the testpmd app, which will forward the traffic between two DPDK ports:
+  
+`sudo ./testpmd -n 4 --socket-mem 512 -- --burst=64 -i`
+  
 ### Summary
 
 This blog posts describes how to setup OVS-DPDK with VM for performance testing. I hope it will be found useful for anyone, who will need to run OVS-DPDK with KVM. With this setup I was able to achieve about 8.5 Mpps (~7.5 Gbps) for small (74 Bytes) packets on HP ProLiant DL380 Gen9 server with 2x Intel(R) Xeon(R) CPU E5-2650 v3 @ 2.30GHz and 128 GB RAM.
