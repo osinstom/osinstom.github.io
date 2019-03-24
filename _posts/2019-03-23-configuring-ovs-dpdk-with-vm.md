@@ -15,7 +15,7 @@ tags:
 ---
 ## Configuring OVS-DPDK with VM for performance testing
 
-Recently, I work on a performance comparison between virtualization technologies. In order to make an evaluation I had to setup a test environment based on [OVS-DPDK](https://software.intel.com/en-us/articles/open-vswitch-with-dpdk-overview) and [KVM-based Virtual Machine](https://www.redhat.com/en/topics/virtualization/what-is-KVM). This user guide shows how to install and configure the test scenario with OVS-DPDK and libvirt. The test scenario is presented below. According to OVS flow rules configuration we can test PHY-OVS-PHY scenario (green line) or PHY-VM-PHY scenario (red line). 
+Recently, I work on a performance comparison between virtualization technologies. In order to made an experiment I had had to setup a test environment based on [OVS-DPDK](https://software.intel.com/en-us/articles/open-vswitch-with-dpdk-overview) and [KVM-based Virtual Machine](https://www.redhat.com/en/topics/virtualization/what-is-KVM). This user guide shows how to install and configure the test scenario with OVS-DPDK and libvirt. The test scenario is presented below. According to OVS flow rules configuration we can test PHY-OVS-PHY scenario (green line) or PHY-VM-PHY scenario (red line). 
 
 ![The OVS-DPDK + VM scenario]({{site.baseurl}}/_posts/test-scenario-ovs-dpdk.png)
 
@@ -51,7 +51,7 @@ export DPDK_TARGET=x86_64-native-linuxapp-gcc
 export DPDK_BUILD=$DPDK_DIR/$DPDK_TARGET
 ```
 
-.. and install DPDK. Note that we will use special flags (_-g -Ofast -march=native -Q_) to achieve a better performance of OVS-DPDK.
+.. and install DPDK. Note that we are using special flags (_-g -Ofast -march=native -Q_) to achieve a better performance of OVS-DPDK.
 
 `EXTRA_CFLAGS="-g -Ofast" make install -j T=$target CONFIG_RTE_BUILD_COMBINE_LIBS=y CONFIG_RTE_LIBRTE_VHOST=y DESTDIR=install`
 
@@ -82,14 +82,14 @@ DPDK 18.11.0
 
 ### Configuring OVS-DPDK
 
-Firstly, let's configure DPDK ports. Following commands inject required kernel drivers (i.e. uio, igb_uio, vfio). It is up to you, which one you would like to use. In order to choose one refer to https://doc.dpdk.org/guides/linux_gsg/linux_drivers.html. For our purposes we have used _uiopcigeneric_.
+Firstly, let's configure DPDK ports. Following commands inject required kernel driver (i.e. uio, igb_uio, vfio). It is up to you, which one you would like to use. In order to choose one refer to https://doc.dpdk.org/guides/linux_gsg/linux_drivers.html. For our purposes we have used _uiopcigeneric_.
 
 ```
 cd dpdk/dpdk-18.11/usertools/
 sudo modprobe uio_pci_generic
 ```
 
-If kernel modules has been injected NICs can be attached to DPDK. Note that you need to use the *bus-info* format (e.g.0000:88:00.0). To retrieve NIC ID in the bus-info format use:
+Once kernel module has been injected NICs can be attached to DPDK. Note that you need to use the *bus-info* format (e.g.0000:88:00.0). To retrieve NIC ID in the bus-info format use:
 
 `lspci | grep Ethernet`
 
@@ -100,7 +100,7 @@ sudo ./dpdk-devbind.py -b uio_pci_generic 0000:88:00.0
 sudo ./dpdk-devbind.py -b uio_pci_generic 0000:88:00.1
 ```
 
-You can check if interfaces have been bound using:
+You can check if interfaces have been bound successfully using:
 
 ```
 tomek@s14-2:~/dpdk/dpdk-18.11$ usertools/dpdk-devbind.py --status
@@ -110,8 +110,10 @@ Network devices using DPDK-compatible driver
 0000:88:00.0 '82599ES 10-Gigabit SFI/SFP+ Network Connection 10fb' drv=uio_pci_generic unused=ixgbe
 0000:88:00.1 '82599ES 10-Gigabit SFI/SFP+ Network Connection 10fb' drv=uio_pci_generic unused=ixgbe
 ```
-Physical memory is segmented into contiguous regions called pages. 
-If Ethernet interfaces have been bound to DPDK, it's time to mount hugepages. Hugepages are contiguous regions, which are segments of physical memory. In order to allocate hugepages persistently I have added following parameters to GRUB_CMDLINE_LINUX_DEFAULT in _/etc/default/grub_:
+
+Under "Network devices using DPDK-compatible driver" you should see the list of ports, which are already bound to the DPDK-compatible driver. 
+ 
+Once Ethernet interfaces have been bound to DPDK, it's time to mount hugepages. Hugepages are contiguous regions - segments of physical memory. In order to allocate hugepages persistently I have added following parameters to GRUB_CMDLINE_LINUX_DEFAULT in _/etc/default/grub_:
 
 `GRUB_CMDLINE_LINUX_DEFAULT="default_hugepagesz=1G hugepagesz=1G hugepages=16 hugepagesz=2M hugepages=2048"`
 
@@ -122,18 +124,22 @@ sudo update-grub
 sudo reboot
 ```
 
-After restart, mount hugepages using:
+This configuration will take effect after every system reboot and will result in allocating 16 hugepages of the 1G size. 
+
+After reboot, you need only to mount hugepages using:
 
 ```
 sudo mkdir -p /mnt/huge
 sudo mount -t hugetlbfs nodev /mnt/huge
 ```
 
-You can validate if hugepages has been configured by:
+To validate if hugepages has been allocated properly by:
 
 `grep -i huge /proc/meminfo`
 
-Great, the DPDK environment should be configured now. We can move to the configuration of OVS. Firstly initialize OVS brigde with DPDK capabilities:
+The number of free hugepages should be less than total number of available hugepages.
+
+Great, the DPDK environment should be configured properly now. We can move to the configuration of OVS. Firstly initialize OVS brigde with DPDK capabilities:
 
 ```
 sudo ovs-vsctl --no-wait init
@@ -161,9 +167,9 @@ sudo ovs-vsctl --no-wait set Open_vSwitch . other_config:dpdk-hugepage-dir="/mnt
 
 Now, to configure _dpdk-lcore-mask_ and _pmd-cpu-mask_ we need to find out how our server is configured. In particular, we need to know how many NUMA nodes our server has and how CPU cores are allocated across NUMA nodes.
 
-Just to clarify, NUMA stands for Non-Uniform Memory Access. In NUMA system memory is divided into zones called nodes, which are allocated to particular CPUs or sockets. Access to memory that is local to a CPU is faster than memory connected to remote CPUs on that system. Normally, each socket on a NUMA system has a local memory node whose contents can be accessed faster than the memory in the node local to another CPU or the memory on a bus shared by all CPUs.
+Just to clarify, NUMA stands for Non-Uniform Memory Access. In NUMA system memory is divided into zones called nodes, which are allocated to particular CPUs or sockets. Access to memory that is local to a CPU is faster than memory connected to remote CPUs on that system. Normally, each socket on a NUMA system has a local memory node whose contents can be accessed faster than the memory in the node local to another CPU or the memory on a bus shared by all CPUs. 
 
-Because of above mentioned characteristics we should configure OVS-DPDK with NUMA-awareness. In order to check NUMA topology on the server use:
+Thus, in order to achieve better performance CPU cores used by OVS-DPDK should be located on the same NUMA node as DPDK ports. So, we configure OVS-DPDK with NUMA-awareness. In order to check NUMA topology on the server use:
 
 ```
 lscpu
@@ -175,7 +181,7 @@ NUMA node1 CPU(s):     10-19,30-39
 
 In our case we have two NUMA nodes (0 and 1). The CPU cores 0-9 and 20-29 are associated with NUMA node0, while the others are associated with NUMA node1. 
 
-Now, for the physical ports (88:00.0 and 88:00.1 in our case) that will be connected to OVS-DPDK we should check the associated NUMA node: 
+Now, for the physical ports (88:00.0 and 88:00.1 in our case), which will be connected to OVS-DPDK we should check the associated NUMA node: 
 
 ```
 cat /sys/bus/pci/devices/0000:88:00.0/numa_node
@@ -184,14 +190,14 @@ cat /sys/bus/pci/devices/0000:88:00.1/numa_node
 1
 ```
 
-**As our NICs are associated with the NUMA node 1 we need to dedicate CPU cores in the same NUMA node to run PMD threads.** From the _lscpu_ command's output we know we should use CPU cores from range 10-19 or 30-39. So, let's configure remaining parameters (we don't configure _pmd-rxq-affinity_):
+**As our NICs are associated with the NUMA node 1 we should dedicate CPU cores in the same NUMA node to run PMD threads.** From the _lscpu_ command's output we know we should use CPU cores from range 10-19 or 30-39. So, let's configure remaining parameters (we don't configure _pmd-rxq-affinity_):
 
 ```
 sudo ovs-vsctl --no-wait set Open_vSwitch . other_config:dpdk-lcore-mask=""
 sudo ovs-vsctl --no-wait set Open_vSwitch . other_config:pmd-cpu-mask=""
 ```
 
-When DPDK parameters are configured, let's run OVS-DPDK bridge. To create OVS-DPDK bridge with type=netdev use:
+Once DPDK parameters for OVS are configured, let's run OVS-DPDK bridge. To create OVS-DPDK bridge use type=netdev:
 
 ```
 sudo ovs-vsctl add-br br0
@@ -212,7 +218,7 @@ sudo ovs-vsctl add-port br0 ens4f1 -- set Interface ens4f1 type=dpdk \
             ofport_request=2
 ```
 
-In our case we want also to attach VM to OVS-DPDK, so we create two virtual ports (type=dpdkvhostuser). These ports will be later used by VM.
+In our case we want also to attach VM to OVS-DPDK, so we create also two virtual ports (type=dpdkvhostuser). These ports will be later used by VM.
 
 ```
 sudo ovs-vsctl add-port br0 dpdkvhostuser0 -- set Interface dpdkvhostuser0 type=dpdkvhostuser ofport_request=3
