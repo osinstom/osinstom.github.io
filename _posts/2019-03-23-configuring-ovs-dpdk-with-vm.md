@@ -240,11 +240,11 @@ sudo ovs-vsctl show
 
 Great! We have OVS-DPDK up and running. Now, let's create and run Virtual Machine..
 
-### Configuring KVM machine
+### Running KVM machine
 
 In order to configure and run VMs we will use _virsh_. Before booting the VM up we need to prepare Host OS by configuring permissions for QEMU and hugepages to be used by VM's ports.
 
-Edit /etc/libvirt/qemu.conf and modify the following lines to set "root" as the value of user and group:
+Edit **_/etc/libvirt/qemu.conf_** and modify the following lines to set "root" as the value of user and group:
 
 ```
 user = "root"
@@ -263,7 +263,20 @@ sudo mkdir -p /dev/hugepages/libvirt/qemu
 sudo mount -t hugetlbfs hugetlbfs /dev/hugepages/libvirt/qemu
 ```
 
-Once done, we can run VM by using _virsh_ and XML configuration file. The XML file is provided below. 
+Once done, we can run VM by using _virsh_ and XML configuration file. I have prepared the pre-defined VM (testpmd.qcow2) with DPDK installed on. Moreover, I have prepared the user-data.img image with cloud init configuration, which configures password to login into VM. In order to generate user-data.img you can create a text file with the below content:
+
+```
+#cloud-config
+password: Password1
+chpasswd: { expire: False }
+ssh_pwauth: True
+```
+
+And generate .img file:
+
+`cloud-localds user-data.img user-data`
+
+Now, let's create the XML file (let's name it _demovm.xml_) for virsh. Refer to the XML file provided below. It will run the KVM machine with 8GB or RAM and 8 vCPUs. The VM will be attached to the OVS-DPDK ports. Note that you need to set the path to the OS image and user-data.img under the <disk> section. 
 
 ```xml
 <domain type='kvm'>
@@ -305,7 +318,7 @@ Once done, we can run VM by using _virsh_ and XML configuration file. The XML fi
     <emulator>/usr/bin/qemu-system-x86_64</emulator>
     <disk type='file' device='disk'>
       <driver name='qemu' type='qcow2' cache='none'/>
-      <source file='/home/tomek/ovs.qcow2'/>
+      <source file='/home/tomek/testpmd.qcow2'/>
       <target dev='vda' bus='virtio'/>
     </disk>
     <disk type='file' device='disk'>
@@ -338,8 +351,20 @@ Once done, we can run VM by using _virsh_ and XML configuration file. The XML fi
 </domain>
 ```
 
+Once created, let's run the KVM machine using virsh:
+  
+`virsh create demovm.xml`
+  
+Now, you can enter the console using:
+  
+`virsh console demovm`
+  
+When the VM will boot up you can login by using username: _ubuntu_ and password: _Password1_. 
+  
+If you would like to test network performance of OVS-DPDK + VM deployment I recommend you to run testpmd app inside VM. 
+  
 ### Summary
 
-This blog posts describes how to setup OVS-DPDK with VM for performance testing. I hope it will be found useful for anyone, who will need to run OVS-DPDK with KVM. With this setup I was able to achieve ~8.5 Mpps (~7.5 Gbps) for l2fwd on HP ProLiant DL380 Gen9 server with 2x Intel(R) Xeon(R) CPU E5-2650 v3 @ 2.30GHz and 128 GB RAM.
+This blog posts describes how to setup OVS-DPDK with VM for performance testing. I hope it will be found useful for anyone, who will need to run OVS-DPDK with KVM. With this setup I was able to achieve ~8.5 Mpps (~7.5 Gbps) for small (74 Bytes) packets on HP ProLiant DL380 Gen9 server with 2x Intel(R) Xeon(R) CPU E5-2650 v3 @ 2.30GHz and 128 GB RAM.
 
-If you have any problem to reproduce the steps to configure OVS-DPDK with VM don't hesitate to contact me.
+If you have any question regarding the configuration process or you faced a problem to reproduce the steps don't hesitate to contact me.
