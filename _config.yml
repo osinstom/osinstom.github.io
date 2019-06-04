@@ -107,7 +107,7 @@ analytics:
 author:
   name             : "Tomek Osinski"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "R&D Software Engineer, SDN/NFV Enthusiast"
+  bio              : "R&D Software Engineer (SDN/NFV/5G), Open-Source Enthusiast"
   location         : "Warsaw, Poland"
   email            : "osinstom@gmail.com"
   github           : "osinstom"
