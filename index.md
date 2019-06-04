@@ -1,5 +1,7 @@
 ---
 layout: single
 author_profile: true
-permanentlink: /about/
+permanentlink: /
 ---
+
+dsada
