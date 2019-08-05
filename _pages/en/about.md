@@ -1,6 +1,8 @@
 ---
 title:  "About"
 layout: single
+lang: en
+lang-ref: about
 permalink: /about/
 author_profile: true
 comments: false
