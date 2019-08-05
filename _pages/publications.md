@@ -8,7 +8,7 @@ comments: false
 
 ## 2019 ##
 
-TBC
+Tomasz Osiński, Halina Tarasiuk, Łukasz Rajewski, Emil Kowalczyk: **DPPx: A P4-based Data Plane Programmability and Exposure framework to enhance NFV services.** NetSoft 2019
 
 ## 2018 ##
 
