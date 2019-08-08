@@ -12,8 +12,13 @@ This blog post describes how to implement more complex tunneling technique (like
 
 ## Short introduction to VXLAN
 
-## VXLAN implementation in P4
+## Design and implementation of VXLAN in P4
 
+It is a good practice to design P4 programs (especially those that perform tunneling) by dividing the P4 program into four functional blocks:
 
+- **_Upstream ingress_** - 
+- Upstream egress
+- Downstream ingress
+- Downstream egress 
 
 ## Summary
