@@ -19,11 +19,11 @@ This blog post describes how to design and implement more complex tunneling tech
 
 The VXLAN (Virtual eXtensible Local Area Network) protocol has been standardized in [RFC 7348](https://tools.ietf.org/html/rfc7348) and is usually used to provide overlay communications between virtual machines in the multi-tenant virtualized data center. It isolates logically networks by using Virtual Network Identifier (VNI). The VNI uniquely identifies a Network Segment or, interchangeably, VXLAN Overlay Network. For more information on how VXLAN works visit these references:
 
-https://sites.google.com/site/amitsciscozone/home/data-center/vxlan
+[https://sites.google.com/site/amitsciscozone/home/data-center/vxlan](https://sites.google.com/site/amitsciscozone/home/data-center/vxlan)
 
-https://medium.com/@NTTICT/vxlan-explained-930cc825a51
+[https://medium.com/@NTTICT/vxlan-explained-930cc825a51](https://medium.com/@NTTICT/vxlan-explained-930cc825a51)
 
-https://tools.ietf.org/html/rfc7348
+[RFC 7348](https://tools.ietf.org/html/rfc7348)
 
 ## Design and implementation of VXLAN in P4
 
