@@ -6,7 +6,7 @@ title: Implementing tunneling techniques in P4 based on the example of VXLAN
 ---
 ## Introduction
 
-Recently, I have been implementing the support for packet tunneling in our [P4C-to-uBPF](https://github.com/P4-Research/p4c/tree/master/backends/ubpf) compiler. However, in order to deeply understand P4 constructs describing tunneling I have created the reference implementation of the VXLAN tunneling for BMv2 switch. 
+Recently, I started to implement the support for packet tunneling in our [P4C-to-uBPF](https://github.com/P4-Research/p4c/tree/master/backends/ubpf) compiler. However, in order to deeply understand P4 constructs describing tunneling I have created the reference implementation of the VXLAN tunneling for BMv2 switch. 
 
 This blog post describes how to design and implement more complex tunneling technique (like VXLAN) in the P4 language. The source code is available on [Github](https://github.com/P4-Research/p4-demos/tree/master/vxlan).
 
@@ -191,12 +191,161 @@ In the context of VXLAN processing the upstream egress block does not need to do
 The downstream ingress is responsible for determining the value of the VNI identifier that will be used to encapsulate L2 packet by the downstream egress. Moreover, it determines source IP address and next hop IP address for the encapsulated packets. It also performs routing for encapsulates packets.
 
 ```
+control vxlan_ingress_downstream(inout headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
 
+    action set_vni(bit<24> vni) {
+        meta.vxlan_vni = vni;
+    }
+
+    action set_ipv4_nexthop(bit<32> nexthop) {
+        meta.nexthop = nexthop;
+    }
+
+    table t_vxlan_segment {
+
+        key = {
+            hdr.ipv4.dstAddr : lpm;
+        }
+
+        actions = {
+            @defaultonly NoAction;
+            set_vni;
+        }
+
+    }
+
+    table t_vxlan_nexthop {
+
+        key = {
+            hdr.ethernet.dstAddr : exact;
+        }
+
+        actions = {
+            set_ipv4_nexthop;
+        }
+    }
+
+    action set_vtep_ip(bit<32> vtep_ip) {
+        meta.vtepIP = vtep_ip;
+    }
+
+    table t_vtep {
+        key = {
+            hdr.ethernet.srcAddr : exact;
+        }
+
+        actions = {
+            set_vtep_ip;
+        }
+
+    }
+
+    action route(bit<9> port) {
+        standard_metadata.egress_spec = port;
+    }
+
+    table t_vxlan_routing {
+
+        key = {
+            meta.nexthop : exact;
+        }
+
+        actions = {
+            route;
+        }
+    }
+
+    apply {
+        if (hdr.ipv4.isValid()) {
+            t_vtep.apply();
+            if(t_vxlan_segment.apply().hit) {
+                if(t_vxlan_nexthop.apply().hit) {
+                    t_vxlan_routing.apply();
+                }
+            }
+        }
+    }
+
+}
 ```
+
+The apply method firsty invokes t_vtep table, which determines source IP address for encapsulated packets based on source MAC address. The source MAC address is the address of the host that is directly connected to the VXLAN endpoint (switch). Then, the control block determines VXLAN Segment ID (the value of VNI) based on the IP subnet mask. Each IP subnet gets unique VNI. If the VXLAN Segment ID is found the next hop IP address is determined. It would be the IP address of the peer VXLAN endpoint. Finally, the P4 enforce to determine output port for packet at the ingress pipeline. Thus, t_vxlan_routing table determines output port based on the next hop IP address. At this moment, everything is prepared to encapsulate packet and send it out in the downstream egress block.
 
 #### Downstream egress
 
-The downstream egress 
+If the VNI has been determined in the ingress downstream block the downstream egress block just encapsulates the packet and sends the L2 frame. 
+
+```
+control vxlan_egress_downstream(inout headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
+
+    action rewrite_macs(bit<48> smac, bit<48> dmac) {
+        hdr.ethernet.srcAddr = smac;
+        hdr.ethernet.dstAddr = dmac;
+    }
+
+    table t_send_frame {
+
+            key = {
+                hdr.ipv4.dstAddr : exact;
+            }
+
+            actions = {
+                rewrite_macs;
+            }
+        }
+
+    action vxlan_encap() {
+
+        hdr.inner_ethernet = hdr.ethernet;
+        hdr.inner_ipv4 = hdr.ipv4;
+
+        hdr.ethernet.setValid();
+
+        hdr.ipv4.setValid();
+        hdr.ipv4.version = IP_VERSION_4;
+        hdr.ipv4.ihl = IPV4_MIN_IHL;
+        hdr.ipv4.diffserv = 0;
+        hdr.ipv4.totalLen = hdr.ipv4.totalLen
+                            + (ETH_HDR_SIZE + IPV4_HDR_SIZE + UDP_HDR_SIZE + VXLAN_HDR_SIZE);
+        hdr.ipv4.identification = 0x1513; /* From NGIC */
+        hdr.ipv4.flags = 0;
+        hdr.ipv4.fragOffset = 0;
+        hdr.ipv4.ttl = 64;
+        hdr.ipv4.protocol = UDP_PROTO;
+        hdr.ipv4.dstAddr = meta.nexthop;
+        hdr.ipv4.srcAddr = meta.vtepIP;
+        hdr.ipv4.hdrChecksum = 0;
+
+        hdr.udp.setValid();
+        // The VTEP calculates the source port by performing the hash of the inner Ethernet frame's header.
+        hash(hdr.udp.srcPort, HashAlgorithm.crc16, (bit<13>)0, { hdr.inner_ethernet }, (bit<32>)65536);
+        hdr.udp.dstPort = UDP_PORT_VXLAN;
+        hdr.udp.length = hdr.ipv4.totalLen + (UDP_HDR_SIZE + VXLAN_HDR_SIZE);
+        hdr.udp.checksum = 0;
+
+        hdr.vxlan.setValid();
+        hdr.vxlan.reserved = 0;
+        hdr.vxlan.reserved_2 = 0;
+        hdr.vxlan.flags = 0;
+        hdr.vxlan.vni = meta.vxlan_vni;
+
+    }
+
+    apply {
+        if (meta.vxlan_vni != 0) {
+            vxlan_encap();
+            if (hdr.vxlan.isValid()) {
+                t_send_frame.apply();
+            }
+        }
+    }
+
+}
+```
+
+However, the vxlan_encap() action is quite complex. Firsty, it copies the contenct of Ethernet and IP headers to the inner Ethernet and IP headers so it will act as a packet payload now. Then, outer headers (Ethernet, IP, UDP and VXLAN) are set valid and their header's fields are filled. For the outer IP header the destination IP address is taken from nexthop value, which is stored in metadata. Similarily, the source IP address is set to the IP address of the VXLAN endpoint. Furthermore, the UDP header is pushed. Note that the source UDP port is caluclated as a hash value of Ethernet header (according to specification). 
+
+Once the packet is encapsulated the MAC addresses of outer Ethernet header are set accordingly to the configuration of the switch interfaces.
 
 ## Running example
 
@@ -208,7 +357,9 @@ Run the demo:
 
 `sudo p4app run vxlan.p4app`
 
-It will start Mininet, install the VXLAN P4 program on the switches and configure flow rules for them. You can test VXLAN encapsulation by sending some traffic (e.g. ping). By running _tcpdump_ on the switch interfaces gives you insight on how packets are handled:
+It will start Mininet, install the VXLAN P4 program on the switches and configure flow rules for them. 
+
+You can test VXLAN encapsulation by sending some traffic (e.g. ping). By running _tcpdump_ on the switch interfaces gives you insight on how packets are handled:
 
 s1-eth1
 ```bash
