@@ -45,6 +45,12 @@ In the context of VXLAN processing the upstream egress block does not need to do
 
 The downstream ingress is responsible for determining the value of the VNI identifier that will be used to encapsulate L2 packet by the downstream egress. 
 
+## Running example
+
+In order to run example I have used [p4app](https://github.com/p4lang/p4app/), which is really nice and simple tool (based on Docker and Mininet) to test P4 programs. I have heard about p4app at the last [IEEE NetSoft conference](https://netsoft2019.ieee-netsoft.org/), good to was there!
+
+I have also configured Mininet with staticArp(), so that I didn't have to implement [ARP handling mechanism for VXLAN endpoints](https://blogs.vmware.com/vsphere/2013/05/vxlan-series-how-vtep-learns-and-creates-forwarding-table-part-5.html). It requires more complex P4 logic and for the sake of simplicity I have omitted this part of VTEP's functionality in the P4 program.
+
 
 
 
