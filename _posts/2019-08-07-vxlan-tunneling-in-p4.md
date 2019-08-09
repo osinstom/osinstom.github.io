@@ -12,9 +12,13 @@ This blog post describes how to design and implement more complex tunneling tech
 
 ## Short introduction to VXLAN
 
-The VXLAN (Virtual eXtensible Local Area Network) protocol has been standardized in [RFC 7348](https://tools.ietf.org/html/rfc7348) and is usually used to provide overlay communications between virtual machines in the multi-tenant virtualized data center. 
+The VXLAN (Virtual eXtensible Local Area Network) protocol has been standardized in [RFC 7348](https://tools.ietf.org/html/rfc7348) and is usually used to provide overlay communications between virtual machines in the multi-tenant virtualized data center. It isolates logically networks by using Virtual Network Identifier (VNI). The VNI uniquely identifies a Network Segment or, interchangeably, VXLAN Overlay Network. For more information on how VXLAN works visit these references:
 
-The VNI uniquely identifies a Network Segment or, interchangeably, VXLAN Overlay Network. 
+https://sites.google.com/site/amitsciscozone/home/data-center/vxlan
+
+https://medium.com/@NTTICT/vxlan-explained-930cc825a51
+
+https://tools.ietf.org/html/rfc7348
 
 ## Design and implementation of VXLAN in P4
 
@@ -22,24 +26,161 @@ In this section I describe more interesting parts of the P4 program. The P4 sour
 
 ### Headers
 
+This P4 program will use four types of headers: Ethernet, IP, UDP and VXLAN. The VXLAN header is defined as follows:
 
+```
+header vxlan_t {
+    bit<8>  flags;
+    bit<24> reserved;
+    bit<24> vni;
+    bit<8>  reserved_2;
+}
+```
+
+In fact, in this example only VNI will be used, the rest of fields will be set to zero.
 
 ### Parser
+
+When implementing VXLAN tunneling we need to have more complex parsing logic in order to parse properly packets that arrive encapsulated into VXLAN header. For such packets the parser need to handle outer Ethernet, IP, UDP and VXLAN headers and the inner Ethernet and IP headers. Therefore, the implementation looks as follows:
+
+```
+#define UDP_PORT_VXLAN 4789
+#define UDP_PROTO 17
+#define IPV4_ETHTYPE 0x800
+
+parser ParserImpl(packet_in packet, out headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
+    state start {
+        transition parse_ethernet;
+    }
+    state parse_ethernet {
+        packet.extract(hdr.ethernet);
+        transition select(hdr.ethernet.etherType) {
+            IPV4_ETHTYPE: parse_ipv4;
+            default: accept;
+        }
+    }
+    state parse_ipv4 {
+        packet.extract(hdr.ipv4);
+        transition select(hdr.ipv4.protocol) {
+            UDP_PROTO: parse_udp;
+            default: accept;
+        }
+    }
+    state parse_udp {
+        packet.extract(hdr.udp);
+        transition select(hdr.udp.dstPort) {
+            UDP_PORT_VXLAN: parse_vxlan;
+            default: accept;
+         }
+    }
+    state parse_vxlan {
+        packet.extract(hdr.vxlan);
+        transition parse_inner_ethernet;
+    }
+    state parse_inner_ethernet {
+        packet.extract(hdr.inner_ethernet);
+        transition select(hdr.ethernet.etherType) {
+            IPV4_ETHTYPE: parse_inner_ipv4;
+            default: accept;
+        }
+    }
+    state parse_inner_ipv4 {
+        packet.extract(hdr.inner_ipv4);
+        transition accept;
+    }
+}
+
+control DeparserImpl(packet_out packet, in headers hdr) {
+    apply {
+        packet.emit(hdr.ethernet);
+        packet.emit(hdr.ipv4);
+        packet.emit(hdr.udp);
+        packet.emit(hdr.vxlan);
+        packet.emit(hdr.inner_ethernet);
+        packet.emit(hdr.inner_ipv4);
+    }
+}
+
+control verifyChecksum(inout headers hdr, inout metadata meta) {
+    apply { }
+}
+
+control computeChecksum(inout headers hdr, inout metadata meta) {
+    apply {
+
+    }
+}
+
+```
+
+The parser distinguish if the packet is encapsulated in VXLAN based on the UDP destination port, which should be set to 4789, which is the standard port for VXLAN encapsulation. Then if the packet is encapsulated parser goes through following stages: parse_vxlan() -> parse_inner_ethernet() -> parse_inner_ipv4(). 
+
+In the same file I have implemented deparser, which defines the order, in which headers are written to packets at the egress.
 
 ### Control blocks
 
 It is a good practice to design P4 programs (especially those that perform tunneling) by dividing the P4 program into four functional blocks:
 
-- **_Upstream ingress_** - ingress control block for incoming not encapsulated packets. 
-- _**Upstream egress**_ - egress control block for outgoing  packets.
-- _**Downstream ingress**_ - control block for incoming, downstream packets.
-- **_Downstream egress_** - control block for outgoing, downstream packets.
+- **_Upstream ingress_** - ingress control block for incoming _**encapsulated**_ packets. 
+- _**Upstream egress**_ - egress control block for outgoing packets, that arrived as encapsulated.
+- _**Downstream ingress**_ - control block for incoming raw (not encapsulated) packets.
+- **_Downstream egress_** - control block for outgoing packets, that arrived as not encapsulated.
 
-Upstream and downstreams terms refer to the direction of the traffic. The upstream traffic is the traffic that is not encapsulated yet (packets from hosts to switch) and should be encapsulated. The downstream traffic is the traffic, which has been already encapsulated and it is the traffic being sent between VXLAN endpoints. It simplify thinking of the P4 program design.   
+Upstream and downstreams terms refer to the direction of the traffic. The upstream traffic is the traffic that is encapsulated (traffic being sent between VXLAN endpoints) and should be decapsulated at the ingress. On the contrary, the downstream traffic is the traffic, which is not encapsulated yet (traffic from host to switch). It simplify thinking of the P4 program design.   
 
 #### Upstream ingress
 
-The upstream ingress needs to validate the VXLAN header and strip it out. Moreover, it must perform L2 forwarding to send the decapsulated packet 
+The upstream ingress needs to validate the VXLAN header and strip it out. Moreover, it must perform L2 forwarding to send the decapsulated packet. 
+
+```
+control vxlan_ingress_upstream(inout headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
+
+    action vxlan_decap() {
+        // as simple as set outer headers as invalid
+        hdr.ethernet.setInvalid();
+        hdr.ipv4.setInvalid();
+        hdr.udp.setInvalid();
+        hdr.vxlan.setInvalid();
+    }
+
+    table t_vxlan_term {
+        key = {
+            // Inner Ethernet desintation MAC address of target VM
+            hdr.inner_ethernet.dstAddr : exact;
+        }
+
+        actions = {
+            @defaultonly NoAction;
+            vxlan_decap();
+        }
+
+    }
+
+    action forward(bit<9> port) {
+        standard_metadata.egress_spec = port;
+    }
+
+    table t_forward_l2 {
+        key = {
+            hdr.inner_ethernet.dstAddr : exact;
+        }
+
+        actions = {
+            forward;
+        }
+    }
+
+    apply {
+        if (hdr.ipv4.isValid()) {
+            if (t_vxlan_term.apply().hit) {
+                t_forward_l2.apply();
+            }
+        }
+    }
+}
+```
+
+It is implemented in the vxlan_ingress_upstream control block using two tables: t_vxlan_term and t_forward_l2. The former decapsulates packets that matches the key. The destination MAC address of the inner Ethernet header should point to the host that is directly connected to VXLAN endpoint (the switch) via Layer 2 network. Encapsulation action sets outer headers as invalid, so that the deparser knows not to put these headers in the output packet. If the t_vxlan_term is hit, the t_forward_l2 is responsible for forwarding packet based on the destination MAC address of the inner Ethernet header. 
 
 #### Upstream egress 
 
@@ -47,7 +188,15 @@ In the context of VXLAN processing the upstream egress block does not need to do
 
 #### Downstream ingress 
 
-The downstream ingress is responsible for determining the value of the VNI identifier that will be used to encapsulate L2 packet by the downstream egress. 
+The downstream ingress is responsible for determining the value of the VNI identifier that will be used to encapsulate L2 packet by the downstream egress. Moreover, it determines source IP address and next hop IP address for the encapsulated packets. It also performs routing for encapsulates packets.
+
+```
+
+```
+
+#### Downstream egress
+
+The downstream egress 
 
 ## Running example
 
