@@ -4,8 +4,12 @@ layout: single
 published: true
 title: Implementing tunneling techniques in P4 based on the example of VXLAN
 tags:
-  - vxlan
-  - p4
+  - p4app
+  - tunnelling
+  - SDN
+  - Data plane programmability
+  - P4
+  - VXLAN
 categories:
   - tutorial
 ---
