@@ -1,5 +1,7 @@
 ---
 layout: single
+lang: en
+lang-ref: ipsec-explanation
 title:  "Explanation of IPSec basics"
 date:   2017-11-21
 categories:
