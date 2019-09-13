@@ -302,6 +302,10 @@ prose:
           placeholder: "Add Tags"
           alterable: true
 
+# Multilingual
+lang: en 
+languages: ["en", "pl"] 
+
 # Defaults
 defaults:
   # _posts
