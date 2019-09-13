@@ -1,5 +1,7 @@
 ---
 layout: single
+lang: en
+ref: index
 permalink: /
 author_profile: true
 comments: false
