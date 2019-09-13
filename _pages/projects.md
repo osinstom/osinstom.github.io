@@ -1,5 +1,7 @@
 ---
 title: Projects
+lang: en
+ref: projects
 layout: single
 permalink: /projects/
 author_profile: true
