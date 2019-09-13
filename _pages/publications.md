@@ -1,5 +1,7 @@
 ---
 title:  "Publications"
+lang: en
+ref: publications
 layout: single
 permalink: /publications/
 author_profile: true
