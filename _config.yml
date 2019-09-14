@@ -29,7 +29,7 @@ description:
   pl: Blog techniczny poświęcony sieciom programowalnym (Software Defined Networking oraz Network Functions Virtualization)
 index:
   en: 
-  pl: /intro/
+  pl: intro/
 url                      : "https://osinstom.github.io"
 baseurl                  : "/" # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
