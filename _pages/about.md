@@ -2,7 +2,7 @@
 title:  "About"
 layout: single
 lang: en
-lang-ref: about
+ref: about
 permalink: /about/
 author_profile: true
 comments: false
