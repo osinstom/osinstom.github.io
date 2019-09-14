@@ -1,6 +1,9 @@
 search_placeholder_text:
   en: 'Enter your search term...'
   pl: 'Wpisz szukaną frazę'
+back_to_top:
+  en: 'Back to top ↑'
+  pl: 'Powrót na górę ↑'
 about:
   en: "About me"
   pl: "O mnie"
