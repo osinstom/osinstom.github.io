@@ -16,10 +16,17 @@ minimal_mistakes_skin    : "air" # "air", "aqua", "contrast", "dark", "dirt", "n
 
 # Site Settings
 locale                   : "en"
-title                    : "Tomek Osiński's professional blog about R&D activities he is willing to share."
+title:
+  en: "Tomasz Osiński's professional blog about R&D activities he is willing to share."
+  pl: "Tomasz Osiński - blog."
 title_separator          : "-"
 name                     : "osinstom"
-description              : "Research blog related to Software-Defined Networking and Network Functions Virtualization"
+description:
+  en: Research blog related to Software-Defined Networking and Network Functions Virtualization
+  pl: Blog techniczny poświęcony sieciom programowalnym (Software Defined Networking oraz Network Functions Virtualization)
+index:
+  en:
+  pl: intro.html
 url                      : "https://osinstom.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
