@@ -1,6 +1,8 @@
 ---
 date: '2019-08-07 14:33 +0200'
 layout: single
+lang: en
+ref: vxlan-p4
 published: true
 title: Implementing tunneling techniques in P4 based on the example of VXLAN
 tags:
