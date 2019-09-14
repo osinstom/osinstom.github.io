@@ -1,3 +1,6 @@
+search_placeholder_text:
+  en: 'Enter your search term...'
+  pl: 'Wpisz szukaną frazę'
 about:
   en: "About me"
   pl: "O mnie"
