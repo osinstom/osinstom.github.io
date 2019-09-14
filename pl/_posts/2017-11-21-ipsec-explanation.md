@@ -1,7 +1,7 @@
 ---
 layout: single
 lang: pl
-lang-ref: ipsec-explanation
+ref: ipsec-explanation
 title:  "Podstawy protokołu IPSec na przykładzie implementacji Strongswan"
 date:   2017-11-21
 categories:
