@@ -2,7 +2,11 @@
 
 {% include seo.html %}
 
-<link href="{% if site.atom_feed.path %}{{ site.atom_feed.path }}{% else %}{{ '/feed.xml' | relative_url }}{% endif %}" type="application/atom+xml" rel="alternate" title="{{ site.title[page.lang] }} Feed">
+{% assign posts=site.posts | where:"ref", page.ref | sort: 'lang' %}{% for post in posts %}
+<link rel="alternate" hreflang="{{ post.lang }}" href="{{ post.url }}" />{% endfor %}
+{% assign pages=site.pages | where:"ref", page.ref | sort: 'lang' %}{% for page in pages %}
+<link rel="alternate" hreflang="{{ page.lang }}" href="{{ page.url }}" />{% endfor %}
+<link rel="alternate" type="application/rss+xml" title="{{ site.title[page.lang] }}" href="{{ site.feed[page.lang] | prepend: site.baseurl | prepend: site.url }}">
 
 <!-- https://t.co/dKP3o1e -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,16 +32,6 @@
     }
   </style>
 <![endif]-->
-
- {% assign posts=site.posts | where:"lang-ref", page.lang-ref | sort: 'lang' %}
-  {% if posts.size == 0 %}
-    {% assign posts=site.pages | where:"lang-ref", page.lang-ref | sort: 'lang' %}
-  {% endif %}
-  {% if posts.size > 0 %}
-    {% for post in posts %}
-  <link rel="alternate" hreflang="{{post.lang}}" href="{{ site.base-url }}{{ post.url }}" />
-    {% endfor %}
-  {% endif %}
 
 {% if site.head_scripts %}
   {% for script in site.head_scripts %}
