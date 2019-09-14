@@ -15,6 +15,6 @@ main:
     - title: "Blog"
       url: /blog/
     - title: "Projekty"
-      url: /projects/
+      url: /projekty/
     - title: "Publikacje"
       url: /publications/
