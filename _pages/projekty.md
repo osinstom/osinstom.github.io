@@ -9,13 +9,13 @@ comments: false
 published: true
 ---
 
-### Research on VNF offloading using P4 technology
+### Prace badawczo-rozwojowe nad zwiększeniem wydajności wirtualnych funkcji sieciowych (VNF) dla sieci 5G poprzez wykorzystanie programowalnej warstwy przekazu danych i techniki [P4](https://p4.org)
 
-### Contribution to ONAP 
+### Kontrybucja do projektu ONAP (ang. Open Network Automation Platform)
 
 [Więcej informacji](https://wiki.onap.org/display/DW/Change+Management+Extensions)
 
-### Contribution to 5G!Pagoda EU-Japan project
+### Kontrybucja do europejsko-japońskiego projektu 5G!Pagoda w ramach programu Horyzont 2020
 
 [Więcej informacji](https://5g-pagoda.aalto.fi/)
 
