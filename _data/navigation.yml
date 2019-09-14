@@ -11,7 +11,7 @@ main:
       url: /publications/
   pl:
     - title: "O mnie"
-      url: /about/
+      url: /o-mnie/
     - title: "Blog"
       url: /posts/
     - title: "Projekty"
