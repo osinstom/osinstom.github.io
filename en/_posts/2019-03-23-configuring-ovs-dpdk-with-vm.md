@@ -1,6 +1,8 @@
 ---
 date: '2019-03-23 23:00 +0100'
 layout: single
+lang: en
+ref: configuring-ovs-dpdk
 published: true
 title: Configuring OVS-DPDK with VM
 categories:
