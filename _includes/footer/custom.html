@@ -1,5 +1,5 @@
 <!-- start custom footer snippets -->
-{% if page.layout != 'index' %}
+<!-- {% if page.layout != 'index' %}
     {% assign posts=site.posts | where:"lang-ref", page.lang-ref | sort: 'lang' %}
     {% if posts.size == 0 %}
         {% assign posts=site.pages | where:"lang-ref", page.lang-ref | sort: 'lang' %}
@@ -14,5 +14,20 @@
         </ul>
     </div>
     {% endif %}
-{% endif %}
+{% endif %} -->
+<ul>
+{% assign posts=site.posts | where:"ref", page.ref | sort: 'lang' %}
+{% for post in posts %}
+  <li>
+    <a href="{{ post.url }}" class="{{ post.lang }}">{{ post.lang }}</a>
+  </li>
+{% endfor %}
+
+{% assign pages=site.pages | where:"ref", page.ref | sort: 'lang' %}
+{% for page in pages %}
+  <li>
+    <a href="{{ page.url }}" class="{{ page.lang }}">{{ page.lang }}</a>
+  </li>
+{% endfor %}
+</ul>
 <!-- end custom footer snippets -->
