@@ -1,11 +1,10 @@
 ---
 published: true
 layout: single
+lang: en
+ref: network-prototyping-p4
 title: Network prototyping made easy with P4 and Python!
 date: 2018-12-24T00:00:00.000Z
-categories:
-- P4
-- Programming
 tags:
 - SDN
 - BMv2
