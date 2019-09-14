@@ -1,20 +1,28 @@
 # main links
 main:
   en:
-    - title: "About"
-      url: /about/
-    - title: "Blog"
-      url: /posts/
-    - title: "Projects"
-      url: /projects/
-    - title: "Publications"
-      url: /publications/
+    about:
+      - title: "About"
+        url: /about/
+    blog:
+      - title: "Blog"
+        url: /posts/
+    projects:
+      - title: "Projects"
+        url: /projects/
+    publications:
+      - title: "Publications"
+        url: /publications/
   pl:
-    - title: "O mnie"
-      url: /o-mnie/
-    - title: "Blog"
-      url: /blog/
-    - title: "Projekty"
-      url: /projects/
-    - title: "Publikacje"
-      url: /publications/
+    about:
+      - title: "O mnie"
+        url: /o-mnie/
+    blog:
+      - title: "Blog"
+        url: /blog/
+    projects:
+      - title: "Projekty"
+        url: /projects/
+    publications:
+      - title: "Publikacje"
+        url: /publications/
