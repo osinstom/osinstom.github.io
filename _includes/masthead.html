@@ -12,13 +12,13 @@
         <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title[page.lang] }}</a>
         <ul class="visible-links">
           {%- for link in site.data.navigation.main[page.lang] -%}
-            {%- if link[1].url contains '://' -%}
-              {%- assign url = link[1].url -%}
+            {%- if link.url contains '://' -%}
+              {%- assign url = link.url -%}
             {%- else -%}
-              {%- assign url = link[1].url | relative_url -%}
+              {%- assign url = link.url | relative_url -%}
             {%- endif -%}
             <li class="masthead__menu-item">
-              <a href="{{ url }}" {% if link[1].description %}title="{{ link[1].description }}"{% endif %}>{{ link[1].title }}</a>
+              <a href="{{ url }}" {% if link.description %}title="{{ link.description }}"{% endif %}>{{ link.title }}</a>
             </li>
           {%- endfor -%}
         </ul>
