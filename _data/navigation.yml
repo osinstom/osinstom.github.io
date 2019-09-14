@@ -13,7 +13,7 @@ main:
     - title: "O mnie"
       url: /o-mnie/
     - title: "Blog"
-      url: /posty/
+      url: /blog/
     - title: "Projekty"
       url: /projects/
     - title: "Publikacje"
