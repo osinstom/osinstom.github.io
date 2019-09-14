@@ -1,28 +1,32 @@
 ---
 layout: null
+permalink: /sitemap.xml
 ---
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://www.sitemaps.org/schemas/sitemap/0.9 https://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   {% for post in site.posts %}
-  <url>
-    <loc>{{ site.url }}{{ site.baseurl }}{{ post.url }}</loc>
-    {% if post.lastmod == null %}
-    <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
-    {% else %}
-    <lastmod>{{ post.lastmod | date_to_xmlschema }}</lastmod>
+    {% if post.id contains "404" %}{% else %}
+      <url>
+        <loc>{{site.base}}{{ post.url }}</loc>
+        {% assign versions=site.posts | where:"ref", post.ref %}
+        {% for version in versions %}
+          <xhtml:link rel="alternate" hreflang="{{ version.lang }}" href="{{site.base}}{{ version.url }}" />
+        {% endfor %}
+        <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
+        <changefreq>weekly</changefreq>
+      </url>
     {% endif %}
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
   {% endfor %}
   {% for page in site.pages %}
-  {% if page.sitemap != null and page.sitemap != empty %}
-  <url>
-    <loc>{{ site.url }}{{ site.baseurl }}{{ page.url }}</loc>
-    <lastmod>{{ page.sitemap.lastmod | date_to_xmlschema }}</lastmod>
-    <changefreq>{{ page.sitemap.changefreq }}</changefreq>
-    <priority>{{ page.sitemap.priority }}</priority>
-  </url>
-  {% endif %}
+    {% if page.id contains "404" %}{% else %}
+      <url>
+        <loc>{{site.base}}{{ page.url }}</loc>
+        {% assign versions=site.pages | where:"ref", page.ref %}
+        {% for version in versions %}
+          <xhtml:link rel="alternate" hreflang="{{ version.lang }}" href="{{site.base}}{{ version.url }}" />
+        {% endfor %}
+        <changefreq>weekly</changefreq>
+      </url>
+    {% endif %}
   {% endfor %}
-</urlset>
+  </urlset>
