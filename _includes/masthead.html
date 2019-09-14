@@ -9,9 +9,9 @@
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
         {% if site.logo %}<a class="site-logo" href="{{ '/' | relative_url }}"><img src="{{ logo_path }}"></a>{% endif %}
-        <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title[page.lang] }}</a>
+        <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title['pl'] }}</a>
         <ul class="visible-links">
-          {%- for link in site.data.navigation.main[page.lang] -%}
+          {%- for link in site.data.navigation.main['pl'] -%}
             {%- if link.url contains '://' -%}
               {%- assign url = link.url -%}
             {%- else -%}
