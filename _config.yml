@@ -19,6 +19,9 @@ locale                   : "en"
 title:
   en: "Tomasz Osiński's professional blog about R&D activities he is willing to share."
   pl: "Tomasz Osiński - blog."
+feed:
+  en: /feed.xml
+  pl: /feed.xml
 title_separator          : "-"
 name                     : "osinstom"
 description:
@@ -26,7 +29,7 @@ description:
   pl: Blog techniczny poświęcony sieciom programowalnym (Software Defined Networking oraz Network Functions Virtualization)
 index:
   en:
-  pl: intro.html
+  pl:
 url                      : "https://osinstom.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
