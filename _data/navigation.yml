@@ -9,6 +9,8 @@ main:
       url: /projects/
     - title: "Publications"
       url: /publications/
+    - title: "Presentations & talks"
+      url: /talks/
   pl:
     - title: "O mnie"
       url: /o-mnie/
