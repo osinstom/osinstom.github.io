@@ -1,4 +1,11 @@
 # main links
+pl:
+  - title: "O mnie"
+    url: /o-mnie/
+  - title: "Blog"
+    url: /blog/
+  - title: "Projekty"
+    url: /projekty/
 en:
   - title: "About"
     url: /about/
@@ -10,12 +17,5 @@ en:
     url: /publications/
   - title: "Presentations & talks"
     url: /talks/
-pl:
-  - title: "O mnie"
-    url: /o-mnie/
-  - title: "Blog"
-    url: /blog/
-  - title: "Projekty"
-    url: /projekty/
 #     - title: "Publikacje"
 #       url: /publications/
