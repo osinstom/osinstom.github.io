@@ -1,21 +1,23 @@
 # main links
 pl:
-  - title: "O mnie"
-    url: /o-mnie/
-  - title: "Blog"
-    url: /blog/
-  - title: "Projekty"
-    url: /projekty/
+  nav:
+    - title: "O mnie"
+      url: /o-mnie/
+    - title: "Blog"
+      url: /blog/
+    - title: "Projekty"
+      url: /projekty/
 en:
-#   - title: "About"
-#     url: /about/
-#   - title: "Blog"
-#     url: /posts/
-#   - title: "Projects"
-#     url: /projects/
-#   - title: "Publications"
-#     url: /publications/
-#   - title: "Presentations & talks"
-#     url: /talks/
+  nav:
+    - title: "About"
+      url: /about/
+    - title: "Blog"
+      url: /posts/
+    - title: "Projects"
+      url: /projects/
+    - title: "Publications"
+      url: /publications/
+    - title: "Presentations & talks"
+      url: /talks/
 #     - title: "Publikacje"
 #       url: /publications/
