@@ -28,8 +28,8 @@ description:
   en: Research blog related to Software-Defined Networking and Network Functions Virtualization
   pl: Blog techniczny poświęcony sieciom programowalnym (Software Defined Networking oraz Network Functions Virtualization)
 index:
-  en: /
-  pl: /intro
+  en: 
+  pl: intro
 url                      : "https://osinstom.github.io"
 baseurl                  : "/" # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
