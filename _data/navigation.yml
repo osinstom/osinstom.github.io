@@ -1,13 +1,13 @@
 # main links
 languages: 
 - language: "en" 
-    links: 
-      - title: "About" 
-        url: /about/ 
+  links: 
+    - title: "About" 
+      url: /about/ 
 - language: "pl" 
-    links: 
-      - title: "O mnie" 
-        url: /o-mnie/ 
+  links: 
+    - title: "O mnie" 
+      url: /o-mnie/ 
 
 
 # pl:
