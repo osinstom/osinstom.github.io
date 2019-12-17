@@ -274,7 +274,7 @@ compress_html:
     envs: development
 
 prose:
-  rooturl: '_posts'
+  rooturl: ''
   siteurl: 'http://osinstom.github.io/'
   ignore:
     - _config.yml
