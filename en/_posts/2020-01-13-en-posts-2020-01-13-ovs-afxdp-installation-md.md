@@ -2,7 +2,7 @@
 date: '2020-01-13 08:12 +0100'
 layout: single
 published: false
-title: en/_posts/2020-01-13-ovs-afxdp-installation.md
+title: ovs-afxdp-installation
 categories:
   - tutorial
 tags:
