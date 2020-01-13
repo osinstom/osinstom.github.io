@@ -2,7 +2,7 @@
 date: '2020-01-13 08:12 +0100'
 layout: single
 published: false
-title: ovs-afxdp-installation
+title: OVS_AFXDP - installation guide step by step
 categories:
   - tutorial
 tags:
@@ -20,7 +20,12 @@ From my perspective,  OVS_AFXDP is interesting as it can be the solution for P4r
 
 ## Installation of OVS_AFXDP
 
+According to the official documentation OVS_AFXDP requires at least kernel 5.0.0. I installed OVS_AFXDP in Ubuntu 18.04, which comes with kernel 5.0.0 already integrated. Firstly, let's install required tools and dependencies:
 
+`sudo apt install -y git make gcc libelf-dev autoconf libtool`
 
+Next, clone the OVS repository:
+
+`git clone  https://github.com/openvswitch/ovs'
 
 
