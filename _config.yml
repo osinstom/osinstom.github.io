@@ -281,7 +281,7 @@ prose:
     - /_layouts
     - /_includes
   metadata:
-    _posts:
+    en/_posts:
       - name: "layout"
         field:
           element: "hidden"
