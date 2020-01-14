@@ -20,12 +20,40 @@ From my perspective,  OVS_AFXDP is interesting as it can be the solution for P4r
 
 ## Installation of OVS_AFXDP
 
-According to the official documentation OVS_AFXDP requires at least kernel 5.0.0. I installed OVS_AFXDP in Ubuntu 18.04, which comes with kernel 5.0.0 already integrated. Firstly, let's install required tools and dependencies:
+According to the official documentation OVS_AFXDP requires at least kernel 5.0.0. I installed OVS_AFXDP in Ubuntu 18.04, which comes with kernel 5.0.0 already integrated. However, kernel 5.4.1 introduces important modifications to how AF_XDP works. Therefore, let's build and install the newer kernel (v5.5) first.
+
+### Building kernel with the XDP support
+
+```
+sudo apt install -y build-essential libncurses-dev bison flex libssl-dev
+git clone https://github.com/torvalds/linux.git
+cd linux/
+git checkout v5.5-rc1
+```
+
+Make config and make sure that following options are enabled:
+
+```bash
+# Open config editor and save it to .config
+$ make menuconfig
+# Check if following options are enabled:
+# CONFIG_BPF=y
+# CONFIG_BPF_SYSCALL=y
+# CONFIG_XDP_SOCKETS=y
+```
+
+Then, build the kernel:
+
+```
+sudo make -j4 
+sudo make modules_install INSTALL_MOD_STRIP=1
+
+```
+
+Firstly, let's install required tools and dependencies:
 
 `sudo apt install -y git make gcc libelf-dev autoconf libtool`
 
 Next, clone the OVS repository:
 
 `git clone  https://github.com/openvswitch/ovs'
-
-
