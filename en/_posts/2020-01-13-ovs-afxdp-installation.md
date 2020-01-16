@@ -20,7 +20,7 @@ From my perspective,  OVS_AFXDP is interesting as it can be the solution for P4r
 
 ## Installation of OVS_AFXDP
 
-According to the official documentation OVS_AFXDP requires at least kernel 5.0.0. I installed OVS_AFXDP in Ubuntu 18.04, which comes with kernel 5.0.0 already integrated. However, kernel 5.4.1 introduces important modifications to how AF_XDP works. Therefore, let's build and install the newer kernel (v5.5) first.
+According to the official documentation OVS_AFXDP requires at least kernel 5.0.0. I installed OVS_AFXDP on Ubuntu 18.10, which comes with kernel 4.18 already integrated. Kernel 4.18 has some initial support for XDP, but it is not sutiable for OVS_AFXDP. Hence, we need to install the newer kernel first. I recommend you to install kernel 5.4.1 because it introduces important modifications to how AF_XDP works.
 
 ### Building kernel with the XDP support
 
@@ -36,6 +36,8 @@ Make config and make sure that following options are enabled:
 ```bash
 # Open config editor and save it to .config
 $ make menuconfig
+# or you can copy the current one:
+$ cp -v /boot/config-$(uname -r) .config
 # Check if following options are enabled:
 # CONFIG_BPF=y
 # CONFIG_BPF_SYSCALL=y
@@ -50,10 +52,73 @@ sudo make modules_install INSTALL_MOD_STRIP=1
 
 ```
 
+### Installing OVS_AFXDP
+
 Firstly, let's install required tools and dependencies:
 
 `sudo apt install -y git make gcc libelf-dev autoconf libtool`
 
 Next, clone the OVS repository:
 
-`git clone  https://github.com/openvswitch/ovs'
+`git clone  https://github.com/openvswitch/ovs`
+
+Then, according to the official documentation, the `libbpf` should be installed:
+
+```bash
+git clone git://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git
+cd bpf-next/
+cd tools/lib/bpf/
+make
+sudo make install
+sudo make install_headers
+```
+
+Now, let's configure OVS.
+
+```bash
+cd ovs/
+./boot.sh
+./configure --enable-afxdp
+```
+
+At this stage, if you use older kernel (e.g. 4.18 or even 5.0.0) you will get the following error during configuration process:
+
+```
+configure: WARNING: bpf/xsk.h: present but cannot be compiled
+configure: WARNING: bpf/xsk.h:     check for missing prerequisite headers?
+configure: WARNING: bpf/xsk.h: see the Autoconf documentation
+configure: WARNING: bpf/xsk.h:     section "Present But Cannot Be Compiled"
+configure: WARNING: bpf/xsk.h: proceeding with the compiler's result
+configure: WARNING:     ## ----------------------------------- ##
+configure: WARNING:     ## Report this to bugs@openvswitch.org ##
+configure: WARNING:     ## ----------------------------------- ##
+checking for bpf/xsk.h... no
+configure: error: unable to find bpf/xsk.h for AF_XDP support
+```
+
+If we look at `config.log` we can see the following message:
+
+```
+configure:18659: checking bpf/xsk.h usability
+configure:18659: gcc -c -g -O2  conftest.c >&5
+In file included from conftest.c:69:
+/usr/local/include/bpf/xsk.h: In function 'xsk_ring_prod__needs_wakeup':
+/usr/local/include/bpf/xsk.h:82:21: error: 'XDP_RING_NEED_WAKEUP' undeclared (first use in this function)
+  return *r->flags & XDP_RING_NEED_WAKEUP;
+                     ^~~~~~~~~~~~~~~~~~~~
+/usr/local/include/bpf/xsk.h:82:21: note: each undeclared identifier is reported only once for each function it appears in
+/usr/local/include/bpf/xsk.h: In function 'xsk_umem__extract_addr':
+/usr/local/include/bpf/xsk.h:173:16: error: 'XSK_UNALIGNED_BUF_ADDR_MASK' undeclared (first use in this function)
+  return addr & XSK_UNALIGNED_BUF_ADDR_MASK;
+                ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/local/include/bpf/xsk.h: In function 'xsk_umem__extract_offset':
+/usr/local/include/bpf/xsk.h:178:17: error: 'XSK_UNALIGNED_BUF_OFFSET_SHIFT' undeclared (first use in this function)
+  return addr >> XSK_UNALIGNED_BUF_OFFSET_SHIFT;
+                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```
+
+This is caused by the old version of `if_xdp.h` that does not provide declaration of `XDP_RING_NEED_WAKEUP` and others. _If you get this error, come back to the section `Building kernel with the XDP support` and install kernel 5.4.12, which comes with `if_xdp.h` supporting those declarations._
+
+
+
+
