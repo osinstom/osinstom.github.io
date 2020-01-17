@@ -16,7 +16,7 @@ tags:
 
 AF_XDP in Open vSwitch is expected to provide similar performance to the DPDK datapath, but with a lower configuration overhead. If AF_XDP will become a successful implementation it would allow to port existing kernel-based OVS deployments to the user-space implementations providing better packet processing performance. 
 
-From my perspective,  OVS_AFXDP is interesting as it can be the solution for P4rt-OVS (P4-capable Open vSwitch developed by my team at Orange Labs Poland), which requires to process packets in the user-space and is currently based on DPDK. Hence, I decided to test OVS_AFXDP and evaluate how it can be integrated to P4rt-OVS. This post describes the installation process that I went through. As there is only the official documentation on how to install OVS_AFXDP this post can be a useful extension. 
+From my perspective, OVS_AFXDP is interesting as it can be the solution for P4rt-OVS (P4-capable Open vSwitch developed by my team at Orange Labs Poland), which requires to process packets in the user-space and is currently based on DPDK. Hence, I decided to test OVS_AFXDP and evaluate how it can be integrated to P4rt-OVS. This post describes the installation process that I went through. As there is only the official documentation on how to install OVS_AFXDP this post can be a useful extension. 
 
 ## Installation of OVS_AFXDP
 
