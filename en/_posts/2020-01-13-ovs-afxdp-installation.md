@@ -20,18 +20,37 @@ From my perspective,  OVS_AFXDP is interesting as it can be the solution for P4r
 
 ## Installation of OVS_AFXDP
 
-According to the official documentation OVS_AFXDP requires at least kernel 5.0.0. I installed OVS_AFXDP on Ubuntu 18.10, which comes with kernel 4.18 already integrated. Kernel 4.18 has some initial support for XDP, but it is not sutiable for OVS_AFXDP. Hence, we need to install the newer kernel first. I recommend you to install kernel 5.4.1 because it introduces important modifications to how AF_XDP works.
+According to the official documentation OVS_AFXDP requires at least kernel 5.0.0. I installed OVS_AFXDP on Ubuntu 18.10, which comes with kernel 4.18 already integrated. Kernel 4.18 has some initial support for XDP, but it is not sutiable for OVS_AFXDP. Hence, we need to install the newer kernel first. I recommend you to install kernel 5.4.1 or higher because it introduces important modifications to how AF_XDP works.
 
 ### Building kernel with the XDP support
 
+I decided to install the latest stable version of Linux - 5.4.12:
+
 ```
 sudo apt install -y build-essential libncurses-dev bison flex libssl-dev
-git clone https://github.com/torvalds/linux.git
-cd linux/
-git checkout v5.5-rc1
+wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.4.12.tar.xz
+unxz -v linux-5.4.12.tar.xz
+wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.4.12.tar.sign
+gpg --verify linux-5.4.12.tar.sign
 ```
 
-Make config and make sure that following options are enabled:
+The sample output will be:
+
+```
+gpg: assuming signed data in 'linux-5.4.12.tar'
+gpg: Signature made Sun 12 Aug 2018 04:00:28 PM CDT
+gpg:                using RSA key 647F28654894E3BD457199BE38DBBDC86092693E
+gpg: Can't check signature: No public key
+```
+
+Copy RSA to the clipboard and run:
+
+```
+gpg --recv-keys 647F28654894E3BD457199BE38DBBDC86092693E
+gpg --verify linux-5.4.12.tar.sign
+```
+
+Now, we can move to the installation process. Enter linux directory, make config and make sure that following options are enabled:
 
 ```bash
 # Open config editor and save it to .config
@@ -47,10 +66,16 @@ $ cp -v /boot/config-$(uname -r) .config
 Then, build the kernel:
 
 ```
-sudo make -j4 
+make -j $(nproc)
 sudo make modules_install INSTALL_MOD_STRIP=1
-
+sudo make install
 ```
+
+The next, important step is to install kernel's headers. They are used by userspace programs (such as Open vSwitch) to interface with kernel services. In other words, kernel's headers provide the API for userspace programs. For instance, in case of OVS_AFXDP, `if_xdp.h` provides the API to the XDP socket.
+
+`sudo make INSTALL_HDR_PATH=/usr headers_install`
+
+After system's reboot you should have up and running Linux 5.4.12 that will allow you to install OVS_AFXDP without any problems.
 
 ### Installing OVS_AFXDP
 
@@ -73,6 +98,19 @@ sudo make install
 sudo make install_headers
 ```
 
+In my case, above commands were not enough. I had to copy the `libbpf` shared library to location, where all libraries are stored and create a symbolic link. I based on the [tutorial from Intel](https://software.intel.com/en-us/articles/install-a-unix-including-linux-shared-library). 
+
+```bash
+# from bpf-next/tools/lib/bpf/
+sudo cp libbpf.so.0 /usr/lib/
+sudo cp libbpf.so.0.0.7 /usr/lib/
+sudo ldconfig -v -n /usr/lib
+sudo ln -sf /usr/lib/libbpf.so.0 /usr/lib/libbpf.so.0.0.7
+sudo ldconfig
+ldconfig -p | grep bpf
+# You should have libbpf listed in the output of the above command.
+```
+
 Now, let's configure OVS.
 
 ```bash
@@ -81,7 +119,7 @@ cd ovs/
 ./configure --enable-afxdp
 ```
 
-At this stage, if you use older kernel (e.g. 4.18 or even 5.0.0) you will get the following error during configuration process:
+At this stage, if you use older kernel (e.g. 4.18 or even 5.0.0) you will get the following error during configuration process. This error will also appear if the command `sudo make INSTALL_HDR_PATH=/usr headers_install` has not been invoked.
 
 ```
 configure: WARNING: bpf/xsk.h: present but cannot be compiled
@@ -118,6 +156,33 @@ In file included from conftest.c:69:
 ```
 
 This is caused by the old version of `if_xdp.h` that does not provide declaration of `XDP_RING_NEED_WAKEUP` and others. _If you get this error, come back to the section `Building kernel with the XDP support` and install kernel 5.4.12, which comes with `if_xdp.h` supporting those declarations._
+
+If `./configure` has been completed successfully, let's build OVS_AFXDP:
+
+```
+make -j $(nproc)
+sudo make install
+```
+
+Voila! OVS_AFXDP is ready to be run!
+
+### Running OVS_AFXDP
+
+It is recommended to run tests first to check basic AF_XDP functionality:
+
+`make check-afxdp TESTSUITEFLAGS='1'`
+
+Note! If `libbpf` has not been installed properly the test will fail wil the following message:
+
+```
+020-01-17 06:54:19.418142218 +0000
+@@ -0,0 +1 @@
++ovsdb-tool: error while loading shared libraries: libbpf.so.0: cannot open shared object file: No such file or directory
+./system-afxdp.at:5: exit code was 127, expected 0
+```
+
+In my case I had to come back and fix the installation of `libbpf`.
+
 
 
 
