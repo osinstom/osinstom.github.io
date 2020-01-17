@@ -2,7 +2,7 @@
 date: '2020-01-13 08:12 +0100'
 layout: single
 published: false
-title: OVS_AFXDP - installation guide step by step
+title: OVS_AFXDP - step-by-step installation guide
 categories:
   - tutorial
 tags:
@@ -183,7 +183,23 @@ Note! If `libbpf` has not been installed properly the test will fail wil the fol
 
 In my case I had to come back and fix the installation of `libbpf`.
 
+If tests were passed, we can move on and run OVS_AFXDP! Firstly, let's perform a standard commands to run OVSDB and `ovs-vswitchd`.
 
+```
+sudo mkdir -p /usr/local/etc/openvswitch
+sudo ovsdb-tool create /usr/local/etc/openvswitch/conf.db vswitchd/vswitch.ovsschema
+sudo mkdir -p /usr/local/var/run/openvswitch
+sudo ovsdb-server --remote=punix:/usr/local/var/run/openvswitch/db.sock \
+    --remote=db:Open_vSwitch,Open_vSwitch,manager_options \
+    --pidfile --detach
+sudo ovs-vswitchd --pidfile --detach    
+```
+
+Then, let's configure OVS wit AF_XDP bridge:
+
+```
+sudo ovs-vsctl -- add-br br0 -- set Bridge br0 datapath_type=netdev
+```
 
 
 
