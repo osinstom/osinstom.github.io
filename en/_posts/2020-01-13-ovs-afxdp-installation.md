@@ -201,5 +201,76 @@ Then, let's configure OVS wit AF_XDP bridge:
 sudo ovs-vsctl -- add-br br0 -- set Bridge br0 datapath_type=netdev
 ```
 
+OVS_AFXDP can be configured with both physical and virutal interfaces. For the test purpose, I will use `veth` interfaces.
+
+Create the first `veth` pair and attach it to OVS.
+
+```
+sudo ip netns add test0
+sudo ip link add port0 type veth peer name peer0
+sudo ip link set port0 netns test0
+sudo ip link set dev peer0 up
+sudo ovs-vsctl add-port br0 peer0 -- set interface peer0 external-ids:iface-id="port0" type="afxdp"
+
+sudo ip netns exec test0 sh << NS_EXEC_HEREDOC
+ip addr add "10.1.1.1/24" dev port0
+ip link set dev port0 up
+NS_EXEC_HEREDOC
+
+sudo ip netns add test1
+sudo ip link add port1 type veth peer name peer1
+sudo ip link set port1 netns test1
+sudo ip link set dev peer1 up
+sudo ovs-vsctl add-port br0 peer1 -- set interface peer1 external-ids:iface-id="port1" type="afxdp"
+
+sudo ip netns exec test1 sh << NS_EXEC_HEREDOC
+ip addr add "10.1.1.2/24" dev port1
+ip link set dev port1 up
+NS_EXEC_HEREDOC
+```
+
+The final configuration of OVS should looks as follows:
+
+```
+ubuntu@ovsafxdp:~/ovs$ sudo ovs-vsctl show
+e7c40460-0252-4c98-a225-44416c01ead2
+    Bridge br0
+        datapath_type: netdev
+        Port peer1
+            Interface peer1
+                type: afxdp
+        Port br0
+            Interface br0
+                type: internal
+        Port peer0
+            Interface peer0
+                type: afxdp
+```
+
+To test if OVS_AFXDP works, let's run `ping` in both directions:
+
+```
+ubuntu@ovsafxdp:~/ovs$ sudo ip netns exec test0 ping 10.1.1.2
+PING 10.1.1.2 (10.1.1.2) 56(84) bytes of data.
+64 bytes from 10.1.1.2: icmp_seq=1 ttl=64 time=0.179 ms
+64 bytes from 10.1.1.2: icmp_seq=2 ttl=64 time=0.110 ms
+64 bytes from 10.1.1.2: icmp_seq=3 ttl=64 time=0.106 ms
+
+ubuntu@ovsafxdp:~/ovs$ sudo ip netns exec test1 ping 10.1.1.1
+PING 10.1.1.1 (10.1.1.1) 56(84) bytes of data.
+64 bytes from 10.1.1.1: icmp_seq=1 ttl=64 time=0.820 ms
+64 bytes from 10.1.1.1: icmp_seq=2 ttl=64 time=0.104 ms
+64 bytes from 10.1.1.1: icmp_seq=3 ttl=64 time=0.086 ms
+```
+
+## Summary
+
+In this post, I described the installation and configuration process to make OVS_AFXDP up and running. As I encountered some problems on the way to install OVS_AFXDP I thought that it was worth sharing my experience with the community. Hence, this post can be a useful complement to the official documentation of OVS_AFXDP. Enjoy! 
+
+The next step is to run our P4rt-OVS prototype with AF_XDP and get rid of DPDK. We also consider to integrate OVS_AFXDP with Mininet to provide researchers and network engineers a simple tool to run and test P4rt-OVS, without the need for DPDK. 
+
+
+
+
 
 
