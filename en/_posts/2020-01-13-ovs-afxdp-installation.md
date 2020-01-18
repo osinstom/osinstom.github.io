@@ -1,7 +1,7 @@
 ---
 date: '2020-01-13 08:12 +0100'
 layout: single
-published: false
+published: true
 title: OVS_AFXDP - step-by-step installation guide
 categories:
   - tutorial
@@ -12,15 +12,15 @@ tags:
 ---
 ## Introduction
 
-[OVS_AFXDP](http://docs.openvswitch.org/en/latest/intro/install/afxdp/) is a new datapath (or _netdev_) implementation for Open vSwitch. The new datapath is based on [eXpress Data Path (XDP)](https://cilium.readthedocs.io/en/latest/bpf/) - an in-kernel hook for eBPF programs designed to provide high-performance packet processing subystem in Linux. AF_XDP is a new socket type (address family) that is built on top of XDP. AF_XDP redirects incoming packets to memory buffer in a user-space application. 
+[OVS_AFXDP](http://docs.openvswitch.org/en/latest/intro/install/afxdp/) is a new datapath implementation for Open vSwitch. The new datapath is based on [eXpress Data Path (XDP)](https://cilium.readthedocs.io/en/latest/bpf/) - the in-kernel hook for eBPF programs designed to provide high-performance packet processing subystem in Linux. AF_XDP is a new socket type (address family) that is built on top of XDP. AF_XDP redirects incoming packets to memory buffer in a user-space application. 
 
 AF_XDP in Open vSwitch is expected to provide similar performance to the DPDK datapath, but with a lower configuration overhead. If AF_XDP will become a successful implementation it would allow to port existing kernel-based OVS deployments to the user-space implementations providing better packet processing performance. 
 
-From my perspective, OVS_AFXDP is interesting as it can be the solution for P4rt-OVS (P4-capable Open vSwitch developed by my team at Orange Labs Poland), which requires to process packets in the user-space and is currently based on DPDK. Hence, I decided to test OVS_AFXDP and evaluate how it can be integrated to P4rt-OVS. This post describes the installation process that I went through. As there is only the official documentation on how to install OVS_AFXDP this post can be a useful extension. 
+From my perspective, OVS_AFXDP is interesting as it can be the solution for P4rt-OVS (P4-capable Open vSwitch developed by my team at Orange Labs Poland), which requires to process packets in the user-space and is currently based on DPDK. Hence, I decided to test OVS_AFXDP and evaluate how it can be integrated to P4rt-OVS. This post describes the installation process that I went through. As there is only the official documentation on how to install OVS_AFXDP, this post can be a useful extension. 
 
 ## Installation of OVS_AFXDP
 
-According to the official documentation OVS_AFXDP requires at least kernel 5.0.0. I installed OVS_AFXDP on Ubuntu 18.10, which comes with kernel 4.18 already integrated. Kernel 4.18 has some initial support for XDP, but it is not sutiable for OVS_AFXDP. Hence, we need to install the newer kernel first. I recommend you to install kernel 5.4.1 or higher because it introduces important modifications to how AF_XDP works.
+According to the official documentation, OVS_AFXDP requires at least kernel 5.0.0. I installed OVS_AFXDP on Ubuntu 18.10, which comes with kernel 4.18 already integrated. Kernel 4.18 has some initial support for XDP, but it is not suitable for OVS_AFXDP. Hence, we need to install the newer kernel first. I recommend you to install kernel 5.4.1 or higher because it introduces important modifications to how AF_XDP works.
 
 ### Building kernel with the XDP support
 
@@ -65,7 +65,7 @@ $ cp -v /boot/config-$(uname -r) .config
 
 Then, build the kernel:
 
-```
+```bash
 make -j $(nproc)
 sudo make modules_install INSTALL_MOD_STRIP=1
 sudo make install
@@ -134,7 +134,7 @@ checking for bpf/xsk.h... no
 configure: error: unable to find bpf/xsk.h for AF_XDP support
 ```
 
-If we look at `config.log` we can see the following message:
+If we would look at `config.log` we can see the following message:
 
 ```
 configure:18659: checking bpf/xsk.h usability
@@ -172,7 +172,7 @@ It is recommended to run tests first to check basic AF_XDP functionality:
 
 `make check-afxdp TESTSUITEFLAGS='1'`
 
-Note! If `libbpf` has not been installed properly the test will fail wil the following message:
+**Note!** If `libbpf` has not been installed properly the test will fail with the following message:
 
 ```
 020-01-17 06:54:19.418142218 +0000
@@ -181,9 +181,9 @@ Note! If `libbpf` has not been installed properly the test will fail wil the fol
 ./system-afxdp.at:5: exit code was 127, expected 0
 ```
 
-In my case I had to come back and fix the installation of `libbpf`.
+In my case I had to fix the installation of `libbpf`.
 
-If tests were passed, we can move on and run OVS_AFXDP! Firstly, let's perform a standard commands to run OVSDB and `ovs-vswitchd`.
+If tests were passed, we can move on and run OVS_AFXDP! Firstly, let's run OVSDB and `ovs-vswitchd`.
 
 ```
 sudo mkdir -p /usr/local/etc/openvswitch
@@ -195,15 +195,15 @@ sudo ovsdb-server --remote=punix:/usr/local/var/run/openvswitch/db.sock \
 sudo ovs-vswitchd --pidfile --detach    
 ```
 
-Then, let's configure OVS wit AF_XDP bridge:
+Then, let's configure OVS with the _netdev_ datapath:
 
 ```
 sudo ovs-vsctl -- add-br br0 -- set Bridge br0 datapath_type=netdev
 ```
 
-OVS_AFXDP can be configured with both physical and virutal interfaces. For the test purpose, I will use `veth` interfaces.
+OVS_AFXDP can be configured with both physical and virutal interfaces. For the test purpose, I use `veth` interfaces.
 
-Create the first `veth` pair and attach it to OVS.
+Create two `veth` pairs and attach them to OVS:
 
 ```
 sudo ip netns add test0
@@ -267,10 +267,4 @@ PING 10.1.1.1 (10.1.1.1) 56(84) bytes of data.
 
 In this post, I described the installation and configuration process to make OVS_AFXDP up and running. As I encountered some problems on the way to install OVS_AFXDP I thought that it was worth sharing my experience with the community. Hence, this post can be a useful complement to the official documentation of OVS_AFXDP. Enjoy! 
 
-The next step is to run our P4rt-OVS prototype with AF_XDP and get rid of DPDK. We also consider to integrate OVS_AFXDP with Mininet to provide researchers and network engineers a simple tool to run and test P4rt-OVS, without the need for DPDK. 
-
-
-
-
-
-
+The next step is to run our P4rt-OVS prototype with AF_XDP and get rid of DPDK. We also consider to integrate OVS_AFXDP with Mininet to provide researchers and network engineers a simple tool to run and test P4rt-OVS, without the need for DPDK.
