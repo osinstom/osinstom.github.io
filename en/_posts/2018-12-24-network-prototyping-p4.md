@@ -1,18 +1,20 @@
 ---
-published: true
+date: 2018-12-24T00:00:00.000Z
 layout: single
+published: true
 lang: en
 ref: network-prototyping-p4
 title: Network prototyping made easy with P4 and Python!
-date: 2018-12-24T00:00:00.000Z
 tags:
-- SDN
-- BMv2
-- NFV
-- Python
-- Mininet
-- scapy
+  - SDN
+  - BMv2
+  - NFV
+  - Python
+  - Mininet
+  - scapy
 ---
+{% include toc title="Table of content" %}
+
 ## Introduction ##
 
 Have you ever tried to understand deeply mechanisms of network protocols? I mean network protocols used by computer networks like, for example, Internet Protocol (IP), Transmission Control Protocol (TCP) or Spanning Tree Protocol (STP). Students are taught at unversity how network systems works. Nextly, they become network administrators, developers or architects. They know how to configure network devices, design complex systems or develop network algorithms. However, it is likely that they got their knowledge from books and/or administration courses, not from development practice! On the other hand, I think the best way to understand network paradigms quickly and deeply is to implement network mechanisms on your own. If as a student you get the deep knowledge about networking basics, it will be easier to understand novel technologies in the future. So far, it was required to use some low-level programming languages (C/C++) with thousands lines of code to build network’s prototype. And here comes the P4 technology and Python as a solution to prototype networks in the easy and fast way! Combining P4 with tools provided by Python such as the scapy library or Mininet gives unlimitied possibilities to implement, build and test complex network systems. Moreover, you can prototype network protocols, which don’t even exist yet!
@@ -125,5 +127,3 @@ In the subsequent blog posts I will describe how I have used these tools to lear
 [1] W. L. Costa Cordeıro, J. A. Marques, and L. P. Gaspary, “Data Plane Programmability Beyond OpenFlow: Opportunities and Challenges for Network and Service Operations and Management,” J. Netw. Syst. Manage., vol. 25, no. 4, pp. 784–818, Oct. 2017.
 
 [2] http://www.p4.org
-
-
