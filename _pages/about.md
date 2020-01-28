@@ -18,7 +18,27 @@ Note that posts are on my own and don’t represent the opinions of my employer.
 
 ## Experience
 
-TBD
+- **R&D Specialist / R&D Expert - Orange Labs Poland (2017 - now)**
+ 
+  - Working with P4, Open vSwitch, DPDK, BPF/XDP, Tofino, SmartNiCs, OpenStack & Kubernetes to implement VNF offloading use cases.
+  - Design, implement, evaluate PoCs and publish new ideas to improve performance and enhance capabilities of the NFV Infrastructure for 5G and Network Slicing use cases.
+  - Research (Industrial PhD) on programmable data plane for SDN/NFV using P4.
+  - Contribution to the ONAP open-source project.
+  - Deployment and maintenance of the OpenStack instance.
+  - Technologies: OpenStack, P4, Open vSwitch, DPDK, AF_XDP, Python, Java, C, C++, eBPF/XDP, Docker, Kubernetes, Ansible, Cloudify, OpenDayLight, ONOS
+
+- **Software Engineer - Samsung R&D Institute Poland (2016 - 2017)**
+
+  - maintenance, development and deployment of VoLTE/VoWiFi services in Android OS for European operators
+  - network analysis and troubleshooting using packet analysis tool
+  - GSMA, 3GPP and RFC specifications analysis
+  - technical cooperation with network engineers
+  - leading internal technical trainings
+  - Technologies: Java, C++, Protobuf, Android, LTE, SIP, IMS, IKE/IPSec
+- **Software Developer - mLife (software house) (2015 - 2016)**
+
+  - Maintenance & development of VoIP/IMS systems.
+  - Technologies: JSF, Spring, PrimeFaces, SOAP, REST, MySQL, Tomcat 8
 
 ## Education
 
