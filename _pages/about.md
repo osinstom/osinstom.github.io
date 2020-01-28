@@ -19,3 +19,15 @@ Note that posts are on my own and don’t represent the opinions of my employer.
 ## Experience
 
 TBD
+
+## Education
+
+- **Warsaw University of Technology (2018 - now)**
+  
+  Industrial Ph.D of Telecommunications
+- **Warsaw University of Technology (2016 - 2018)**
+
+  M.Sc. in Telecommunications
+- **Warsaw University of Technology (2012 - 2016)**
+
+  Bachelor of Telecommunications
