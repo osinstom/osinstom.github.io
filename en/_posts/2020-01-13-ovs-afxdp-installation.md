@@ -11,6 +11,8 @@ tags:
   - afxdp
   - xdp
 ---
+{% include toc title="Table of content" %}
+
 ## Introduction
 
 [OVS_AFXDP](http://docs.openvswitch.org/en/latest/intro/install/afxdp/) is a new datapath implementation for Open vSwitch. The new datapath is based on [eXpress Data Path (XDP)](https://cilium.readthedocs.io/en/latest/bpf/) - the in-kernel hook for eBPF programs designed to provide high-performance packet processing subystem in Linux. AF_XDP is a new socket type (address family) that is built on top of XDP. AF_XDP redirects incoming packets to memory buffer in a user-space application. 
