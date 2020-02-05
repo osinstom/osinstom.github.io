@@ -32,7 +32,12 @@ Now, where does the precendence of operators matter? In general, in any statemen
 if (flags & FLAG != 0) ...
 ```
 
-Sic! The relational operator  (`!=`) has the precendence over the bitwise operator (`&`), so it totally changes our intention! 
+Sic! The relational operator  (`!=`) has the precendence over the bitwise operator (`&`), so it totally changes our intention! The statement firstly compare `FLAG` with 0 and, then, takes the result of comparison and performs logical AND operation with flags. This was not our intention! 
+
+In the book, there are more examples of such a traps in C. What we should remember is:
+
+> The precendence of operators in C is as follows (from the highest precendence):
+The arithmetic operators, the shift operators, the relational operators, the logical operators, the assignment operators, the conditional operator.
 
 To conclude this paragraph, the operator's precendence in C can make a lot of surprises for not experienced programmer. My tip? Use as much parenthesess as you need, but not more than really required, in the *if* statements to express your intention. You will avoid a lot of surprises this way. 
 
