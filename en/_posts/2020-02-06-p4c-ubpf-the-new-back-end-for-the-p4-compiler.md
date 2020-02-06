@@ -24,9 +24,12 @@ Apache License, version 2.0.
 
 ## P4rt-OVS
 
+Open vSwitch (OVS) is a widely adopted high-performance programmable virtual switch. P4rt-OVS is an extension of Open vSwitch that integrates the BPF virtual machine with the userspace datapath of OVS. Hence, P4rt-OVS allows to extend the OVS packet processing pipeline without recompilation by injecting BPF programs at runtime. BPF programs act as programmable actions and they are referenced as a new OVS action (prog) in the OpenFlow tables. Programmable actions are allowed to write to packets as well as read and write to persistent maps (hash tables) to retain information on flows.
 
+Furthermore, a user can use the P4 language to develop new, protocol-independent data plane extensions (BPF programs) for Open vSwitch. P4 provides a high-level and declarative language, so writing a new network features becomes super easy! p4c-ubpf, the uBPF back-end for the P4 compiler, provides the architecture model to write P4 programs making use of wide range of P4 features including stateful registers.
 
 # Compiling P4 to uBPF
+
 
 ```
          --------------              -------
@@ -34,7 +37,7 @@ P4_16 --->  | P4-to-uBPF | ---> C ----> | clang/BCC | --> uBPF
          --------------              -------
 ```
 
-
+ubpf_model.p4
 
 
 # p4c-ubpf vs. other BPF-related compilers
