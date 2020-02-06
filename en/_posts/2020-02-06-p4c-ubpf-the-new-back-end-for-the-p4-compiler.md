@@ -9,13 +9,20 @@ With the constant development of the P4 language more and more programmable targ
 
 This blog post introduces p4c-ubpf - the new back-end for the P4 compiler - that enables programming packet processing modules for uBPF. The p4c-ubpf allows to execute the P4 code in any solution implementing the kernel bypass (e.g. DPDK or AF_XDP applications). 
 
-# Overview
-
-
-
 # uBPF for packet processing
 
 ## Why uBPF?
+
+The uBPF project re-implements the eBPF kernel-based Virtual Machine. It contains 
+eBPF assembler, disassembler, interpreter, and JIT compiler for x86-64. While the BPF programs are 
+intented to run in the kernel, the uBPF project enables running the BPF programs in user-space applications. Therefore, the uBPF Virtual Machine can be used in any solution implementing the kernel bypass (e.g. DPDK/AF_XDP apps).
+
+Moreover, contrary to the eBPF implementation, uBPF is not licensed under GPL. The uBPF implementation is licensed under
+Apache License, version 2.0. 
+
+## P4rt-OVS
+
+
 
 # Compiling P4 to uBPF
 
@@ -31,4 +38,4 @@ For questions or comments, please send an email to tomasz.osinski2@orange.com.
 
 [P4-uBPF - presentation from Open vSwitch and OVN Fall 2019 conference](https://www.openvswitch.org/support/ovscon2019/#4.3F)
 
-
+[P4rt-OVS - Github repository](https://github.com/Orange-OpenSource/p4rt-ovs)
