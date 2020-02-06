@@ -11,7 +11,7 @@ tags:
   - C operators
 ---
 
-Recently, I read the really nice book, entitled "C Traps and Pitfalls", to extend my competences in C. This post gathers all my findings and takeways from this book. I wrote this more for myself to note the key findings, but I think any C programmer can find something useful in my notes. Enjoy!
+Recently, I read the really nice book, entitled "C Traps and Pitfalls", to extend my competences in C. This post gathers all my key findings and takeways from this book. I wrote this more for myself to note the key findings, but I think any C programmer can find something useful in my notes. Enjoy!
 
 ### 1. Precendence of operators
 
@@ -39,7 +39,29 @@ In the book, there are more examples of such a traps in C. What we should rememb
 > The precendence of operators in C is as follows (from the highest precendence):
 The arithmetic operators, the shift operators, the relational operators, the logical operators, the assignment operators, the conditional operator.
 
-To conclude this paragraph, the operator's precendence in C can make a lot of surprises for not experienced programmer. My tip? Use as much parenthesess as you need, but not more than really required, in the *if* statements to express your intention. You will avoid a lot of surprises this way. 
+To conclude this paragraph, the operator's precendence in C can make a lot of surprises for not experienced programmer. 
 
+> My hint? Use as much parenthesess as you need, but not more than really required, in the *if* statements to express your intention. You will avoid a lot of surprises this way.
+
+### 2. Mind a break statement!
+
+In the *switch* statement each *case* statement should be terminated with *break*. Otherwise, all the subsequent *case* statements will be also invoked until the first *break* ! Note that this trap may also be a nice feature of the language if used intentionally (e.g. in the compiler program to skip some tokens while analyzing the code). 
+
+### 3. Dangling *else* problem
+
+Consider the following example from the book:
+
+```C
+if (x == 0)
+  if (y == 0) error();
+else {
+  z = x + y;
+  f(&z);
+}
+```
+
+The intention here is to enter *else* block if `x != 0`. However, in C, *else* is associated with the nearest *if* statement! Therefore, in the above example *else* statement will be invoked if `y != 0` (sic!). 
+
+> My hint? You should always use parenthesses in the *if-else* statements to make sure that C program behaves as you intended to. 
 
 
