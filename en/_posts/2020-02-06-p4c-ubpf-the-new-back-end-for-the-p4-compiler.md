@@ -26,6 +26,12 @@ Apache License, version 2.0.
 
 # Compiling P4 to uBPF
 
+```
+         --------------              -------
+P4_16 --->  | P4-to-uBPF | ---> C ----> | clang/BCC | --> uBPF
+         --------------              -------
+```
+
 # p4c-ubpf vs. other BPF-related compilers
 
 Table with comparsion of features of p4c-ubpf, p4c-ebpf, p4c-xdp
