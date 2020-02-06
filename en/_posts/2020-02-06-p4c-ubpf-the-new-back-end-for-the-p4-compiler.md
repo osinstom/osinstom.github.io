@@ -5,18 +5,24 @@ published: false
 title: p4c-ubpf - the new back-end for the P4 compiler!
 ---
 
-This blog post introduces p4c-ubpf - the new back-end for the P4 compiler - that enables programming packet processing modules for user-space re-implementation of in-kernel eBPF virtual machine. The user-space BPF (uBPF) virtual machine allows to execute arbitrary BPF machine code in any solution implementing the kernel bypass (e.g. DPDK or AF_XDP applications). 
+With the constant development of the P4 language more and more programmable targets are emerging. The P4 compiler has already support for the next-generation Linux datapath such as eBPF/XDP. However, in-kernel eBPF has its own limitations. Sometimes, it is required to introduce runtime extensibility mechanism in a user-space packet processing applications. The user-space BPF (uBPF) is a re-implementation of in-kernel eBPF virtual machine and provides user-space execution environment, which can be extended at runtime.  
 
-## Overview
+This blog post introduces p4c-ubpf - the new back-end for the P4 compiler - that enables programming packet processing modules for uBPF. The p4c-ubpf allows to execute the P4 code in any solution implementing the kernel bypass (e.g. DPDK or AF_XDP applications). 
+
+# Overview
 
 
 
-## uBPF for packet processing
+# uBPF for packet processing
 
-### Why uBPF?
+## Why uBPF?
 
-## Compiling P4 to uBPF
+# Compiling P4 to uBPF
 
-## p4c-ubpf vs. other BPF-related compilers
+# p4c-ubpf vs. other BPF-related compilers
 
 Table with comparsion of features of p4c-ubpf, p4c-ebpf, p4c-xdp
+
+# Summary
+
+For questions or comments, please send an email to tomasz.osinski2@orange.com. 
