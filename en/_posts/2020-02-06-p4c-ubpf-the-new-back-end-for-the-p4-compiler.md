@@ -34,6 +34,9 @@ P4_16 --->  | P4-to-uBPF | ---> C ----> | clang/BCC | --> uBPF
          --------------              -------
 ```
 
+
+
+
 # p4c-ubpf vs. other BPF-related compilers
 
 Table with comparsion of features of p4c-ubpf, p4c-ebpf, p4c-xdp
@@ -42,8 +45,8 @@ Table with comparsion of features of p4c-ubpf, p4c-ebpf, p4c-xdp
 |:----------------------------------:|:--------:|:-------:|:--------:|
 |          Packet filtering          |    YES   |   YES   |    YES   |
 | Packet's modifications & tunneling |    NO    |   YES   |    YES   |
-|                                    |          |         |          |
-|              Registers             |    NO    |    NO   |    YES   |
+|      Simple packet forwarding      |          |         |          |
+|              Registers             |    NO    |   NO    |    YES   |
 |              Counters              |    YES   |   YES   |    NO    |
 |        Checksum computation        |    NO    |   YES   |    YES   |
 
