@@ -89,7 +89,12 @@ while (i < tabsize && tab[i] != x)
 ```
 
 If the `&&` would be replaced by `&` we will have two consequences:
-1. 
+1. In this example, both comparisons produce the value of 0 or 1, so that `&` and `&&` will work similarily. However, if one of the comparisons would produce some other value, the loop would work incorrectly.
+2. This is really tricky and can make a surprise! The `&`, unlike `&&`, must **always** evaluate both of its operands. So, even if `i < tabsize` is "False", the second operand (`tab[i] != x`) will be evaluated! In this case, it leads to reading a value that is not in the bounds of the `tab` array. 
+
+It is worth to remember these consequences as the recruiters like to ask this sort of questions at job interview :) 
+
+
 
 
 
