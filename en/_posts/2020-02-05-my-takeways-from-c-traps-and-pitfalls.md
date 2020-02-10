@@ -62,6 +62,40 @@ else {
 
 The intention here is to enter *else* block if `x != 0`. However, in C, *else* is associated with the nearest *if* statement! Therefore, in the above example *else* statement will be invoked if `y != 0` (sic!). 
 
-> My hint? You should always use parenthesses in the *if-else* statements to make sure that C program behaves as you intended to. 
+> My hint? You should always use parenthesses in the *if-else* statements to make sure that C program behaves as you intended to.
+
+### 4. Order of evaluation
+
+Order of evaluation for most operators in the C language is not defined. The compiler is free to evaluate such expressions in any order, if the compiler can guarantee a consistent results.
+
+The only the following operators specify and guarantee the particular order of evalation: sequential-evaluation (`,`), logical-AND (`&&`), logical-OR (`||`) and conditional expression (`? :`). 
+
+All other C operands evalute their operands in undefined order. It means their exact behavior is implementation-specific/
+
+### 5. Logical vs. bitwise comparison
+
+Anyone should avoid using logical (e.g. `&&`) and bitwise (`&`) operators, interchangebly. For experienced programmers, it is obvious that these operators are not equivalent to each other. However, young programmers can substitute bitwise operator for logical operators or vice versa. 
+
+In general the rule is simple: 
+
+> Logical operators treats their arguments as either "True" (value 1) or "False" (value 0). On the other hand, bitwise operators work on sequence of bits and compares bits of their arguments. 
+
+According to the following example (from book):
+
+```C
+i = 0;
+while (i < tabsize && tab[i] != x)
+  i++;
+```
+
+If the `&&` would be replaced by `&` we will have two consequences:
+1. 
+
+
+
+
+
+
+
 
 
