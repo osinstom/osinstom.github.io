@@ -94,6 +94,16 @@ If the `&&` would be replaced by `&` we will have two consequences:
 
 It is worth to remember these consequences as the recruiters like to ask this sort of questions at job interview :) 
 
+### 6. C doesn't cast function's arguments automatically!
+
+In other words:
+
+> It is the programmer’s responsibility to ensure that the arguments toa function are of the right type.
+
+### 7. Pointers are not always arrays
+
+In almost any book about the C language, we can find some sentence that pointers are arrays. It is a simplification that make understanding of C easier at the beginning. However, it is not always the case! In particular, we can get a surprise, when working with strings.
+
 
 
 
