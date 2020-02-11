@@ -22,4 +22,7 @@ What is hard in software, but easy in hardware?
 
 Ben proposes to include only Parser in the P4_16 architecture model for OVS, because P4 model nicely describes hardware pipeline, but for software switches it does not make sense to specify fixed tables, what actions the table needs to have and fixed packet processing pipeline in advance. 
 
+### Why is it hard to have user-configurable protocols (P4 support) in OVS?
+
+1. 
 
