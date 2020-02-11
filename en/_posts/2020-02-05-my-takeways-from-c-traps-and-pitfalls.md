@@ -100,11 +100,19 @@ In other words:
 
 > It is the programmer’s responsibility to ensure that the arguments toa function are of the right type.
 
-### 7. Pointers are not always arrays
+### 7. Allocate enough memory for strings
 
-In almost any book about the C language, we can find some sentence that pointers are arrays. It is a simplification that make understanding of C easier at the beginning. However, it is not always the case! In particular, we can get a surprise, when working with strings.
+String is an array of characters, but this array is terminated with `'\0'` (null character). Therefore, we need allocate one extra character for string! For example, if `strlen(s)` equals `n`, `s` really requires `n+1` characters to be allocated.
 
+### 8. Integer overflow
 
+> If either operand is unsigned, the result is unsigned, and is defined to be modulo 2^n, where "n" is  the word size.  If both operands are signed, the result is **undefined**.
+
+### 9. How to shift bits?
+
+1. It is more safe to right-shift *unsigned* integers. In some implementations, if the item is *signed*, it is allowed to fill vacatated bit positions either with zeros or with copies of the sign bit. The latter can make a surprise!
+
+2. It is not allowed to shift the variable by value greater than its length. 
 
 
 
