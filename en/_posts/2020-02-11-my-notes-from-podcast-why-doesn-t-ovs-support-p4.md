@@ -24,5 +24,22 @@ Ben proposes to include only Parser in the P4_16 architecture model for OVS, bec
 
 ### Why is it hard to have user-configurable protocols (P4 support) in OVS?
 
-1. 
+1. Fixed interface between slowpath (ovs-vswitchd) and multiple datapaths. There are difficulties to make it protocol-independent.
+2. Version compatiblity with kernel module (not maintained by OVS)
+
+### How we can implement P4 support in OVS?
+
+1. eBPF
+  * Add OVS action that executes eBPF code
+  * Re-write kernel datapath in eBPF/XDP, but there are problems with it (e.g. limited number of instructions, performance, tail calls). In case of eBPF, restrictions of P4 language on tables (defining them in advance) can make it easier to integrate P4 with eBPF. 
+    * eBPF is slower than OVS kernel module, but more flexible: you can tailor kernel module to user-configurable protocols. 
+  * 
+2. Get rid of kernel module at all and use just packet interface (like DPDK).
+
+### Research ideas based on notes
+
+* There is probably needed some fork, new version of P4 language or a specific P4_16 architecture model for software datapaths (it applies not only to OVS, but also to Linux TC).
+
+
+
 
