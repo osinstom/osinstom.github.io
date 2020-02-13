@@ -112,7 +112,69 @@ String is an array of characters, but this array is terminated with `'\0'` (null
 
 1. It is more safe to right-shift *unsigned* integers. In some implementations, if the item is *signed*, it is allowed to fill vacatated bit positions either with zeros or with copies of the sign bit. The latter can make a surprise!
 
-2. It is not allowed to shift the variable by value greater than its length. 
+2. It is not allowed to shift the variable by value greater than its length.
+
+### 10. What C preprocessor gives us?
+
+1. We can change all instances of a particular quantity by changing one number (in only one place) and recompiling the program. It is useful for some pre-defined variables like size of char arrays etc.
+2. We can define things to appear as functions, but without typical execution overhead, which applies to classical function calls. Preprocessor just replaces a function call inline with predefined operations defined in macros. 
+
+### 11. Macros are not functions
+
+This statements is rather obvious for everyone, who has been working with C for some time now. However, it can be misunderstood by beginners.
+
+Even though macros usually looks like function calls, they are not the same! Come back to takeways #10 and remember: preprocessor replaces all macros instances with actual value of a macro. This may lead to surprises for less experienced programmers. 
+
+In my personal opinion, macros should be used mindfully, because they are not always the best option. The macros imitating functions sometimes looks really ugly and far away from "clean code" principles. My hint?
+
+> Use macros to imitate function only if a function is not complex. Otherwise, use typical functions to make a code more readable.
+
+### 12. Macros are not typedefs
+
+In C, there is a construct called *typedef*, which allows programmer to create new types. However, macros are also used to define new types. The rule to remember is that macros are not typedefs and can lead to a surprise. Consider below example (from book):
+
+```C
+// T1 and T2 conceptually seems to define the same type (pointer to a struct foo).
+#define T1 struct foo *
+typedef struct foo *T2;
+
+// declarations
+T1 a, b;
+T2 c, d;
+```
+
+Now, there is a surprise! Remember macros replaces its instances with the actual value. As a result we have:
+
+```C
+struct foo * a, b;
+```
+
+So, "a" is a pointer to a struct foo, indeed. However, "b" is just a variable of type struct foo! 
+
+### 13. C is not really portable
+
+The chapter 7 of the book deals with portability pitfalls. To summarize this chapter it is really easy to say that C is not really portable language and every programmer needs to know, which platform she or he is programming on. A programmer has to know about underlaying platform's features, libraries and limitations. 
+
+What authors recommend to look at regarding portability? 
+* Case sensitivness - not all platforms/compilers are sensitive to case in names of variables/functions.
+* Size of integers - the size is architecture-dependent. Usually we have 32 bit for integers, 16 bit for *short*, etc. However, it is not guaranteed.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
