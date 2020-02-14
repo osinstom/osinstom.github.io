@@ -1,11 +1,16 @@
 ---
-title:  "Knowledge base"
+title: Knowledge base
 lang: en
 ref: knowledge-base
 layout: single
 permalink: /knowledge-base/
 author_profile: true
 comments: false
+published: true
 ---
 
-TBD
+## Programmable data planes / Data plane programming
+
+[Programmable Network Data Planes - Report from Dagstuhl seminar](http://www.justinesherry.com/papers/antichi-dagstuhl19.pdf)
+
+[Why does the Internet need a programmable forwarding plane by Nick McKeown ](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=2ahUKEwiStN7-5NDnAhXimFwKHVh0AyoQwqsBMAB6BAgKEAQ&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DzR88Nlg3n3g&usg=AOvVaw178t8oxeEILCtLSKd_fKF_)
