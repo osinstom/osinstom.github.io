@@ -159,4 +159,8 @@ What authors recommend to look at regarding portability?
 * Case sensitivness - not all platforms/compilers are sensitive to case in names of variables/functions.
 * Size of integers - the size is architecture-dependent. Usually we have 32 bit for integers, 16 bit for *short*, etc. However, it is not guaranteed.
 * Converting char to int - it is not defined if a character should be transformed to unsigned or signed integer. If one wants to force conversion to unsigned integer it is better to declare *unsigned char*. In this case, extra bit positions should be filled with zeros. If casting from *char* it depends on implementation - a compiler may convert it to signed or unsigned integer.
-* 
+* Random numbers - due to historical reasons, it is undefined what is an upper bound for randomly-generated number. However, it is granted to be at least 2^15-1.
+
+## Summary
+
+This book was a nice journey for me! As I spent a lot of time on programming C software, it was not a revolutionary book for me. Nevertheless, it can give a strong background and deep knowledge about trapsl
