@@ -158,29 +158,5 @@ The chapter 7 of the book deals with portability pitfalls. To summarize this cha
 What authors recommend to look at regarding portability? 
 * Case sensitivness - not all platforms/compilers are sensitive to case in names of variables/functions.
 * Size of integers - the size is architecture-dependent. Usually we have 32 bit for integers, 16 bit for *short*, etc. However, it is not guaranteed.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+* Converting char to int - it is not defined if a character should be transformed to unsigned or signed integer. If one wants to force conversion to unsigned integer it is better to declare *unsigned char*. In this case, extra bit positions should be filled with zeros. If casting from *char* it depends on implementation - a compiler may convert it to signed or unsigned integer.
+* 
