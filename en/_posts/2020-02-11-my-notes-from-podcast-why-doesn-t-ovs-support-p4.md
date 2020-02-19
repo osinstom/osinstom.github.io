@@ -1,10 +1,8 @@
 ---
 date: '2020-02-11 20:42 +0100'
 layout: single
-published: false
+published: true
 title: My notes from podcast "Why doesn't OVS support P4?"
-categories: ''
-tags: ''
 ---
 
 The OVS Orbit podcast "User-Configurable Protocol Support for OVS, or Why Doesn't OVS Support P4?" [1] was recorded at the Dagstuhl seminar on programmable data planes in April 2019. It explains the reasons that OVS doesn't already have support for P4, what's changing, and likely future directions. There are my notes (quick summary) from this podcast below. 
