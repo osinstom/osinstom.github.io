@@ -3,8 +3,6 @@ date: '2020-02-06 13:35 +0100'
 layout: single
 published: false
 title: p4c-ubpf - the new back-end for the P4 compiler!
-categories: ''
-tags: ''
 ---
 
 With the constant development of the P4 language more and more programmable targets are emerging. The P4 compiler has already support for the next-generation Linux datapath such as eBPF/XDP. However, it is sometimes required to introduce runtime extensibility mechanism in a user-space packet processing applications. It can be achieved by using [the user-space BPF (uBPF) Virtual Machine](https://github.com/iovisor/ubpf), which is a re-implementation of in-kernel eBPF VM and provides a user-space execution environment, which can be extended at runtime.  
@@ -39,7 +37,8 @@ P4_16 --->  | p4c-ubpf | ---> C ----> | clang | --> uBPF
 
 We designed a new architecture model for P4c-uBPF (depicted below). The `ubpf_model` architecture consists of a single parser, match-action pipeline, and deparser. We made the decision to disable packet forwarding in the first version, what simplifies the design, but can be treated as a limitation. It means it is the responsibility of the underlaying target to determine output port for incoming packets. P4rt-OVS is implemented according to this design principle. However, p4c-ubpf can be enhanced to support packet forwarding in the next releases.
 
-![P4c-uBPF architecture model]({{site.baseurl}}/en/_posts/p4c-ubpf-architecture-model.png =250x)
+![P4c-uBPF architecture model]({{site.baseurl}}/en/_posts/p4c-ubpf-architecture-model.png)
+
 
 The p4c-ubpf compiler provides also a library of *extern* functions that implement features not supported by the P4 language. These functions can be called from the P4 program as a normal action. The `ubpf` architecture model supports such operations as hash functions, stateful registers, timestamp retrieving and checksum computation. To see the heavily commented, full specification of the architecture model see [this link](https://github.com/P4-Research/p4c/blob/master/backends/ubpf/p4include/ubpf_model.p4). 
 
