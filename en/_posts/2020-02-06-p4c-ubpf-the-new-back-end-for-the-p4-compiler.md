@@ -37,7 +37,8 @@ P4_16 --->  | p4c-ubpf | ---> C ----> | clang | --> uBPF
 
 We designed a new architecture model for P4c-uBPF (depicted below). The `ubpf_model` architecture consists of a single parser, match-action pipeline, and deparser. We made the decision to disable packet forwarding in the first version, what simplifies the design, but can be treated as a limitation. It means it is the responsibility of the underlaying target to determine output port for incoming packets. P4rt-OVS is implemented according to this design principle. However, p4c-ubpf can be enhanced to support packet forwarding in the next releases.
 
-![P4c-uBPF architecture model]({{site.baseurl}}/en/_posts/p4c-ubpf-architecture-model.png)
+![p4c-ubpf-architecture-model.png]({{site.baseurl}}/en/_posts/p4c-ubpf-architecture-model.png)
+
 
 
 The p4c-ubpf compiler provides also a library of *extern* functions that implement features not supported by the P4 language. These functions can be called from the P4 program as a normal action. The `ubpf` architecture model supports such operations as hash functions, stateful registers, timestamp retrieving and checksum computation. To see the heavily commented, full specification of the architecture model see [this link](https://github.com/P4-Research/p4c/blob/master/backends/ubpf/p4include/ubpf_model.p4). 
