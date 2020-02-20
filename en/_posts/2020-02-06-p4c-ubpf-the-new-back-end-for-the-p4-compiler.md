@@ -39,8 +39,8 @@ P4_16 --->  | P4-to-uBPF | ---> C ----> | clang/BCC | --> uBPF
 
 
 
+![P4c-uBPF architecture model]({{site.baseurl}}/en/_posts/p4c-ubpf-architecture-model.png)
 
-ubpf_model.p4
 
 
 # p4c-ubpf vs. other BPF-related compilers
@@ -71,4 +71,3 @@ For questions or comments, please send an email to tomasz.osinski2@orange.com.
 # References 
 
 [1] Userspace eBPF VM, https://github.com/iovisor/ubpf
-
