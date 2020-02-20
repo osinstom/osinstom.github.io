@@ -14,7 +14,7 @@ My name is **Tomasz Osiński** and I'm the author of this blog. This blog is ful
 
 * Programmable data plane and the P4 language
 * Packet processing techniques in software (e.g. eBPF, XDP)
-* Performance of the NFV infrastructure
+* Performance of the NFV infrastructure and high-speed Virtual Network Functions
 * Design and implementation of cloud-native, NFV-ready telco network functions 
 
 Mainly, I am going to publish tech tutorials & reports. However, some of my personal opinions or visions may also appear on this blog. 
