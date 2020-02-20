@@ -39,8 +39,6 @@ We designed a new architecture model for P4c-uBPF (depicted below). The `ubpf_mo
 
 ![p4c-ubpf-architecture-model.png]({{site.baseurl}}/en/_posts/p4c-ubpf-architecture-model.png)
 
-
-
 The p4c-ubpf compiler provides also a library of *extern* functions that implement features not supported by the P4 language. These functions can be called from the P4 program as a normal action. The `ubpf` architecture model supports such operations as hash functions, stateful registers, timestamp retrieving and checksum computation. To see the heavily commented, full specification of the architecture model see [this link](https://github.com/P4-Research/p4c/blob/master/backends/ubpf/p4include/ubpf_model.p4). 
 
 ## Translating P4 to C
@@ -96,9 +94,9 @@ The uBPF is yet another BPF-related backend for P4. `p4c-ebpf` generates program
 
 # Summary
 
+The uBPF backend for the P4 compiler can be used for any application that processes packets in a user space. It has already been used to implement various, simple applications such as stateful firewall, rate limiter or GTP tunneling. For instance, in case of P4rt-OVS, `p4c-ubpf` allows to implement network protocols, which are not currently supported by Open vSwitch. See [this link](https://github.com/P4-Research/p4c/blob/master/backends/ubpf/docs/EXAMPLES.md) for more examples. 
 
-
-For questions or comments, please send an email to tomasz.osinski2@orange.com. 
+We encourage community to start playing with uBPF backend, report bugs and propose new enhancements. For questions or comments, please send an email to tomasz.osinski2@orange.com. 
 
 # Quick links
 
@@ -110,6 +108,3 @@ For questions or comments, please send an email to tomasz.osinski2@orange.com.
 
 [P4rt-OVS - Github repository](https://github.com/Orange-OpenSource/p4rt-ovs)
 
-# References 
-
-[1] Userspace eBPF VM, https://github.com/iovisor/ubpf
