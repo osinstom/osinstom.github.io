@@ -102,6 +102,8 @@ For questions or comments, please send an email to tomasz.osinski2@orange.com.
 
 # Quick links
 
+[BPF and XDP Reference Guide](https://docs.cilium.io/en/v1.6/bpf/)
+
 [Background on P4 and eBPF](https://github.com/p4lang/p4c/blob/master/backends/ebpf/README.md)
 
 [P4-uBPF - presentation from Open vSwitch and OVN Fall 2019 conference](https://www.openvswitch.org/support/ovscon2019/#4.3F)
