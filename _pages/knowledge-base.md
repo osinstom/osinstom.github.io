@@ -9,8 +9,12 @@ comments: false
 published: true
 ---
 
-## Programmable data planes / Data plane programming
+## Programmable data plane
 
 [Programmable Network Data Planes - Report from Dagstuhl seminar](http://www.justinesherry.com/papers/antichi-dagstuhl19.pdf)
 
 [Why does the Internet need a programmable forwarding plane by Nick McKeown ](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=2ahUKEwiStN7-5NDnAhXimFwKHVh0AyoQwqsBMAB6BAgKEAQ&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DzR88Nlg3n3g&usg=AOvVaw178t8oxeEILCtLSKd_fKF_)
+
+## eBPF / XDP
+
+[BPF and XDP Reference Guide by Cilium](https://docs.cilium.io/en/v1.6/bpf/)
