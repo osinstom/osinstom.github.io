@@ -18,3 +18,5 @@ published: true
 ## eBPF / XDP
 
 [BPF and XDP Reference Guide by Cilium](https://docs.cilium.io/en/v1.6/bpf/)
+
+[Survey: Fast Packet Processing with eBPF and XDP: Concepts, Code, Challenges, and Applications](https://dl.acm.org/doi/abs/10.1145/3371038)
