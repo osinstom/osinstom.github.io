@@ -47,7 +47,7 @@ The p4c-ubpf compiler provides also a library of *extern* functions that impleme
 
 The key operation that is performed by p4c-ubpf is translation from P4 to C. The following tables provide a brief summary of how each P4 construct is mapped to a corresponding C construct. Note that the translation is very similar to `p4c-ebpf` and `p4c-xdp`.
 
-### Translating parser
+#### Translating parser
 
 P4 Construct | C Translation
 ----------|------------
@@ -57,7 +57,7 @@ parser state  | code block
 state transition | `goto` statement
 `extract` | load/shift/mask data from packet buffer
 
-### Translating match-action pipelines
+#### Translating match-action pipelines
 
 P4 Construct | C Translation
 ----------|------------
@@ -72,7 +72,7 @@ registers  | additional eBPF map
 register `reads` | eBPF map's lookups
 register `writes` | eBPF map's updates
 
-### Translating deparser
+#### Translating deparser
 
 P4 Construct | C Translation
 ----------|------------
@@ -81,7 +81,9 @@ P4 Construct | C Translation
 
 # p4c-ubpf vs. other BPF-related compilers
 
-Table with comparsion of features of p4c-ubpf, p4c-ebpf, p4c-xdp
+The uBPF is yet another BPF-related backend for P4. `p4c-ebpf` generates programs to be attached to the Linux TC subsystem, `p4c-xdp` targets XDP hook, while `p4c-ubpf`. There are differences in the range of functionalities that these P4 backends support. The table below provides a brief comparison of features provided by each BPF-related backend.
+
+#### Comparsion of features provided by p4c-ubpf, p4c-ebpf and p4c-xdp
 
 |               Feature              | p4c-ebpf | p4c-xdp | p4c-ubpf |
 |:----------------------------------:|:--------:|:-------:|:--------:|
