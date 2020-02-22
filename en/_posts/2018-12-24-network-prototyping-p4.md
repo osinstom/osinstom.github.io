@@ -74,7 +74,7 @@ or software-based (e.g.
 become the same what the CUDA language became for graphics cards
 programming. The concept of the P4 language has been presented below.
 
-![p4-program-structure.png]({{site.baseurl}}/assets/p4-program-structure.png)
+![p4-program-structure.png]({{site.baseurl}}/assets/images/p4-program-structure.png)
 
 The P4 program is composed of three main sections: Protocols definition
 (data declaration), Parser Logic (Parser & Deparser) and a number of
