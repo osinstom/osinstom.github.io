@@ -15,6 +15,10 @@ published: true
 
 [Why does the Internet need a programmable forwarding plane by Nick McKeown ](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=2ahUKEwiStN7-5NDnAhXimFwKHVh0AyoQwqsBMAB6BAgKEAQ&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DzR88Nlg3n3g&usg=AOvVaw178t8oxeEILCtLSKd_fKF_)
 
+## Packet processing
+
+[Introduction to software-based and hardware-based packet processing architectures by Kentaro Ebisawa](https://www.janog.gr.jp/en/attach/janog37/janog37-ebisawa.pdf)
+
 ## eBPF / XDP
 
 [BPF and XDP Reference Guide by Cilium](https://docs.cilium.io/en/v1.6/bpf/)
