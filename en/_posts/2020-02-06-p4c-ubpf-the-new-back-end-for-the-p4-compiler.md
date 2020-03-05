@@ -39,7 +39,7 @@ We designed a new architecture model for P4c-uBPF (depicted below). The `ubpf_mo
 
 ![p4c-ubpf-architecture-model.png]({{site.baseurl}}/en/_posts/p4c-ubpf-architecture-model.png)
 
-The p4c-ubpf compiler provides also a library of *extern* functions that implement features not supported by the P4 language. These functions can be called from the P4 program as a normal action. The `ubpf` architecture model supports such operations as hash functions, stateful registers, timestamp retrieving and checksum computation. To see the heavily commented, full specification of the architecture model see [this link](https://github.com/P4-Research/p4c/blob/master/backends/ubpf/p4include/ubpf_model.p4). 
+The p4c-ubpf compiler provides also a library of *extern* functions that implement features not supported by the P4 language. These functions can be called from the P4 program as a normal action. The `ubpf` architecture model supports such operations as hash functions, stateful registers, timestamp retrieving and checksum computation. To see the heavily commented, full specification of the architecture model see [this link](https://github.com/p4lang/p4c/blob/master/backends/ubpf/p4include/ubpf_model.p4). 
 
 ## Translating P4 to C
 
@@ -79,9 +79,9 @@ P4 Construct | C Translation
 
 # p4c-ubpf vs. other BPF-related compilers
 
-The uBPF is yet another BPF-related backend for P4. `p4c-ebpf` generates programs to be attached to the Linux TC subsystem, `p4c-xdp` targets XDP hook, while `p4c-ubpf`. There are differences in the range of functionalities that these P4 backends support. The table below provides a brief comparison of features provided by each BPF-related backend.
+The uBPF is yet another BPF-related backend for P4. `p4c-ebpf` generates programs to be attached to the Linux TC subsystem, `p4c-xdp` targets XDP hook, while `p4c-ubpf` produces code to be run in at the user-space level. There are differences in the range of functionalities that these P4 backends support. The table below provides a brief comparison of features provided by each BPF-related backend.
 
-#### Comparsion of features provided by p4c-ubpf, p4c-ebpf and p4c-xdp
+#### Comparsion of features provided by p4c-ebpf, p4c-xdp and p4c-ubpf
 
 |               Feature              | p4c-ebpf | p4c-xdp | p4c-ubpf |
 |:----------------------------------:|:--------:|:-------:|:--------:|
@@ -94,7 +94,7 @@ The uBPF is yet another BPF-related backend for P4. `p4c-ebpf` generates program
 
 # Summary
 
-The uBPF backend for the P4 compiler can be used for any application that processes packets in a user space. It has already been used to implement various, simple applications such as stateful firewall, rate limiter or GTP tunneling. For instance, in case of P4rt-OVS, `p4c-ubpf` allows to implement network protocols, which are not currently supported by Open vSwitch. See [this link](https://github.com/P4-Research/p4c/blob/master/backends/ubpf/docs/EXAMPLES.md) for more examples. 
+The uBPF backend for the P4 compiler can be used for any application that processes packets in a user space. It has already been used to implement various, simple applications such as stateful firewall, rate limiter or GTP tunneling. For instance, in case of P4rt-OVS, `p4c-ubpf` allows to implement network protocols, which are not currently supported by Open vSwitch. See [this link](https://github.com/p4lang/p4c/tree/master/backends/ubpf/examples) for more examples. 
 
 We encourage community to start playing with uBPF backend, report bugs and propose new enhancements. For questions or comments, please send an email to tomasz.osinski2@orange.com. 
 
