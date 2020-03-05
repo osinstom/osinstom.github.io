@@ -27,7 +27,7 @@ Furthermore, a user can use the P4 language to develop new, protocol-independent
 
 # Compiling P4 to uBPF
 
-The P4-to-uBPF compiler follows the same convention as P4 compilers for eBPF or XDP backends, i.e. The P4 program is firstly translated to the C representation and, then, compiled to the BPF code by using `clang` compiler. It makes things a little bit easier as P4 compiler does not need to generate low-level BPF instructions. 
+The P4-to-uBPF compiler follows the same convention as P4 compilers for eBPF or XDP backends, i.e. the P4 program is firstly translated to the C representation and, then, compiled to the BPF code using `clang` compiler. It makes things a little bit easier as P4 compiler does not need to generate low-level BPF instructions. 
 
 ```
             ------------              ---------
