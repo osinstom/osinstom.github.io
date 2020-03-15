@@ -62,11 +62,9 @@ BPF_MAP_UPDATE_ELEM(tcp_reg, &conn, &new_info, 0);
 BPF_MAP_DELETE_ELEM(tcp_reg, &conn);
 ```
 
-# Summary
+# Try it out!
 
-
-
-Apprently, this
+We encourage the community to use custom C externs and extend its BPF-based data plane programs with user-defined, customizable data plane operations. We hope that the new feature can enable new exciting data applications. Moreover, as a future work we plan to extend this feature, so that the custom C extern function would also have access to packet's payload! This could allow for in-network computing use cases (e.g. DPI). 
 
 
 
