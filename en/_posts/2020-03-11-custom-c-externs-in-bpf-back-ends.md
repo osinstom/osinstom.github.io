@@ -10,10 +10,30 @@ P4 is a powerful language, which can descibe a majority of network-related opera
 
 However, there are some platforms (mostly software one), which can be extended with a custom, user-defined extern function. These functions are provided by a developer and are injected right before a target-specific binary is deployed. The good example is the support for custom externs provided by BMv2 or [the use of the C sandbox in the Netronome Network Flow Processor (NFP) programming](https://www.netronome.com/m/documents/WP_Programming_with_P4_and_C_.pdf).
 
-Recently, we have added support for custom extern functions also for BPF-related back-ends of the P4 compiler. The new feature is briefly presented in this post.
+Recently, we have also added support for custom extern functions for BPF-related back-ends of the P4 compiler. The new feature is briefly presented in this post.
 
 # Workflow
 
+The general workflow is depicted below. 
+
+
+Basically, the P4 to BPF compilers translates program written in P4_16 to the subset of C, which is compatible to the eBPF virtual machine. Then, the C program is compiled down to BPF code using `clang` and the generated code can be injected to eBPF VM. 
+
+With the support for custom C externs, an additional C file implementing custom extern function can be now mixed with the C code generated from the P4 program. For inclusion of the custom C extern into the P4 code, users need to define the action as `extern` object. The defintion of the `extern` object should follow P4 convention and declare name, arguments (with [directional parameters](https://p4.org/p4-spec/docs/P4-16-v1.2.0.html#sec-calling-convention)) and return type, for instance:
+
+```
+extern bit<16> incremental_checksum(in bit<16> csum, in bit<32> old, in bit<32> new);
+```
+
+Optionally, `extern` can take some P4 header defintion as argument:
+
+```
+extern bool verify_ipv4_checksum(in IPv4_h iphdr);
+```
+
+Furthermore, users need to pass `--emit-externs` flag to the `p4c-ebpf` or `p4c-ubpf` to instruct the compiler not to warn about user-defined externs. 
+
+That's all, what a programmer has to do to define a new, user-defined extern function. The last part is to write an actual implementation of extern in C.
 
 # How to write a custom C extern function?
 
@@ -21,4 +41,4 @@ Recently, we have added support for custom extern functions also for BPF-related
 
 # Summary
 
-Apprently, this 
+Apprently, this
