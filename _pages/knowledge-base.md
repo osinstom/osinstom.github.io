@@ -30,3 +30,5 @@ published: true
 ### C
 
 [The Lost Art of Structure Packing](http://www.catb.org/esr/structure-packing/)
+
+[Introduction to RAW sockets by Technische Universität Darmstadt](https://tuprints.ulb.tu-darmstadt.de/6243/1/TR-18.pdf)
