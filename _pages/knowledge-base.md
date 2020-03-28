@@ -19,6 +19,8 @@ published: true
 
 [Introduction to software-based and hardware-based packet processing architectures by Kentaro Ebisawa](https://www.janog.gr.jp/en/attach/janog37/janog37-ebisawa.pdf)
 
+[Performance techniques in packet processing applications - blog post by Srinivasa Addepalli](https://www.linkedin.com/pulse/performance-techniques-packet-processing-applications-addepalli)
+
 ## eBPF / XDP
 
 [BPF and XDP Reference Guide by Cilium](https://docs.cilium.io/en/v1.6/bpf/)
