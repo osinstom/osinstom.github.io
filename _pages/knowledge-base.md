@@ -9,6 +9,8 @@ comments: false
 published: true
 ---
 
+On this page I collect all materials that I've used to expand my knowledge and may also be valuable for you.
+
 ## Programmable data plane
 
 [Programmable Network Data Planes - Report from Dagstuhl seminar](http://www.justinesherry.com/papers/antichi-dagstuhl19.pdf)
@@ -28,6 +30,10 @@ published: true
 [Survey: Fast Packet Processing with eBPF and XDP: Concepts, Code, Challenges, and Applications](https://dl.acm.org/doi/abs/10.1145/3371038)
 
 ## Programming
+
+### Computer architecture
+
+[Series of YouTube videos on cache memory concepts and mechanisms.](https://www.youtube.com/playlist?list=PLbtzT1TYeoMgJ4NcWFuXpnF24fsiaOdGq)
 
 ### C
 
