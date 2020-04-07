@@ -40,3 +40,7 @@ On this page I collect all materials that I've used to expand my knowledge and m
 [The Lost Art of Structure Packing](http://www.catb.org/esr/structure-packing/)
 
 [Introduction to RAW sockets by Technische Universität Darmstadt](https://tuprints.ulb.tu-darmstadt.de/6243/1/TR-18.pdf)
+
+### Go
+
+[Golang in 7 hours - video tutorial for beginners](https://www.youtube.com/watch?v=YS4e4q9oBaU)
