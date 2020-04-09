@@ -53,7 +53,14 @@ gpg --recv-keys 647F28654894E3BD457199BE38DBBDC86092693E
 gpg --verify linux-5.4.12.tar.sign
 ```
 
-Now, we can move to the installation process. Enter linux directory, make config and make sure that following options are enabled:
+Now, we can move to the installation process. Extract Linux package:
+
+```
+tar xvf linux-5.4.12.tar
+```
+
+
+Enter linux directory, make config and make sure that following options are enabled:
 
 ```bash
 # Open config editor and save it to .config
