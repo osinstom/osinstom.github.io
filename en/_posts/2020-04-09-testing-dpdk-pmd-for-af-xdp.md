@@ -24,7 +24,7 @@ Both these features comes with kernel v5.4.12.
   sudo make install_headers
   ```
   
-3. Install DPDK library (v20.02). 
+3. Install DPDK library (v20.02). Note that I compiled with additional flags for better performance.
   
   ```bash
   # Download latest DPDK release (20.02):
@@ -33,7 +33,7 @@ Both these features comes with kernel v5.4.12.
   cd dpdk-20.02/
   # Important! The option below must be configured in config/common_linux
   CONFIG_RTE_LIBRTE_PMD_AF_XDP=y
-  make -j $(n_cores) install T=x86_64-native-linuxapp-gcc
+  EXTRA_CFLAGS="-g -Ofast"  make install -j T=x86_64-native-linuxapp-gcc  CONFIG_RTE_BUILD_COMBINE_LIBS=y CONFIG_RTE_LIBRTE_VHOST=y DESTDIR=install
   # Involve libbpf. Replace <PATH-TO-LINUX-SRC>.
   export LD_LIBRARY_PATH=<PATH-TO-LINUX-SRC>/tools/lib/bpf:$LD_LIBRARY_PATH
   ```
@@ -78,7 +78,7 @@ Ok, if it works, let's make some performance tests. I've connected two 10G ports
 Download the `set_irq_affinity.sh` script...
 
 ```
-wget https://gist.githubusercontent.com/syuu1228/4352382/raw/5dc7abe2968088310fc05abf6f7cc25847151104/set_irq_affinity.sh
+wget https://raw.githubusercontent.com/majek/ixgbe/master/scripts/set_irq_affinity
 ```
   
 And assigned kernel cores:
