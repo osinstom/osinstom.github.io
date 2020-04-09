@@ -163,4 +163,4 @@ What authors recommend to look at regarding portability?
 
 ## Summary
 
-This book was a nice journey for me! As I spent a lot of time on programming C software during last year, it was not a revolutionary book for me. Nevertheless, it definetely broaden my knowledge about C and I'm sure it provides a strong background and deep knowledge about specific constructs of C.
+This book was a nice journey for me! As I spent a lot of time on programming C software during last year, it was not a revolutionary book for me. Nevertheless, it definetely expand my knowledge about C and I'm sure it provides a strong background and deep knowledge about specific constructs of C.
