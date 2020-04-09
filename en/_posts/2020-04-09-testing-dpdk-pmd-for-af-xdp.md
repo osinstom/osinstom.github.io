@@ -6,11 +6,6 @@ title: Testing DPDK PMD for AF_XDP
 ---
 
 
-
-## A New Post
-
-Enter text in [Markdown](http://daringfireball.net/projects/markdown/). Use the toolbar above, or click the **?** button for formatting help.
-
 # Summary
 
 Let me provide a few bullets providing summary of this blog post:
