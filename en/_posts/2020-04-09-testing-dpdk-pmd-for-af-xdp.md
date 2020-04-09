@@ -47,8 +47,9 @@ Both these features comes with kernel v5.4.12.
 5. Mount hugepages:
   
   ```
-  sudo mkdir -p /mnt/huge
-  
+  mkdir -p /mnt/huge
+  echo 1024 > /sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages
+  mount -t hugetlbfs nodev /mnt/huge
   ```
   
 # Basic performance tests
@@ -60,9 +61,26 @@ Basically, my first try was to just run the `testpmd` application with DPDK PMD 
 sudo ./x86_64-native-linuxapp-gcc/app/testpmd -l 1-2 -n 4 --vdev net_af_xdp0,iface=ens1f0,start_queue=0,queue_count=1 --log-level=pmd.net.af_xdp:8  -- -i --nb-cores=1 --rxq=1 --txq=1 --port-topology=loop
 ```
   
-Ok, if it works, let's make some performance tests. I've configured IXIA hardware generator and the following topology:
+If you see the following message you should be happy:
   
-
+```
+rte_pmd_af_xdp_probe(): Initializing pmd_af_xdp for net_af_xdp0
+```
+  
+Ok, if it works, let's make some performance tests. I've connected two 10G ports of IXIA hardware generator to my Dell server. Then, I've run the `testpmd` application handling packets on two 10G ports:
+  
+```
+./x86_64-native-linuxapp-gcc/app/testpmd -l 1-3 --no-pci -n 4 \
+--vdev net_af_xdp0,iface=ens1f0 --vdev net_af_xdp1,iface=ens1f1 \
+--log-level=pmd.net.af_xdp:8 -- -i --auto-start --nb-cores=2 --rxq=1 --txq=1 --port-topology=loop
+```
+  
+And assigned kernel cores:
+  
+```
+./set_irq_affinity 4 ens1f0
+./set_irq_affinity 5 ens1f1
+```
 
 ## Comparison with OVS-AF_XDP
 
