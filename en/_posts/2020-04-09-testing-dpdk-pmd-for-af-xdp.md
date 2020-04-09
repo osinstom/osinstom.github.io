@@ -44,9 +44,24 @@ Both these features comes with kernel v5.4.12.
   sudo ethtool -L ens1f0 combined 1
   sudo ethtool -L ens1f1 combined 1
   ```
+5. Mount hugepages:
+  
+  ```
+  sudo mkdir -p /mnt/huge
+  
+  ```
   
 # Basic performance tests
 
+
+Basically, my first try was to just run the `testpmd` application with DPDK PMD for AF_XDP. It worked like a charm! 
+
+```
+sudo ./x86_64-native-linuxapp-gcc/app/testpmd -l 1-2 -n 4 --vdev net_af_xdp0,iface=ens1f0,start_queue=0,queue_count=1 --log-level=pmd.net.af_xdp:8  -- -i --nb-cores=1 --rxq=1 --txq=1 --port-topology=loop
+```
+  
+Ok, if it works, let's make some performance tests. I've configured IXIA hardware generator and the following topology:
+  
 
 
 ## Comparison with OVS-AF_XDP
