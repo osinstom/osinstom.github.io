@@ -6,6 +6,12 @@ title: Testing DPDK PMD for AF_XDP
 ---
 
 
+# Basic performance tests
+
+## Comparison with OVS-AF_XDP
+
+# Running DPDK PMD for AF_XDP in Docker
+
 # Summary
 
 Let me provide a few bullets providing summary of this blog post:
