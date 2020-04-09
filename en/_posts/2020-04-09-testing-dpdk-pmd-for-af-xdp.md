@@ -72,7 +72,13 @@ Ok, if it works, let's make some performance tests. I've connected two 10G ports
 ```
 ./x86_64-native-linuxapp-gcc/app/testpmd -l 1-3 --no-pci -n 4 \
 --vdev net_af_xdp0,iface=ens1f0 --vdev net_af_xdp1,iface=ens1f1 \
---log-level=pmd.net.af_xdp:8 -- -i --auto-start --nb-cores=2 --rxq=1 --txq=1 --port-topology=loop
+--log-level=pmd.net.af_xdp:8 -- -i --auto-start --nb-cores=2 --rxq=1 --txq=1
+```
+  
+Download the `set_irq_affinity.sh` script...
+
+```
+wget https://gist.githubusercontent.com/syuu1228/4352382/raw/5dc7abe2968088310fc05abf6f7cc25847151104/set_irq_affinity.sh
 ```
   
 And assigned kernel cores:
