@@ -13,6 +13,10 @@ published: true
 
 Currently, as my PhD topic, I do a research on P4 language and related technologies (e.g. eBPF/XDP, VPP, OVS) in order to explore a way to implement a VNF offloading framework for OpenStack.
 
+## P4-capable software switch solutions
+
+I've been worked on applying the principles of P4 to software switching solutions, e.g. OVS and eBPF/XDP. The outcome of this work is [P4rt-OVS](https://ieeexplore.ieee.org/document/9142794) developed by my team at Orange Labs Poland to enable programming runtime extensions using P4. Upon this work, I'm building the [P4-OvS](https://github.com/osinstom/P4-OvS) switch, which brings the full power of P4 to Open vSwitch. 
+
 ## Contribution to ONAP 
 
 I have contributed to the Open Network Automation Platform (ONAP). I am involved in the Change Management project. The objective is to provide lifecycle management APIs to support seamless software upgrade of Virtual Network Functions. For Casablanca release I implemented a northbound APIs for Application Controller (APP-C) to support distribute traffic mechanism. [More info](https://wiki.onap.org/display/DW/Change+Management+Extensions)
