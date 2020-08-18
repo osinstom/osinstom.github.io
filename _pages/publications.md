@@ -1,12 +1,19 @@
 ---
-title:  "Publications"
+title: Publications
 lang: en
 ref: publications
 layout: single
 permalink: /publications/
 author_profile: true
 comments: false
+published: true
 ---
+
+The up-to-date list of my publications is available at [Google Scholar](https://scholar.google.com/citations?user=vQmx0FQAAAAJ).
+
+## 2020 ##
+
+Tomasz Osiński, Halina Tarasiuk, Paul Chaignon, Mateusz Kossakowski: **P4rt-OVS: Programming Protocol-Independent Runtime Extensions for Open vSwitch using P4**, 2020 IFIP Networking Conference (Networking) [ [Paper](http://dl.ifip.org/db/conf/networking/networking2020/1570619872.pdf) ] 
 
 ## 2019 ##
 
