@@ -11,7 +11,7 @@ published: true
 
 ## 2020 ##
 
-Speaker during Plenary Session **How P4 is evolving as the language?** with Andy Fingerhut and Eric Campbell at [P4 Expert Roundtable Series hosted by Open Networking Foundation](https://p4.org/events/2020-p4-summit/), Online. [ [Video](https://www.youtube.com/watch?v=SKlvJb3xh1c) ]
+Speaker during Plenary Session **How P4 is evolving as the language?** with Andy Fingerhut and Eric Campbell at [P4 Expert Roundtable Series hosted by Open Networking Foundation](https://p4.org/events/2020-p4-summit/), April 28-29, 2020, Online. [ [Video](https://www.youtube.com/watch?v=SKlvJb3xh1c) ]
 
 ## 2019 ##
 
