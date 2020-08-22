@@ -1,7 +1,7 @@
 ---
 date: '2020-02-05 08:38 +0100'
 layout: single
-published: false
+published: true
 title: My takeways from "C Traps and Pitfalls"
 categories:
   - tutorial
