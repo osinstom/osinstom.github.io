@@ -9,7 +9,13 @@ title: Understanding the P4's Action Profile/Selector
 
 In this post I explain how Action Selector works based on the implementation of the IP-based load balancing.
 
+# Theory
+
+
+
 # Demo
+
+
 
 # When is Action Selector useful? 
 
