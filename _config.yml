@@ -2,7 +2,7 @@
 # Site settings
 # -----------------------------------------------------------------------------
 
-title: Making networks programmable # the website title (if blank, full name will be used instead)
+title: Making networks programmable! # the website title (if blank, full name will be used instead)
 first_name: Tomasz
 middle_name: 
 last_name: Osiński
@@ -225,6 +225,9 @@ exclude:
   - README.md
   - readme_preview/
   - vendor
+  - _pages/dropdown.md
+  - _pages/cv.md
+  - _pages/publications.md
 keep_files:
   - CNAME
   - .nojekyll
