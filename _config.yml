@@ -227,6 +227,7 @@ exclude:
   - _pages/dropdown.md
   - _pages/cv.md
   - _pages/publications.md
+  - _pages/profiles.md
 keep_files:
   - CNAME
   - .nojekyll
