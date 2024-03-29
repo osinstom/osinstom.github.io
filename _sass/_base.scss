@@ -227,9 +227,13 @@ ul.task-list input[type="checkbox"] {
     margin: auto
 }
 
+.profile img {
+    width: 100%
+}
+
 .profile.center img {
     margin: auto;
-    max-width: 100%;
+    max-width: 25%;
     min-width: 100px
 }
 
