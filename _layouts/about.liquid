@@ -40,6 +40,15 @@ layout: default
 
     <div class="clearfix">{{ content }}</div>
 
+    <!-- Social -->
+    {% if page.social %}
+      <div class="social">
+        <div class="contact-icons">{% include social.liquid %}</div>
+
+        <div class="contact-note">{{ site.contact_note }}</div>
+      </div>
+    {% endif %}
+
     <!-- News -->
     {% if page.news and site.announcements.enabled %}
       <h2>
@@ -47,6 +56,8 @@ layout: default
       </h2>
       {% include news.liquid limit=true %}
     {% endif %}
+
+    <div class="clearfix"><i>Note that the content on this site are my own and by no means represent the opinions of my past and present employers.</i></div>
 
     <!-- Latest posts -->
     {% if site.latest_posts.enabled %}
@@ -62,15 +73,6 @@ layout: default
         <a href="{{ '/publications/' | relative_url }}" style="color: inherit">selected publications</a>
       </h2>
       {% include selected_papers.liquid %}
-    {% endif %}
-
-    <!-- Social -->
-    {% if page.social %}
-      <div class="social">
-        <div class="contact-icons">{% include social.liquid %}</div>
-
-        <div class="contact-note">{{ site.contact_note }}</div>
-      </div>
     {% endif %}
   </article>
 </div>

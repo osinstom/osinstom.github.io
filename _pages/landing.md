@@ -17,10 +17,8 @@ selected_papers: false # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
 ---
 
-<br><br>
+<br><br><br><br><br><br><br><br>
 
 Building high-performance, programmable and scalable network systems working at the intersection of research, innovation and engineering.
 
 <br><br>
-
-<i>Note that the content on this site are my own and by no means represent the opinions of my past and present employers.</i>
