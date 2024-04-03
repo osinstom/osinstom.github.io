@@ -21,8 +21,13 @@ layout: default
             cache_bust=true
           %}
         {% endif %}
-        {% if page.profile.more_info %}
-          <div class="more-info">{{ page.profile.more_info }}</div>
+        {% if page.profile.blog_owner %}
+          <div class="header" style="margin-bottom: 1rem;">
+          " {{ page.profile.blog_owner }} "
+          {% if page.profile.more_info %}
+            <div class="more-info">{{ page.profile.more_info }}</div>
+          {% endif %}
+          </div>
         {% endif %}
       </div>
     {% endif %}

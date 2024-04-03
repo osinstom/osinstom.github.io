@@ -14,6 +14,7 @@ I currently teach the following courses at Faculty of Electronics and Informatio
 - **(PL) Wstęp do telekomunikacji**
 - **(PL) Projekt grupowy 1**
 - **(PL) Projekt grupowy 2**
+- **(PL) Platformy dla realizacji sieci i usług internetu (PRIN) - wykład o programowalnej warstwy przekazu danych i P4**
 
 # B.Sc. and M.Sc. thesis proposals
 
