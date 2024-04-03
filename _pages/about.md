@@ -42,6 +42,10 @@ driving the research activities (mainly in collaboration with other researchers)
 as the R&D team leader at Orange, where I was responsible for research planning and strategy, system design, PoC delivery, engineering and driving a day-to-day work.
 Since 2021 I've been a senior team member at Open Networking Foundation (until 2022) and Intel Corporation (until now), working as a software engineer on SDN, 5G and edge computing.
 
+Except for my industrial experience, I'm an adjunct in the Architecture and Applications for the Internet team at Warsaw University of Technology, where 
+I research any aspects of high-performance, scalable and programmable network systems and supervise or co-supervise several bachelor & master students. 
+I'm also a lecturer, see more info about my [teaching](https://osinstom.github.io/teaching/) activities.
+
 I believe in life-long learning. Thus, I'm a big fan (but not a freak!) of self-development. I always try to develop my talents.
 According to the CliftonStrengths assessment developed by the Gallup Institute, my TOP5 talents are:
 

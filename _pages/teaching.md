@@ -7,6 +7,12 @@ nav: true
 nav_order: 7
 ---
 
+**Address Info**
+
+Warsaw University of Technology,<br>
+Faculty of Electronics and Information Technology,<br>
+Nowowiejska 15/19, room 334c<br>
+
 # Current courses
 
 I currently teach the following courses at Faculty of Electronics and Information Technology of Warsaw University of Technology:
