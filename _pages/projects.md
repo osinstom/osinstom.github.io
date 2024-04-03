@@ -5,7 +5,8 @@ permalink: /projects/
 description: A list of projects that I've led or contributed to.
 nav: true
 nav_order: 4
-display_categories: [work, fun]
+display_categories: [work]
+#display_categories: [work, fun]
 horizontal: false
 ---
 

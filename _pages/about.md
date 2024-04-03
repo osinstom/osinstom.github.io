@@ -44,7 +44,8 @@ Since 2021 I've been a senior team member at Open Networking Foundation (until 2
 
 Except for my industrial experience, I'm an adjunct in the Architecture and Applications for the Internet team at Warsaw University of Technology, where 
 I research any aspects of high-performance, scalable and programmable network systems and supervise or co-supervise several bachelor & master students. 
-I'm also a lecturer, see more info about my [teaching](https://osinstom.github.io/teaching/) activities.
+I'm also a lecturer, see more info about my [teaching](https://osinstom.github.io/teaching/) activities. In the past, I participated in the PL-5G project that aimed at building a national 5G research lab in Poland.
+In particular, I was responsible for building a programmable networks lab consisting of high-performance compute servers, P4-programmable Tofino-based EdgeCore Wedge switches, DPU/IPU cards and IXIA traffic generator.
 
 I believe in life-long learning. Thus, I'm a big fan (but not a freak!) of self-development. I always try to develop my talents.
 According to the CliftonStrengths assessment developed by the Gallup Institute, my TOP5 talents are:
