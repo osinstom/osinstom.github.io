@@ -538,46 +538,91 @@ ninja.data = [{
           description: "I have been recognized as one of TOP100 young researches in Poland and awarded with the START scholarship.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/1_FNP_START/";
+            },},{id: "projects-project-1",
+          title: 'project 1',
+          description: "with background image",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/1_project/";
             },},{id: "projects-pl-5g",
           title: 'PL-5G',
           description: "Building a national 5G research lab in Poland. I was responsible for building a programmable networks lab consisting of high-performance compute servers, P4-programmable Tofino-based EdgeCore Wedge switches, DPU/IPU cards and IXIA traffic generator.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/2_PL-5G/";
+            },},{id: "projects-project-2",
+          title: 'project 2',
+          description: "a project with a background image and giscus comments",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/2_project/";
             },},{id: "projects-onf-aether",
           title: 'ONF Aether',
           description: "As a Member of ONF&#39;s Technical Staff I contributed to various components of the ONF Aether stack, mainly pfcpsim, BESS-UPF and P4-UPF.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/3_Aether/";
+            },},{id: "projects-project-3-with-very-long-name",
+          title: 'project 3 with very long name',
+          description: "a project that redirects to another website",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/3_project/";
             },},{id: "projects-sd-fabric",
           title: 'SD-Fabric',
           description: "As a Member of ONF&#39;s Technical Staff I actively contributed to the SD-Fabric software stack (P4 programs for BMv2 and Tofino, ONOS core &amp; apps, line-rate &amp; packet-level tests, Host-INT)",
           section: "Projects",handler: () => {
               window.location.href = "/projects/4_SDFabric/";
+            },},{id: "projects-project-4",
+          title: 'project 4',
+          description: "another without an image",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/4_project/";
             },},{id: "projects-p4",
           title: 'P4',
           description: "I&#39;m member of the P4 community. I was a speaker at several P4 conferences and contributed two backends for the P4 compiler (PSA-eBPF, P4-uBPF)",
           section: "Projects",handler: () => {
               window.location.href = "/projects/5_P4/";
+            },},{id: "projects-project-5",
+          title: 'project 5',
+          description: "a project with a background image",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/5_project/";
             },},{id: "projects-onap",
           title: 'ONAP',
           description: "I was involved in the Change Management project. The objective was to provide lifecycle management APIs to support seamless software upgrade of Virtual Network Functions. For Casablanca release, I implemented a northbound APIs for Application Controller (APP-C) to support traffic distribution.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/6_ONAP/";
+            },},{id: "projects-project-6",
+          title: 'project 6',
+          description: "a project with no image",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/6_project/";
             },},{id: "projects-5g-pagoda-h2020-program",
           title: '5G!Pagoda H2020 program',
           description: "I contributed to the 5G!Pagoda EU-Japan project realized under EU H2020 programme. 5G!Pagoda was a research project on network slicing for 5G networks. I was involved in designing a network slicing architecture and multi-domain NFV orchestration. Moreover, I had developed various prototypes of designed solutions based on OpenStack, Docker, Kubernetes, OpenBaton, Ansible and Juju.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/7_PAGODA/";
+            },},{id: "projects-project-7",
+          title: 'project 7',
+          description: "with background image",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/7_project/";
             },},{id: "projects-floodlight",
           title: 'Floodlight',
           description: "I implemented a multipath routing algorithm based on the Depth-First Search (DFS) algorithm for the Floodlight SDN controller.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/8_Floodlight/";
+            },},{id: "projects-project-8",
+          title: 'project 8',
+          description: "an other project with a background image and giscus comments",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/8_project/";
             },},{id: "projects-onos",
           title: 'ONOS',
           description: "I have designed from scratch and developed the XMPP protocol as a southbound interface for Open Network Operating System (ONOS). The main use case for XMPP in ONOS was the BGP/MPLS IP VPN solution as described in IETF draft &quot;BGP-Signaled End-System IP/VPNs&quot;.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/9_XMPP-ONOS/";
+            },},{id: "projects-project-9",
+          title: 'project 9',
+          description: "another project with an image 🎉",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/9_project/";
             },},{
         id: 'social-email',
         title: 'email',
