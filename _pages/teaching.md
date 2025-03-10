@@ -28,13 +28,14 @@ TBD
 
 # Supervised theses (ongoing)
 
-1. Jakub Górczynski (master thesis), "Design and implementation of In-Band Network Telemetry on Tofino switches with the TeraflowSDN controller"
-2. Kacper Banaszczak (master thesis), "TCP congestion control powered by In-Band Network Telemetry"
-3. Sławomir Batruch (master thesis), "Performance evaluation and analysis of NVIDIA BlueField-2 DPU"
+1. Kacper Banaszczak (master thesis), "TCP congestion control powered by In-Band Network Telemetry"
+2. Sławomir Batruch (master thesis), "Performance evaluation and analysis of NVIDIA BlueField-2 DPU"
+3. Wiktor Frątczak (bachelor thesis), "Mechanism for remote access to edge nodes in distributed edge clouds"
+4. Marcin Krawiec (master thesis), "Orchestration methods for Kubernetes powered by eBPF observability"
 
-# Co-supervised thesis (ongoing)
+# Supervised theses (defended)
 
-1. Hubert Maciak (master thesis), "Distributed, end-host-based elephant flow detection mechanism for offload management in hardware-software flow tables"
+1. Jakub Górczynski (master thesis), "Analysis, evaluation and implementation of In-Band Network Telemetry for programmable networks", 2025. Defended with honors.
 
 # Co-supervised theses (defended)
 
@@ -42,5 +43,5 @@ TBD
 2. Angelika Kapica, M.Sc., "Performance evaluation of P4 switch" (pl. "Badanie efektywności działania switcha P4"), 2022
 3. Emilia Kurach, M.Sc., "Packet classification algorithms for programmable data plane in SDN networks" (pl "Algorytmy klasyfikacji pakietów dla programowalnej warstwy przekazu danych w sieciach SDN"), 2022
 4. Wojciech Majcher, M.Sc., "Performance optimizations of the P4-eBPF compiler" (pl "Metody optymalizacji kompilatora P4-eBPF"), 2022
-5. Jakub Górczyński, B.Sc. "Implementation and performance evaluation of 5G UPF using P4" (pl "Implementacja i badanie wydajności funkcji sieciowej 5G UPF"), 2023
-
+5. Jakub Górczyński, B.Sc., "Implementation and performance evaluation of 5G UPF using P4" (pl "Implementacja i badanie wydajności funkcji sieciowej 5G UPF"), 2023
+6. Hubert Maciak, M.Sc., "Large flows detection mechanism for data centers using a programmable data plane", 2025
