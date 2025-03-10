@@ -3,8 +3,8 @@ const ninja = document.querySelector('ninja-keys');
 
 // add the home and posts menu items
 ninja.data = [{
-    id: "nav-about",
-    title: "about",
+    id: "nav-landing",
+    title: "landing",
     section: "Navigation",
     handler: () => {
       window.location.href = "/al-folio/";
@@ -369,6 +369,127 @@ ninja.data = [{
           window.location.href = "/al-folio/blog/2020/twitter/";
         
       },
+    },{id: "post-my-notes-from-podcast-quot-why-doesn-39-t-ovs-support-p4-quot",
+      
+        title: "My notes from podcast &quot;Why doesn&#39;t OVS support P4?&quot;",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/al-folio/blog/2020/my-notes-from-podcast-why-doesn-t-ovs-support-p4/";
+        
+      },
+    },{id: "post-p4c-ubpf-the-new-back-end-for-the-p4-compiler",
+      
+        title: "p4c-ubpf - the new back-end for the P4 compiler!",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/al-folio/blog/2020/p4c-ubpf-the-new-back-end-for-the-p4-compiler/";
+        
+      },
+    },{id: "post-my-takeways-from-the-quot-c-traps-and-pitfalls-quot-book",
+      
+        title: "My takeways from the &quot;C Traps and Pitfalls&quot; book",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/al-folio/blog/2020/my-takeways-from-c-traps-and-pitfalls/";
+        
+      },
+    },{id: "post-ovs-afxdp-step-by-step-installation-guide",
+      
+        title: "OVS_AFXDP - step-by-step installation guide",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/al-folio/blog/2020/ovs-afxdp-installation/";
+        
+      },
+    },{id: "post-implementing-tunneling-techniques-in-p4-based-on-the-example-of-vxlan",
+      
+        title: "Implementing tunneling techniques in P4 based on the example of VXLAN",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/al-folio/blog/2019/vxlan-tunneling-in-p4/";
+        
+      },
+    },{id: "post-configuring-ovs-dpdk-with-vm",
+      
+        title: "Configuring OVS-DPDK with VM",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/al-folio/blog/2019/configuring-ovs-dpdk-with-vm/";
+        
+      },
+    },{id: "post-mpls-network-based-on-p4",
+      
+        title: "MPLS network based on P4",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/al-folio/blog/2019/mpls-p4/";
+        
+      },
+    },{id: "post-ip-router-in-p4",
+      
+        title: "IP Router in P4",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/al-folio/blog/2019/ip-router-p4/";
+        
+      },
+    },{id: "post-network-prototyping-made-easy-with-p4-and-python",
+      
+        title: "Network prototyping made easy with P4 and Python!",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/al-folio/blog/2018/network-prototyping-p4/";
+        
+      },
+    },{id: "post-initial-view-on-vowifi-in-the-5g-network",
+      
+        title: "Initial view on VoWiFi in the 5G network",
+      
+      description: "A short overview of how the Voice over WiFi architecture may change in 5G deployments compared to 4G.",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/al-folio/blog/2017/vowifi-5g/";
+        
+      },
+    },{id: "post-explanation-of-ipsec-basics",
+      
+        title: "Explanation of IPSec basics",
+      
+      description: "An in-depth tutorial on IPSec based on Strongswan",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/al-folio/blog/2017/ipsec-explanation/";
+        
+      },
     },{id: "post-a-post-with-disqus-comments",
       
         title: "a post with disqus comments",
@@ -440,46 +561,91 @@ ninja.data = [{
             },},{id: "news-a-simple-inline-announcement-with-markdown-emoji-sparkles-smile",
           title: 'A simple inline announcement with Markdown emoji! :sparkles: :smile:',
           description: "",
-          section: "News",},{id: "projects-project-1",
+          section: "News",},{id: "projects-start-by-foundation-for-polish-science",
+          title: 'START by Foundation for Polish Science',
+          description: "I have been recognized as one of TOP100 young researches in Poland and awarded with the START scholarship.",
+          section: "Projects",handler: () => {
+              window.location.href = "/al-folio/projects/1_FNP_START/";
+            },},{id: "projects-project-1",
           title: 'project 1',
           description: "with background image",
           section: "Projects",handler: () => {
               window.location.href = "/al-folio/projects/1_project/";
+            },},{id: "projects-pl-5g",
+          title: 'PL-5G',
+          description: "Building a national 5G research lab in Poland. I was responsible for building a programmable networks lab consisting of high-performance compute servers, P4-programmable Tofino-based EdgeCore Wedge switches, DPU/IPU cards and IXIA traffic generator.",
+          section: "Projects",handler: () => {
+              window.location.href = "/al-folio/projects/2_PL-5G/";
             },},{id: "projects-project-2",
           title: 'project 2',
           description: "a project with a background image and giscus comments",
           section: "Projects",handler: () => {
               window.location.href = "/al-folio/projects/2_project/";
+            },},{id: "projects-onf-aether",
+          title: 'ONF Aether',
+          description: "As a Member of ONF&#39;s Technical Staff I contributed to various components of the ONF Aether stack, mainly pfcpsim, BESS-UPF and P4-UPF.",
+          section: "Projects",handler: () => {
+              window.location.href = "/al-folio/projects/3_Aether/";
             },},{id: "projects-project-3-with-very-long-name",
           title: 'project 3 with very long name',
           description: "a project that redirects to another website",
           section: "Projects",handler: () => {
               window.location.href = "/al-folio/projects/3_project/";
+            },},{id: "projects-sd-fabric",
+          title: 'SD-Fabric',
+          description: "As a Member of ONF&#39;s Technical Staff I actively contributed to the SD-Fabric software stack (P4 programs for BMv2 and Tofino, ONOS core &amp; apps, line-rate &amp; packet-level tests, Host-INT)",
+          section: "Projects",handler: () => {
+              window.location.href = "/al-folio/projects/4_SDFabric/";
             },},{id: "projects-project-4",
           title: 'project 4',
           description: "another without an image",
           section: "Projects",handler: () => {
               window.location.href = "/al-folio/projects/4_project/";
+            },},{id: "projects-p4",
+          title: 'P4',
+          description: "I&#39;m member of the P4 community. I was a speaker at several P4 conferences and contributed two backends for the P4 compiler (PSA-eBPF, P4-uBPF)",
+          section: "Projects",handler: () => {
+              window.location.href = "/al-folio/projects/5_P4/";
             },},{id: "projects-project-5",
           title: 'project 5',
           description: "a project with a background image",
           section: "Projects",handler: () => {
               window.location.href = "/al-folio/projects/5_project/";
+            },},{id: "projects-onap",
+          title: 'ONAP',
+          description: "I was involved in the Change Management project. The objective was to provide lifecycle management APIs to support seamless software upgrade of Virtual Network Functions. For Casablanca release, I implemented a northbound APIs for Application Controller (APP-C) to support traffic distribution.",
+          section: "Projects",handler: () => {
+              window.location.href = "/al-folio/projects/6_ONAP/";
             },},{id: "projects-project-6",
           title: 'project 6',
           description: "a project with no image",
           section: "Projects",handler: () => {
               window.location.href = "/al-folio/projects/6_project/";
+            },},{id: "projects-5g-pagoda-h2020-program",
+          title: '5G!Pagoda H2020 program',
+          description: "I contributed to the 5G!Pagoda EU-Japan project realized under EU H2020 programme. 5G!Pagoda was a research project on network slicing for 5G networks. I was involved in designing a network slicing architecture and multi-domain NFV orchestration. Moreover, I had developed various prototypes of designed solutions based on OpenStack, Docker, Kubernetes, OpenBaton, Ansible and Juju.",
+          section: "Projects",handler: () => {
+              window.location.href = "/al-folio/projects/7_PAGODA/";
             },},{id: "projects-project-7",
           title: 'project 7',
           description: "with background image",
           section: "Projects",handler: () => {
               window.location.href = "/al-folio/projects/7_project/";
+            },},{id: "projects-floodlight",
+          title: 'Floodlight',
+          description: "I implemented a multipath routing algorithm based on the Depth-First Search (DFS) algorithm for the Floodlight SDN controller.",
+          section: "Projects",handler: () => {
+              window.location.href = "/al-folio/projects/8_Floodlight/";
             },},{id: "projects-project-8",
           title: 'project 8',
           description: "an other project with a background image and giscus comments",
           section: "Projects",handler: () => {
               window.location.href = "/al-folio/projects/8_project/";
+            },},{id: "projects-onos",
+          title: 'ONOS',
+          description: "I have designed from scratch and developed the XMPP protocol as a southbound interface for Open Network Operating System (ONOS). The main use case for XMPP in ONOS was the BGP/MPLS IP VPN solution as described in IETF draft &quot;BGP-Signaled End-System IP/VPNs&quot;.",
+          section: "Projects",handler: () => {
+              window.location.href = "/al-folio/projects/9_XMPP-ONOS/";
             },},{id: "projects-project-9",
           title: 'project 9',
           description: "another project with an image 🎉",

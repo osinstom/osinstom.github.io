@@ -1,0 +1,280 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Implementing tunneling techniques in P4 based on the example of VXLAN | You R. Name </title> <meta name="author" content="You R. Name"> <meta name="description" content="A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. "> <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website"> <link rel="stylesheet" href="/al-folio/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/al-folio/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/al-folio/assets/css/scholar-icons.css?62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/al-folio/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%E2%9A%9B%EF%B8%8F&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/al-folio/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://alshedivat.github.io/al-folio/blog/2019/vxlan-tunneling-in-p4/"> <script src="/al-folio/assets/js/theme.js?9a0c749ec5240d9cda97bc72359a72c0"></script> <link defer rel="stylesheet" href="/al-folio/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/al-folio/"> <span class="font-weight-bold">You</span> R. Name </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/al-folio/">landing </a> </li> <li class="nav-item active"> <a class="nav-link" href="/al-folio/blog/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/al-folio/publications/">publications </a> </li> <li class="nav-item "> <a class="nav-link" href="/al-folio/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/al-folio/repositories/">repositories </a> </li> <li class="nav-item "> <a class="nav-link" href="/al-folio/cv/">cv </a> </li> <li class="nav-item "> <a class="nav-link" href="/al-folio/teaching/">teaching </a> </li> <li class="nav-item "> <a class="nav-link" href="/al-folio/people/">people </a> </li> <li class="nav-item dropdown "> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">submenus </a> <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown"> <a class="dropdown-item " href="/al-folio/books/">bookshelf</a> <div class="dropdown-divider"></div> <a class="dropdown-item " href="/al-folio/blog/">blog</a> </div> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <span class="nav-link">ctrl k <i class="ti ti-search"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-sun-moon" id="light-toggle-system"></i> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title">Implementing tunneling techniques in P4 based on the example of VXLAN</h1> <p class="post-meta"> Created on August 07, 2019 </p> <p class="post-tags"> <a href="/al-folio/blog/2019"> <i class="fa-solid fa-calendar fa-sm"></i> 2019 </a>   ·   <a href="/al-folio/blog/tag/p4app"> <i class="fa-solid fa-hashtag fa-sm"></i> p4app</a>   <a href="/al-folio/blog/tag/tunneling"> <i class="fa-solid fa-hashtag fa-sm"></i> tunneling</a>   <a href="/al-folio/blog/tag/sdn"> <i class="fa-solid fa-hashtag fa-sm"></i> SDN</a>   <a href="/al-folio/blog/tag/p4"> <i class="fa-solid fa-hashtag fa-sm"></i> P4</a>   <a href="/al-folio/blog/tag/vxlan"> <i class="fa-solid fa-hashtag fa-sm"></i> VXLAN</a>   ·   <a href="/al-folio/blog/category/tutorial"> <i class="fa-solid fa-tag fa-sm"></i> tutorial</a> </p> </header> <article class="post-content"> <div id="table-of-contents"> <ul id="toc" class="section-nav"> <li class="toc-entry toc-h2"><a href="#introduction">Introduction</a></li> <li class="toc-entry toc-h2"><a href="#short-introduction-to-vxlan">Short introduction to VXLAN</a></li> <li class="toc-entry toc-h2"> <a href="#design-and-implementation-of-vxlan-in-p4">Design and implementation of VXLAN in P4</a> <ul> <li class="toc-entry toc-h3"><a href="#headers">Headers</a></li> <li class="toc-entry toc-h3"><a href="#parser">Parser</a></li> <li class="toc-entry toc-h3"> <a href="#control-blocks">Control blocks</a> <ul> <li class="toc-entry toc-h4"><a href="#upstream-ingress">Upstream ingress</a></li> <li class="toc-entry toc-h4"><a href="#upstream-egress">Upstream egress</a></li> <li class="toc-entry toc-h4"><a href="#downstream-ingress">Downstream ingress</a></li> <li class="toc-entry toc-h4"><a href="#downstream-egress">Downstream egress</a></li> </ul> </li> </ul> </li> <li class="toc-entry toc-h2"><a href="#running-example">Running example</a></li> <li class="toc-entry toc-h2"><a href="#summary">Summary</a></li> </ul> </div> <hr> <div id="markdown-content"> <h2 id="introduction">Introduction</h2> <p>Recently, I started to implement the support for packet tunneling in our <a href="https://github.com/P4-Research/p4c/tree/master/backends/ubpf" rel="external nofollow noopener" target="_blank">P4C-to-uBPF</a> compiler. However, in order to deeply understand P4 constructs describing tunneling I have created the reference implementation of the VXLAN tunneling for BMv2 switch.</p> <p>This blog post describes how to design and implement more complex tunneling technique (like VXLAN) in the P4 language. The source code is available on <a href="https://github.com/P4-Research/p4-demos/tree/master/vxlan" rel="external nofollow noopener" target="_blank">Github</a>.</p> <h2 id="short-introduction-to-vxlan">Short introduction to VXLAN</h2> <p>The VXLAN (Virtual eXtensible Local Area Network) protocol has been standardized in <a href="https://tools.ietf.org/html/rfc7348" rel="external nofollow noopener" target="_blank">RFC 7348</a> and is usually used to provide overlay communications between virtual machines in the multi-tenant virtualized data center. It isolates logically networks by using Virtual Network Identifier (VNI). The VNI uniquely identifies a Network Segment or, interchangeably, VXLAN Overlay Network. For more information on how VXLAN works visit these references:</p> <p><a href="https://sites.google.com/site/amitsciscozone/home/data-center/vxlan" rel="external nofollow noopener" target="_blank">https://sites.google.com/site/amitsciscozone/home/data-center/vxlan</a></p> <p><a href="https://medium.com/@NTTICT/vxlan-explained-930cc825a51" rel="external nofollow noopener" target="_blank">https://medium.com/@NTTICT/vxlan-explained-930cc825a51</a></p> <p><a href="https://tools.ietf.org/html/rfc7348" rel="external nofollow noopener" target="_blank">RFC 7348</a></p> <h2 id="design-and-implementation-of-vxlan-in-p4">Design and implementation of VXLAN in P4</h2> <p>In this section I describe more interesting parts of the P4 program. The P4 source code is divided into <a href="https://github.com/P4-Research/p4-demos/blob/master/vxlan/vxlan.p4app/header.p4" rel="external nofollow noopener" target="_blank">header.p4</a>, <a href="https://github.com/P4-Research/p4-demos/blob/master/vxlan/vxlan.p4app/parser.p4" rel="external nofollow noopener" target="_blank">parser.p4</a> and <a href="https://github.com/P4-Research/p4-demos/blob/master/vxlan/vxlan.p4app/vxlan.p4" rel="external nofollow noopener" target="_blank">vxlan.p4</a>.</p> <h3 id="headers">Headers</h3> <p>This P4 program will use four types of headers: Ethernet, IP, UDP and VXLAN. The VXLAN header is defined as follows:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>header vxlan_t {
+    bit&lt;8&gt;  flags;
+    bit&lt;24&gt; reserved;
+    bit&lt;24&gt; vni;
+    bit&lt;8&gt;  reserved_2;
+}
+</code></pre></div></div> <p>In fact, in this example only VNI will be used, the rest of fields will be set to zero.</p> <h3 id="parser">Parser</h3> <p>When implementing VXLAN tunneling we need to have more complex parsing logic in order to parse properly packets that arrive encapsulated into VXLAN header. For such packets the parser need to handle outer Ethernet, IP, UDP and VXLAN headers and the inner Ethernet and IP headers. Therefore, the implementation looks as follows:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#define UDP_PORT_VXLAN 4789
+#define UDP_PROTO 17
+#define IPV4_ETHTYPE 0x800
+
+parser ParserImpl(packet_in packet, out headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
+    state start {
+        transition parse_ethernet;
+    }
+    state parse_ethernet {
+        packet.extract(hdr.ethernet);
+        transition select(hdr.ethernet.etherType) {
+            IPV4_ETHTYPE: parse_ipv4;
+            default: accept;
+        }
+    }
+    state parse_ipv4 {
+        packet.extract(hdr.ipv4);
+        transition select(hdr.ipv4.protocol) {
+            UDP_PROTO: parse_udp;
+            default: accept;
+        }
+    }
+    state parse_udp {
+        packet.extract(hdr.udp);
+        transition select(hdr.udp.dstPort) {
+            UDP_PORT_VXLAN: parse_vxlan;
+            default: accept;
+         }
+    }
+    state parse_vxlan {
+        packet.extract(hdr.vxlan);
+        transition parse_inner_ethernet;
+    }
+    state parse_inner_ethernet {
+        packet.extract(hdr.inner_ethernet);
+        transition select(hdr.ethernet.etherType) {
+            IPV4_ETHTYPE: parse_inner_ipv4;
+            default: accept;
+        }
+    }
+    state parse_inner_ipv4 {
+        packet.extract(hdr.inner_ipv4);
+        transition accept;
+    }
+}
+
+control DeparserImpl(packet_out packet, in headers hdr) {
+    apply {
+        packet.emit(hdr.ethernet);
+        packet.emit(hdr.ipv4);
+        packet.emit(hdr.udp);
+        packet.emit(hdr.vxlan);
+        packet.emit(hdr.inner_ethernet);
+        packet.emit(hdr.inner_ipv4);
+    }
+}
+
+control verifyChecksum(inout headers hdr, inout metadata meta) {
+    apply { }
+}
+
+control computeChecksum(inout headers hdr, inout metadata meta) {
+    apply {
+
+    }
+}
+
+</code></pre></div></div> <p>The parser distinguish if the packet is encapsulated in VXLAN based on the UDP destination port, which should be set to 4789, which is the standard port for VXLAN encapsulation. Then if the packet is encapsulated parser goes through following stages: parse_vxlan() -&gt; parse_inner_ethernet() -&gt; parse_inner_ipv4().</p> <p>In the same file I have implemented deparser, which defines the order, in which headers are written to packets at the egress.</p> <h3 id="control-blocks">Control blocks</h3> <p>It is a good practice to design P4 programs (especially those that perform tunneling) by dividing the P4 program into four functional blocks:</p> <ul> <li> <strong><em>Upstream ingress</em></strong> - ingress control block for incoming <em><strong>encapsulated</strong></em> packets.</li> <li> <em><strong>Upstream egress</strong></em> - egress control block for outgoing packets, that arrived as encapsulated.</li> <li> <em><strong>Downstream ingress</strong></em> - control block for incoming raw (not encapsulated) packets.</li> <li> <strong><em>Downstream egress</em></strong> - control block for outgoing packets, that arrived as not encapsulated.</li> </ul> <p>Upstream and downstreams terms refer to the direction of the traffic. The upstream traffic is the traffic that is encapsulated (traffic being sent between VXLAN endpoints) and should be decapsulated at the ingress. On the contrary, the downstream traffic is the traffic, which is not encapsulated yet (traffic from host to switch). It simplify thinking of the P4 program design.</p> <h4 id="upstream-ingress">Upstream ingress</h4> <p>The upstream ingress needs to validate the VXLAN header and strip it out. Moreover, it must perform L2 forwarding to send the decapsulated packet.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>control vxlan_ingress_upstream(inout headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
+
+    action vxlan_decap() {
+        // as simple as set outer headers as invalid
+        hdr.ethernet.setInvalid();
+        hdr.ipv4.setInvalid();
+        hdr.udp.setInvalid();
+        hdr.vxlan.setInvalid();
+    }
+
+    table t_vxlan_term {
+        key = {
+            // Inner Ethernet desintation MAC address of target VM
+            hdr.inner_ethernet.dstAddr : exact;
+        }
+
+        actions = {
+            @defaultonly NoAction;
+            vxlan_decap();
+        }
+
+    }
+
+    action forward(bit&lt;9&gt; port) {
+        standard_metadata.egress_spec = port;
+    }
+
+    table t_forward_l2 {
+        key = {
+            hdr.inner_ethernet.dstAddr : exact;
+        }
+
+        actions = {
+            forward;
+        }
+    }
+
+    apply {
+        if (hdr.ipv4.isValid()) {
+            if (t_vxlan_term.apply().hit) {
+                t_forward_l2.apply();
+            }
+        }
+    }
+}
+</code></pre></div></div> <p>It is implemented in the vxlan_ingress_upstream control block using two tables: t_vxlan_term and t_forward_l2. The former decapsulates packets that matches the key. The destination MAC address of the inner Ethernet header should point to the host that is directly connected to VXLAN endpoint (the switch) via Layer 2 network. Encapsulation action sets outer headers as invalid, so that the deparser knows not to put these headers in the output packet. If the t_vxlan_term is hit, the t_forward_l2 is responsible for forwarding packet based on the destination MAC address of the inner Ethernet header.</p> <h4 id="upstream-egress">Upstream egress</h4> <p>In the context of VXLAN processing the upstream egress block does not need to do anything.</p> <h4 id="downstream-ingress">Downstream ingress</h4> <p>The downstream ingress is responsible for determining the value of the VNI identifier that will be used to encapsulate L2 packet by the downstream egress. Moreover, it determines source IP address and next hop IP address for the encapsulated packets. It also performs routing for encapsulates packets.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>control vxlan_ingress_downstream(inout headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
+
+    action set_vni(bit&lt;24&gt; vni) {
+        meta.vxlan_vni = vni;
+    }
+
+    action set_ipv4_nexthop(bit&lt;32&gt; nexthop) {
+        meta.nexthop = nexthop;
+    }
+
+    table t_vxlan_segment {
+
+        key = {
+            hdr.ipv4.dstAddr : lpm;
+        }
+
+        actions = {
+            @defaultonly NoAction;
+            set_vni;
+        }
+
+    }
+
+    table t_vxlan_nexthop {
+
+        key = {
+            hdr.ethernet.dstAddr : exact;
+        }
+
+        actions = {
+            set_ipv4_nexthop;
+        }
+    }
+
+    action set_vtep_ip(bit&lt;32&gt; vtep_ip) {
+        meta.vtepIP = vtep_ip;
+    }
+
+    table t_vtep {
+        key = {
+            hdr.ethernet.srcAddr : exact;
+        }
+
+        actions = {
+            set_vtep_ip;
+        }
+
+    }
+
+    action route(bit&lt;9&gt; port) {
+        standard_metadata.egress_spec = port;
+    }
+
+    table t_vxlan_routing {
+
+        key = {
+            meta.nexthop : exact;
+        }
+
+        actions = {
+            route;
+        }
+    }
+
+    apply {
+        if (hdr.ipv4.isValid()) {
+            t_vtep.apply();
+            if(t_vxlan_segment.apply().hit) {
+                if(t_vxlan_nexthop.apply().hit) {
+                    t_vxlan_routing.apply();
+                }
+            }
+        }
+    }
+
+}
+</code></pre></div></div> <p>The apply method firsty invokes t_vtep table, which determines source IP address for encapsulated packets based on source MAC address. The source MAC address is the address of the host that is directly connected to the VXLAN endpoint (switch). Then, the control block determines VXLAN Segment ID (the value of VNI) based on the IP subnet mask. Each IP subnet gets unique VNI. If the VXLAN Segment ID is found the next hop IP address is determined. It would be the IP address of the peer VXLAN endpoint. Finally, the P4 enforce to determine output port for packet at the ingress pipeline. Thus, t_vxlan_routing table determines output port based on the next hop IP address. At this moment, everything is prepared to encapsulate packet and send it out in the downstream egress block.</p> <h4 id="downstream-egress">Downstream egress</h4> <p>If the VNI has been determined in the ingress downstream block the downstream egress block just encapsulates the packet and sends the L2 frame.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>control vxlan_egress_downstream(inout headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
+
+    action rewrite_macs(bit&lt;48&gt; smac, bit&lt;48&gt; dmac) {
+        hdr.ethernet.srcAddr = smac;
+        hdr.ethernet.dstAddr = dmac;
+    }
+
+    table t_send_frame {
+
+            key = {
+                hdr.ipv4.dstAddr : exact;
+            }
+
+            actions = {
+                rewrite_macs;
+            }
+        }
+
+    action vxlan_encap() {
+
+        hdr.inner_ethernet = hdr.ethernet;
+        hdr.inner_ipv4 = hdr.ipv4;
+
+        hdr.ethernet.setValid();
+
+        hdr.ipv4.setValid();
+        hdr.ipv4.version = IP_VERSION_4;
+        hdr.ipv4.ihl = IPV4_MIN_IHL;
+        hdr.ipv4.diffserv = 0;
+        hdr.ipv4.totalLen = hdr.ipv4.totalLen
+                            + (ETH_HDR_SIZE + IPV4_HDR_SIZE + UDP_HDR_SIZE + VXLAN_HDR_SIZE);
+        hdr.ipv4.identification = 0x1513; /* From NGIC */
+        hdr.ipv4.flags = 0;
+        hdr.ipv4.fragOffset = 0;
+        hdr.ipv4.ttl = 64;
+        hdr.ipv4.protocol = UDP_PROTO;
+        hdr.ipv4.dstAddr = meta.nexthop;
+        hdr.ipv4.srcAddr = meta.vtepIP;
+        hdr.ipv4.hdrChecksum = 0;
+
+        hdr.udp.setValid();
+        // The VTEP calculates the source port by performing the hash of the inner Ethernet frame's header.
+        hash(hdr.udp.srcPort, HashAlgorithm.crc16, (bit&lt;13&gt;)0, { hdr.inner_ethernet }, (bit&lt;32&gt;)65536);
+        hdr.udp.dstPort = UDP_PORT_VXLAN;
+        hdr.udp.length = hdr.ipv4.totalLen + (UDP_HDR_SIZE + VXLAN_HDR_SIZE);
+        hdr.udp.checksum = 0;
+
+        hdr.vxlan.setValid();
+        hdr.vxlan.reserved = 0;
+        hdr.vxlan.reserved_2 = 0;
+        hdr.vxlan.flags = 0;
+        hdr.vxlan.vni = meta.vxlan_vni;
+
+    }
+
+    apply {
+        if (meta.vxlan_vni != 0) {
+            vxlan_encap();
+            if (hdr.vxlan.isValid()) {
+                t_send_frame.apply();
+            }
+        }
+    }
+
+}
+</code></pre></div></div> <p>However, the vxlan_encap() action is quite complex. Firsty, it copies the contenct of Ethernet and IP headers to the inner Ethernet and IP headers so it will act as a packet payload now. Then, outer headers (Ethernet, IP, UDP and VXLAN) are set valid and their header’s fields are filled. For the outer IP header the destination IP address is taken from nexthop value, which is stored in metadata. Similarily, the source IP address is set to the IP address of the VXLAN endpoint. Furthermore, the UDP header is pushed. Note that the source UDP port is caluclated as a hash value of Ethernet header (according to specification).</p> <p>Once the packet is encapsulated the MAC addresses of outer Ethernet header are set accordingly to the configuration of the switch interfaces.</p> <h2 id="running-example">Running example</h2> <p>In order to run example I have used <a href="https://github.com/p4lang/p4app/" rel="external nofollow noopener" target="_blank">p4app</a>, which is really nice and simple tool (based on Docker and Mininet) to test P4 programs. I have heard about p4app during the last <a href="https://netsoft2019.ieee-netsoft.org/" rel="external nofollow noopener" target="_blank">IEEE NetSoft conference</a>, good to be there!</p> <p>We will use simple Mininet topology with two switches and two hosts. The test environment is described in <a href="https://github.com/P4-Research/p4-demos/blob/master/vxlan/vxlan.p4app/p4app.json" rel="external nofollow noopener" target="_blank">the p4app manifest file</a>. I had to write simple controller module to avoid setting up L3 configuration for hosts. I have also configured Mininet with staticArp(), so that I didn’t have to implement <a href="https://blogs.vmware.com/vsphere/2013/05/vxlan-series-how-vtep-learns-and-creates-forwarding-table-part-5.html" rel="external nofollow noopener" target="_blank">ARP handling mechanism for VXLAN endpoints</a>. It requires more complex P4 logic and for the sake of simplicity I have omitted this part of VTEP’s functionality in the P4 program.</p> <p>Run the demo:</p> <p><code class="language-plaintext highlighter-rouge">sudo p4app run vxlan.p4app</code></p> <p>It will start Mininet, install the VXLAN P4 program on the switches and configure flow rules for them.</p> <p>You can test VXLAN encapsulation by sending some traffic (e.g. ping). By running <em>tcpdump</em> on the switch interfaces gives you insight on how packets are handled:</p> <p>s1-eth1</p> <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>11:14:54.689967 00:04:00:00:01:01 <span class="o">(</span>oui Unknown<span class="o">)</span> <span class="o">&gt;</span> 00:04:00:00:02:01 <span class="o">(</span>oui Unknown<span class="o">)</span>, ethertype IPv4 <span class="o">(</span>0x0800<span class="o">)</span>, length 98: 10.0.0.1 <span class="o">&gt;</span> 10.0.0.2: ICMP <span class="nb">echo </span>request, <span class="nb">id </span>113, <span class="nb">seq </span>23, length 64
+
+11:14:54.692320 00:04:00:00:02:01 <span class="o">(</span>oui Unknown<span class="o">)</span> <span class="o">&gt;</span> 00:04:00:00:01:01 <span class="o">(</span>oui Unknown<span class="o">)</span>, ethertype IPv4 <span class="o">(</span>0x0800<span class="o">)</span>, length 98: 10.0.0.2 <span class="o">&gt;</span> 10.0.0.1: ICMP <span class="nb">echo </span>reply, <span class="nb">id </span>113, <span class="nb">seq </span>23, length 64
+</code></pre></div></div> <p>s1-eth2</p> <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>11:15:14.719712 00:aa:00:01:00:02 <span class="o">(</span>oui Unknown<span class="o">)</span> <span class="o">&gt;</span> 00:aa:00:02:00:03 <span class="o">(</span>oui Unknown<span class="o">)</span>, ethertype IPv4 <span class="o">(</span>0x0800<span class="o">)</span>, length 148: 192.168.11.1.58032 <span class="o">&gt;</span> 192.168.11.254.4789: VXLAN, flags <span class="o">[</span>.] <span class="o">(</span>0x00<span class="o">)</span>, vni 22
+00:04:00:00:01:01 <span class="o">(</span>oui Unknown<span class="o">)</span> <span class="o">&gt;</span> 00:04:00:00:02:01 <span class="o">(</span>oui Unknown<span class="o">)</span>, ethertype IPv4 <span class="o">(</span>0x0800<span class="o">)</span>, length 98: 10.0.0.1 <span class="o">&gt;</span> 10.0.0.2: ICMP <span class="nb">echo </span>request, <span class="nb">id </span>113, <span class="nb">seq </span>43, length 64
+
+11:15:14.720664 00:aa:00:02:00:03 <span class="o">(</span>oui Unknown<span class="o">)</span> <span class="o">&gt;</span> 00:aa:00:01:00:02 <span class="o">(</span>oui Unknown<span class="o">)</span>, ethertype IPv4 <span class="o">(</span>0x0800<span class="o">)</span>, length 148: 192.168.11.254.43328 <span class="o">&gt;</span> 192.168.11.1.4789: VXLAN, flags <span class="o">[</span>.] <span class="o">(</span>0x00<span class="o">)</span>, vni 22
+00:04:00:00:02:01 <span class="o">(</span>oui Unknown<span class="o">)</span> <span class="o">&gt;</span> 00:04:00:00:01:01 <span class="o">(</span>oui Unknown<span class="o">)</span>, ethertype IPv4 <span class="o">(</span>0x0800<span class="o">)</span>, length 98: 10.0.0.2 <span class="o">&gt;</span> 10.0.0.1: ICMP <span class="nb">echo </span>reply, <span class="nb">id </span>113, <span class="nb">seq </span>43, length 64
+</code></pre></div></div> <p>s2-eth2</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>11:15:14.719712 00:aa:00:01:00:02 (oui Unknown) &gt; 00:aa:00:02:00:03 (oui Unknown), ethertype IPv4 (0x0800), length 148: 192.168.11.1.58032 &gt; 192.168.11.254.4789: VXLAN, flags [.] (0x00), vni 22
+00:04:00:00:01:01 (oui Unknown) &gt; 00:04:00:00:02:01 (oui Unknown), ethertype IPv4 (0x0800), length 98: 10.0.0.1 &gt; 10.0.0.2: ICMP echo request, id 113, seq 82, length 64
+
+11:15:14.720664 00:aa:00:02:00:03 (oui Unknown) &gt; 00:aa:00:01:00:02 (oui Unknown), ethertype IPv4 (0x0800), length 148: 192.168.11.254.43328 &gt; 192.168.11.1.4789: VXLAN, flags [.] (0x00), vni 22
+00:04:00:00:02:01 (oui Unknown) &gt; 00:04:00:00:01:01 (oui Unknown), ethertype IPv4 (0x0800), length 98: 10.0.0.2 &gt; 10.0.0.1: ICMP echo reply, id 113, seq 82, length 64
+</code></pre></div></div> <p>s2-eth1</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>11:15:14.719712 00:04:00:00:01:01 (oui Unknown) &gt; 00:04:00:00:02:01 (oui Unknown), ethertype IPv4 (0x0800), length 98: 10.0.0.1 &gt; 10.0.0.2: ICMP echo request, id 113, seq 133, length 64
+
+11:15:14.720664 00:04:00:00:02:01 (oui Unknown) &gt; 00:04:00:00:01:01 (oui Unknown), ethertype IPv4 (0x0800), length 98: 10.0.0.2 &gt; 10.0.0.1: ICMP echo reply, id 113, seq 133, length 64
+</code></pre></div></div> <h2 id="summary">Summary</h2> <p>The P4 implementation of the more advanced tunneling techniques (like VXLAN) requires a bit more effort than more standard networking. The purpose of this tutorial was to show how to implement them properly in the P4 language. I really recommend to split control block into four parts implementing upstream ingress and egress and downstream ingress and egress, seperately. It is <em>the good practice</em> that should ease the programming of the complex P4 programs. Following the VXLAN example one can implement similar tunneling techniques such as GPRS Tunneling Protocol (GTP) or Network Virtualization using Generic Routing Encapsulation (NVGRE).</p> </div> </article> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="https://blog.google/technology/ai/google-gemini-update-flash-ai-assistant-io-2024/" target="_blank" rel="external nofollow noopener">Google Gemini updates: Flash 1.5, Gemma 2 and Project Astra</a> <svg width="1rem" height="1rem" viewbox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"> <path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="https://medium.com/@al-folio/displaying-external-posts-on-your-al-folio-blog-b60a1d241a0a?source=rss-17feae71c3c4------2" target="_blank" rel="external nofollow noopener">Displaying External Posts on Your al-folio Blog</a> <svg width="1rem" height="1rem" viewbox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"> <path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/al-folio/blog/2024/photo-gallery/">a post with image galleries</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/al-folio/blog/2024/tabs/">a post with tabs</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/al-folio/blog/2024/typograms/">a post with typograms</a> </li> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2025 You R. Name. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. Photos from <a href="https://unsplash.com" target="_blank" rel="external nofollow noopener">Unsplash</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/al-folio/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/al-folio/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/al-folio/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script src="/al-folio/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/al-folio/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/al-folio/assets/js/copy_code.js?12775fdf7f95e901d7119054556e495f" type="text/javascript"></script> <script defer src="/al-folio/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/al-folio/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/al-folio/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/al-folio/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/al-folio/assets/js/search/ninja-keys.min.js?a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/al-folio/assets/js/search-setup.js?6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/al-folio/assets/js/search-data.js"></script> <script src="/al-folio/assets/js/shortcut-key.js?6f508d74becd347268a7f822bca7309d"></script> </body> </html>
