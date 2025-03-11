@@ -214,9 +214,9 @@ ninja.data = [{
           description: "I implemented a multipath routing algorithm based on the Depth-First Search (DFS) algorithm for the Floodlight SDN controller.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/8_Floodlight/";
-            },},{id: "projects-onos",
-          title: 'ONOS',
-          description: "I have designed from scratch and developed the XMPP protocol as a southbound interface for Open Network Operating System (ONOS). The main use case for XMPP in ONOS was the BGP/MPLS IP VPN solution as described in IETF draft &quot;BGP-Signaled End-System IP/VPNs&quot;.",
+            },},{id: "projects-9-xmpp-onos",
+          title: '9_xmpp Onos',
+          description: "",
           section: "Projects",handler: () => {
               window.location.href = "/projects/9_XMPP-ONOS/";
             },},{
