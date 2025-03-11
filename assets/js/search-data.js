@@ -10,34 +10,41 @@ ninja.data = [{
       window.location.href = "/";
     },
   },{id: "nav-about",
-          title: "about",
+          title: "About",
           description: "",
           section: "Navigation",
           handler: () => {
             window.location.href = "/about";
           },
         },{id: "nav-blog",
-          title: "blog",
+          title: "Blog",
           description: "",
           section: "Navigation",
           handler: () => {
             window.location.href = "/blog/";
           },
         },{id: "nav-projects",
-          title: "projects",
-          description: "A growing collection of your cool projects.",
+          title: "Projects",
+          description: "A list of projects that I&#39;ve led or contributed to.",
           section: "Navigation",
           handler: () => {
             window.location.href = "/projects/";
           },
-        },{id: "nav-teaching",
-          title: "teaching",
-          description: "",
-          section: "Navigation",
-          handler: () => {
-            window.location.href = "/teaching/";
-          },
-        },{id: "post-my-notes-from-podcast-quot-why-doesn-39-t-ovs-support-p4-quot",
+        },{id: "dropdown-info",
+              title: "info",
+              description: "",
+              section: "Dropdown",
+              handler: () => {
+                window.location.href = "/teaching_info/";
+              },
+            },{id: "dropdown-supervision",
+              title: "supervision",
+              description: "",
+              section: "Dropdown",
+              handler: () => {
+                window.location.href = "/teaching_supervision/";
+              },
+            },{id: "post-my-notes-from-podcast-quot-why-doesn-39-t-ovs-support-p4-quot",
       
         title: "My notes from podcast &quot;Why doesn&#39;t OVS support P4?&quot;",
       
