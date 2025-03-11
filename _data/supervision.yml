@@ -1,0 +1,55 @@
+- title: Supervised theses (ongoing)
+  type: time_table
+  contents:
+    - title: Mechanism for remote access to edge nodes in distributed edge clouds
+      year: ongoing
+      department: Bachelor thesis
+      maindescription: Wiktor Frątczak
+    - title: Orchestration methods for Kubernetes powered by eBPF observability
+      department: Master thesis
+      year: ongoing
+      maindescription: Marcin Krawiec
+    - title: Performance evaluation and analysis of NVIDIA BlueField-2 DPU
+      department: Master thesis
+      year: ongoing
+      maindescription: Sławomir Batruch
+    - title: TCP congestion control powered by In-Band Network Telemetry
+      department: Master thesis
+      year: ongoing
+      maindescription: Kacper Banaszczak
+
+- title: Supervised theses (defended)
+  type: time_table
+  contents:
+    - title: Analysis, evaluation and implementation of In-Band Network Telemetry for programmable networks (defended with honors)
+      department: Master thesis
+      year: 2025
+      maindescription: Jakub Górczynski
+
+- title: Co-supervised theses (defended)
+  type: time_table
+  contents:
+    - title: Large flows detection mechanism for data centers using a programmable data plane
+      department: Master thesis
+      year: 2025
+      maindescription: Huber Maciak
+    - title: Implementation and performance evaluation of 5G UPF using P4
+      year: 2023
+      department: Bachelor thesis
+      maindescription: Jakub Górczynski
+    - title: Performance optimizations of the P4-eBPF compiler
+      year: 2022
+      department: Master thesis
+      maindescription: Wojciech Majcher
+    - title: Packet classification algorithms for programmable data plane in SDN networks
+      department: Master thesis
+      year: 2022
+      maindescription: Emilia Kurach
+    - title: Performance evaluation of P4 software switches
+      department: Master thesis
+      year: 2022
+      maindescription: Angelika Kapica
+    - title: Application and evaluation of telemetry techniques using Open vSwitch and the P4 language
+      department: Master thesis
+      year: 2020
+      maindescription: Jan Palimąka
