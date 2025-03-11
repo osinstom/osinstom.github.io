@@ -37,18 +37,7 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/teaching/";
           },
-        },{id: "post-lights-and-shadows-cloud-init",
-      
-        title: "Lights And Shadows Cloud Init",
-      
-      description: "",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/blog/2025/lights-and-shadows-cloud-init/";
-        
-      },
-    },{id: "post-my-notes-from-podcast-quot-why-doesn-39-t-ovs-support-p4-quot",
+        },{id: "post-my-notes-from-podcast-quot-why-doesn-39-t-ovs-support-p4-quot",
       
         title: "My notes from podcast &quot;Why doesn&#39;t OVS support P4?&quot;",
       
