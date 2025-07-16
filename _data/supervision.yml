@@ -9,10 +9,6 @@
       department: Master thesis
       year: ongoing
       maindescription: Marcin Krawiec
-    - title: Performance evaluation and analysis of NVIDIA BlueField-2 DPU
-      department: Master thesis
-      year: ongoing
-      maindescription: Sławomir Batruch
     - title: TCP congestion control powered by In-Band Network Telemetry
       department: Master thesis
       year: ongoing
@@ -25,6 +21,10 @@
       department: Master thesis
       year: 2025
       maindescription: Jakub Górczynski
+    - title: Performance evaluation and analysis of programmable network cards
+      department: Master thesis
+      year: 2025
+      maindescription: Sławomir Batruch
 
 - title: Co-supervised theses (defended)
   type: time_table
