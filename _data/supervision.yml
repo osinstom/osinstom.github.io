@@ -1,14 +1,6 @@
 - title: Supervised theses (ongoing)
   type: time_table
   contents:
-    - title: Mechanism for remote access to edge nodes in distributed edge clouds
-      year: ongoing
-      department: Bachelor thesis
-      maindescription: Wiktor Frątczak
-    - title: Orchestration methods for Kubernetes powered by eBPF observability
-      department: Master thesis
-      year: ongoing
-      maindescription: Marcin Krawiec
     - title: TCP congestion control powered by In-Band Network Telemetry
       department: Master thesis
       year: ongoing
@@ -17,14 +9,22 @@
 - title: Supervised theses (defended)
   type: time_table
   contents:
+    - title: Mechanism for remote access to edge nodes in distributed edge clouds
+      year: 2026
+      department: Bachelor thesis
+      maindescription: Wiktor Frątczak
+    - title: Orchestration methods for Kubernetes powered by eBPF observability
+      department: Master thesis
+      year: 2026
+      maindescription: Marcin Krawiec
+    - title: Performance evaluation and analysis of NVIDIA BlueField-2 DPU
+      department: Master thesis
+      year: 2025
+      maindescription: Sławomir Batruch
     - title: Analysis, evaluation and implementation of In-Band Network Telemetry for programmable networks (defended with honors)
       department: Master thesis
       year: 2025
       maindescription: Jakub Górczynski
-    - title: Performance evaluation and analysis of programmable network cards
-      department: Master thesis
-      year: 2025
-      maindescription: Sławomir Batruch
 
 - title: Co-supervised theses (defended)
   type: time_table
