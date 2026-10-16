@@ -5,6 +5,18 @@
       department: Master thesis
       year: ongoing
       maindescription: Kacper Banaszczak
+    - title: Design and implementation of SRv6 behaviors for GTP tunneling in mobile networks
+      department: Bachelor thesis
+      year: ongoing
+      maindescription: Mateusz Janecki
+    - title: Evaluation of load balancing methods in the Kubernetes environment
+      department: Bachelor thesis
+      year: ongoing
+      maindescription: Jakub Szalacha
+    - title: Network techniques for distributed AI computations
+      department: Master thesis
+      year: ongoing
+      maindescription: Piotr Kosiara
 
 - title: Supervised theses (defended)
   type: time_table
