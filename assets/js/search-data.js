@@ -44,7 +44,18 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/teaching_supervision/";
               },
-            },{id: "post-my-notes-from-podcast-quot-why-doesn-39-t-ovs-support-p4-quot",
+            },{id: "post-the-highs-and-lows-of-cloud-init-for-zero-touch-provisioning",
+      
+        title: "The Highs and Lows of cloud-init for Zero-Touch Provisioning",
+      
+      description: "What held up, and what did not, after we moved Day-0 OS configuration for zero-touch edge provisioning onto cloud-init.",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2025/the-highs-and-lows-of-cloud-init-for-zero-touch-provisioning/";
+        
+      },
+    },{id: "post-my-notes-from-podcast-quot-why-doesn-39-t-ovs-support-p4-quot",
       
         title: "My notes from podcast &quot;Why doesn&#39;t OVS support P4?&quot;",
       
